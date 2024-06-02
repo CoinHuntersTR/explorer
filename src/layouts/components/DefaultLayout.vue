@@ -265,7 +265,7 @@ function selected(route: any, nav: NavLink) {
           class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
         >
           <img
-            src="https://pbs.twimg.com/profile_images/1767624096404443137/vQFNuneA_400x400.jpg"
+            src="https://pbs.twimg.com/profile_images/1793670687925936128/f9yaYPom_400x400.jpg"
             class="w-6 h-6 rounded-full mr-3"
           />
           <div
