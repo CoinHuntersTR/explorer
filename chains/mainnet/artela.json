@@ -13,16 +13,16 @@
         }
     ],
     "sdk_version": "v0.47.4",
-    "coin_type": "60",
+    "coin_type": "118",
     "min_tx_fee": "500",
     "assets": [{
         "base": " uart",
         "symbol": "ART",
-        "exponent": "6",
+        "exponent": "60",
         "coingecko_id": "artela", 
         "logo": "https://pbs.twimg.com/profile_images/1786260022676324353/q9a40NSw_400x400.png"
     }],
     "addr_prefix": "artela",
-    "theme_color": "#d196ca",
+    "theme_color": "#c91a1a",
     "logo": "https://pbs.twimg.com/profile_images/1786260022676324353/q9a40NSw_400x400.png"
 }
