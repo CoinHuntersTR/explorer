@@ -16,8 +16,9 @@
     "coin_type": "118",
     "min_tx_fee": "500",
     "assets": [{
-        "base": " uart",
+        "base": "uart",
         "symbol": "ART",
+        "exponent": "6",
         "coingecko_id": "artela", 
         "logo": "https://pbs.twimg.com/profile_images/1786260022676324353/q9a40NSw_400x400.png"
     }],
