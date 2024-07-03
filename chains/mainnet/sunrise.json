@@ -13,12 +13,12 @@
         }
     ],
     "sdk_version": "v0.47.4",
-    "coin_type": "60",
+    "coin_type": "118",
     "min_tx_fee": "500",
     "assets": [{
         "base": "urise",
         "symbol": "RISE",
-        "exponent": "18",
+        "exponent": "6",
         "coingecko_id": "sunrise", 
         "logo": "https://pbs.twimg.com/profile_images/1806774793145860096/eFcRdi36_400x400.jpg"
     }],
