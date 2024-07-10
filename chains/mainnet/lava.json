@@ -22,7 +22,7 @@
         "coingecko_id": "lava", 
         "logo": "https://pbs.twimg.com/profile_images/1628433459977850882/l4oqDz8R_400x400.jpg"
     }],
-    "addr_prefix": "lava",
+    "addr_prefix": "lava@",
     "theme_color": "#cc2c2c",
     "logo": "https://pbs.twimg.com/profile_images/1628433459977850882/l4oqDz8R_400x400.jpg"
 }
