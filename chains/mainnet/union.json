@@ -2,13 +2,13 @@
     "chain_name": "union",
     "api": [
         {
-            "address": "https://union-api.chainad.org/", 
+            "address": "https://union-api.chainad.org:443", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://union-rpc.chainad.org/", 
+            "address": "https://union-rpc.chainad.org:443", 
             "provider": "CoinHunters"
         }
     ],
