@@ -1,0 +1,28 @@
+{
+    "chain_name": "empeiria",
+    "api": [
+        {
+            "address": "https://empeiria-api.chainad.org:443", 
+            "provider": "CoinHunters"
+        }
+    ], 
+    "rpc": [
+        {
+            "address": "https://empeiria-rpc.chainad.org:443", 
+            "provider": "CoinHunters"
+        }
+    ],
+    "sdk_version": "v0.0.0-20240206230727-9973b232e832",
+    "coin_type": "60",
+    "min_tx_fee": "500",
+    "assets": [{
+        "base": "uempe",
+        "symbol": "EMPE",
+        "exponent": "6",
+        "coingecko_id": "union", 
+        "logo": "https://pbs.twimg.com/profile_images/1575715887591612419/D2Aw6uNh_400x400.jpg"
+    }],
+    "addr_prefix": "empeiria",
+    "theme_color": "#ea4335",
+    "logo": "https://pbs.twimg.com/profile_images/1575715887591612419/D2Aw6uNh_400x400.jpg"
+}
