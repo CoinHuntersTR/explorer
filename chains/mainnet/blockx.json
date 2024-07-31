@@ -1,0 +1,28 @@
+{
+    "chain_name": "blockx",
+    "api": [
+        {
+            "address": "https://blockx-api.chainad.org:443", 
+            "provider": "CoinHunters"
+        }
+    ], 
+    "rpc": [
+        {
+            "address": "https://blockx-rpc.chainad.org:443", 
+            "provider": "CoinHunters"
+        }
+    ],
+    "sdk_version": "v0.0.0-20240206230727-9973b232e832",
+    "coin_type": "60",
+    "min_tx_fee": "500",
+    "assets": [{
+        "base": "abcx",
+        "symbol": "BCX",
+        "exponent": "6",
+        "coingecko_id": "blockx", 
+        "logo": "https://pbs.twimg.com/profile_images/1571914336288776193/HmxJDHvF_400x400.jpg"
+    }],
+    "addr_prefix": "blockx",
+    "theme_color": "#ea4335",
+    "logo": "https://pbs.twimg.com/profile_images/1571914336288776193/HmxJDHvF_400x400.jpg"
+}
