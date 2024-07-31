@@ -18,7 +18,7 @@
     "assets": [{
         "base": "abcx",
         "symbol": "BCX",
-        "exponent": "6",
+        "exponent": "60",
         "coingecko_id": "blockx", 
         "logo": "https://pbs.twimg.com/profile_images/1571914336288776193/HmxJDHvF_400x400.jpg"
     }],
