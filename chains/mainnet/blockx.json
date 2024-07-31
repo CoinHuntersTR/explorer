@@ -13,7 +13,7 @@
         }
     ],
     "sdk_version": "v0.45.7",
-    "coin_type": "118",
+    "coin_type": "60",
     "min_tx_fee": "500",
     "assets": [{
         "base": "abcx",
