@@ -12,8 +12,8 @@
             "provider": "CoinHunters"
         }
     ],
-    "sdk_version": "v0.0.0-20240206230727-9973b232e832",
-    "coin_type": "60",
+    "sdk_version": "v0.45.7",
+    "coin_type": "118",
     "min_tx_fee": "500",
     "assets": [{
         "base": "abcx",
