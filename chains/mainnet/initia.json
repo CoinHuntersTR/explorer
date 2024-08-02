@@ -1,5 +1,5 @@
 {
-    "chain_name": "initia",
+    "chain_name": "Initia-Testnet",
     "api": [
         {
             "address": "https://initia-api.coinhunterstr.com/", 
