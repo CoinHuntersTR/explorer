@@ -1,5 +1,5 @@
 {
-    "chain_name": "mantra",
+    "chain_name": "Mantra-Testnet",
     "api": [
         {
             "address": "https://mantra-api.chainad.org/", 
