@@ -1,5 +1,5 @@
 {
-    "chain_name": "0G-Newton",
+    "chain_name": "0G-Newton-Tesnet",
     "api": [
         {
             "address": "https://0g-api.chainad.org/", 
