@@ -1,5 +1,5 @@
 {
-    "chain_name": "sunrise",
+    "chain_name": "Sunrise-Testnet",
     "api": [
         {
             "address": "https://sunrise-api.chainad.org/", 
