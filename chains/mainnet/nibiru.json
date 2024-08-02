@@ -1,5 +1,5 @@
 {
-    "chain_name": "Nibiru-Mainnet",
+    "chain_name": "Nibiru",
     "api": [
         {
             "address": "https://nibiru-api.chainad.org/", 
