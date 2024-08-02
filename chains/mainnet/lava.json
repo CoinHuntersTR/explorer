@@ -1,25 +1,25 @@
 {
-    "chain_name": "lava",
+    "chain_name": "Lava",
     "api": [
         {
-            "address": "https://lava-api.chainad.org/", 
+            "address": "https://lava-api.coinhunterstr.com:443", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://lava-rpc.chainad.org/", 
+            "address": "https://lava-rpc.coinhunterstr.com:443", 
             "provider": "CoinHunters"
         }
     ],
-    "sdk_version": "v0.47.10",
-    "coin_type": "60",
+    "sdk_version": "v0.47.3",
+    "coin_type": "118",
     "min_tx_fee": "0",
     "assets": [{
         "base": "ulava",
         "symbol": "LAVA",
         "exponent": "6",
-        "coingecko_id": "lava", 
+        "coingecko_id": "lava-network", 
         "logo": "https://pbs.twimg.com/profile_images/1628433459977850882/l4oqDz8R_400x400.jpg"
     }],
     "addr_prefix": "lava@",
