@@ -1,5 +1,5 @@
 {
-    "chain_name": "empeiria-testnet",
+    "chain_name": "Empeiria-Testnet",
     "api": [
         {
             "address": "https://empeiria-api.chainad.org:443", 
