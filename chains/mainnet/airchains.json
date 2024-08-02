@@ -1,5 +1,5 @@
 {
-    "chain_name": "Airchains",
+    "chain_name": "Airchains-Testnet",
     "api": [
         {
             "address": "https://airchains-api.chainad.org/", 
