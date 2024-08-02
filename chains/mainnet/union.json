@@ -1,5 +1,5 @@
 {
-    "chain_name": "union",
+    "chain_name": "Union-Testnet",
     "api": [
         {
             "address": "https://union-api.chainad.org:443", 
