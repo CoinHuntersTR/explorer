@@ -13,12 +13,12 @@
         }
     ],
     "sdk_version": "v0.46.15",
-    "coin_type": "118",
+    "coin_type": "60",
     "min_tx_fee": "800",
     "assets": [{
         "base": "ufia",
         "symbol": "FIA",
-        "exponent": "18",
+        "exponent": "6",
         "coingecko_id": "Fiamma", 
         "logo": "https://pbs.twimg.com/profile_images/1805129353183027200/SUjWerZv_400x400.jpg"
     }],
