@@ -2,13 +2,13 @@
     "chain_name": "Zetachain",
     "api": [
         {
-            "address": "https://zetachain-mainnet-rpc.itrocket.net", 
+            "address": "https://zetachain-mainnet-api.itrocket.net", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://zetachain-mainnet-api.itrocket.net", 
+            "address": "https://zetachain-mainnet-rpc.itrocket.net", 
             "provider": "CoinHunters"
         }
     ],
