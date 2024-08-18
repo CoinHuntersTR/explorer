@@ -2,7 +2,7 @@
     "chain_name": "Sunrise-Testnet",
     "api": [
         {
-            "address": "https://sunrise-api.chainad.org:443", 
+            "address": "https://api-t.sunrise.nodestake.org", 
             "provider": "CoinHunters"
         }
     ], 
