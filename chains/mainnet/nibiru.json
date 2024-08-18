@@ -2,13 +2,13 @@
     "chain_name": "Nibiru",
     "api": [
         {
-            "address": "https://nibiru-api.chainad.org/", 
+            "address": "https://nibiru.api.m.stavr.tech:443", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://nibiru-rpc.chainad.org/", 
+            "address": "https://nibiru.rpc.m.stavr.tech:443", 
             "provider": "CoinHunters"
         }
     ],
