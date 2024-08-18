@@ -2,13 +2,13 @@
     "chain_name": "Dymension",
     "api": [
         {
-            "address": "https://api.mainnet.dymension.aviaone.com", 
+            "address": "https://dymension.api.kjnodes.com:443", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://rpc.mainnet.dymension.aviaone.com", 
+            "address": "https://dymension.rpc.kjnodes.com:443", 
             "provider": "CoinHunters"
         }
     ],
