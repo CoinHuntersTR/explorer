@@ -18,7 +18,7 @@
     "assets": [{
         "base": "uallo",
         "symbol": "ALLO",
-        "exponent": "6",
+        "exponent": "18",
         "coingecko_id": "ALLO", 
         "logo": "https://pbs.twimg.com/profile_images/1793726657783812096/sDRnXVCd_400x400.jpg"
     }],
