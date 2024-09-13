@@ -84,6 +84,11 @@ const changes = computed(() => {
 
 const change24 = (entry: { consensus_pubkey: Key; tokens: string }) => {
     const txt = entry.consensus_pubkey.key;
+    // const n: number = latest.value[txt];
+    // const o: number = yesterday.value[txt];
+    // // console.log( txt, n, o)
+    // return n > 0 && o > 0 ? n - o : 0;
+
     const latestValue = latest.value[txt];
     if (!latestValue) {
         return 0;
@@ -149,6 +154,7 @@ const list = computed(() => {
 });
 
 const fetchAvatar = (identity: string) => {
+  // fetch avatar from keybase
   return new Promise<void>((resolve) => {
     staking
       .keybase(identity)
@@ -164,21 +170,25 @@ const fetchAvatar = (identity: string) => {
         } else throw new Error(`failed to fetch avatar for ${identity}`);
       })
       .catch((error) => {
+        // console.error(error); // uncomment this if you want the user to see which avatars failed to load.
         resolve();
       });
   });
 };
 
 const loadAvatar = (identity: string) => {
+  // fetches avatar from keybase and stores it in localStorage
   fetchAvatar(identity).then(() => {
     localStorage.setItem('avatars', JSON.stringify(avatars.value));
   });
 };
 
 const loadAvatars = () => {
+  // fetches all avatars from keybase and stores it in localStorage
   const promises = staking.validators.map((validator) => {
     const identity = validator.description?.identity;
 
+    // Here we also check whether we haven't already fetched the avatar
     if (identity && !avatars.value[identity]) {
       return fetchAvatar(identity);
     } else {
@@ -212,7 +222,6 @@ base.$subscribe((_, s) => {
 
 loadAvatars();
 </script>
-
 <template>
 <div>
     <div class="bg-base-100 rounded-lg grid sm:grid-cols-1 md:grid-cols-4 p-4" >    
@@ -266,18 +275,15 @@ loadAvatars();
         </div>  
     </div>
 
-    <!-- Moved and updated tab section -->
-    <div class="tabs tabs-boxed bg-transparent mt-4">
-        <a
-            class="tab text-gray-400"
-            :class="{ 'tab-active': tab === 'featured' }"
-            @click="tab = 'featured'"
-        >Stake with CoinHunters</a>
-    </div>
-
     <div>
         <div class="flex items-center justify-between py-1">
             <div class="tabs tabs-boxed bg-transparent">
+                <a
+                    class="tab text-gray-400"
+                    :class="{ 'tab-active': tab === 'featured' }"
+                    @click="tab = 'featured'"
+                    >{{ $t('staking.popular') }}</a
+                >
                 <a
                     class="tab text-gray-400"
                     :class="{ 'tab-active': tab === 'active' }"
@@ -322,7 +328,7 @@ loadAvatars();
                             :key="v.operator_address"
                             class="hover:bg-gray-100 dark:hover:bg-[#384059]"
                         >
-                            
+                            <!-- 👉 rank -->
                             <td>
                                 <div
                                     class="text-xs truncate relative px-2 py-1 rounded-full w-fit"
@@ -335,7 +341,7 @@ loadAvatars();
                                     {{ i + 1 }}
                                 </div>
                             </td>
-                            
+                            <!-- 👉 Validator -->
                             <td>
                                 <div
                                     class="flex items-center overflow-hidden"
@@ -392,7 +398,7 @@ loadAvatars();
                                 </div>
                             </td>
 
-                            
+                            <!-- 👉 Voting Power -->
                             <td class="text-right">
                                 <div class="flex flex-col">
                                     <h6 class="text-sm font-weight-medium whitespace-nowrap ">
@@ -418,14 +424,14 @@ loadAvatars();
                                     }}</span>
                                 </div>
                             </td>
-                            
+                            <!-- 👉 24h Changes -->
                             <td
                                 class="text-right text-xs"
                                 :class="change24Color(v)"
                             >
                                 {{ change24Text(v) }}
                             </td>
-                            
+                            <!-- 👉 commission -->
                             <td class="text-right text-xs">
                                 {{
                                     format.formatCommissionRate(
@@ -433,7 +439,7 @@ loadAvatars();
                                     )
                                 }}
                             </td>
-                            
+                            <!-- 👉 Action -->
                             <td class="text-center">
                                 <div
                                     v-if="v.jailed"
@@ -494,3 +500,10 @@ loadAvatars();
     }
   }
 </route>
+
+<style>
+.staking-table.table :where(th, td) {
+    padding: 8px 5px;
+    background: transparent;
+}
+</style>
