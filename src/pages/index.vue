@@ -13,27 +13,36 @@ const dashboard = useDashboard();
 
 const keywords = ref('');
 const chains = computed(() => {
-  if (keywords.value) {
-    const lowercaseKeywords = keywords.value.toLowerCase();
+  const allChains = Object.values(dashboard.chains);
 
-    return Object.values(dashboard.chains).filter(
-      (x: ChainConfig) => x.chainName.toLowerCase().indexOf(lowercaseKeywords) > -1 
-      || x.prettyName.toLowerCase().indexOf(lowercaseKeywords) > -1
-    );
-  } else {
-    return Object.values(dashboard.chains);
-  }
+  const filteredChains = keywords.value
+    ? allChains.filter(
+        (x: ChainConfig) =>
+          x.chainName.toLowerCase().includes(keywords.value.toLowerCase()) ||
+          x.prettyName.toLowerCase().includes(keywords.value.toLowerCase())
+      )
+    : allChains;
+
+  const testnetChains = filteredChains.filter((x: ChainConfig) =>
+    x.chainName.endsWith('-Testnet')
+  );
+  const mainnetChains = filteredChains.filter(
+    (x: ChainConfig) => !x.chainName.endsWith('-Testnet')
+  );
+
+  return [...mainnetChains, ...testnetChains];
 });
 
 const featured = computed(() => {
   const names = ["cosmos", "osmosis", "akash", "celestia", "evmos", "injective", "dydx", "noble"];
   return chains.value
     .filter(x => names.includes(x.chainName))
-    .sort((a, b)=> (names.indexOf(a.chainName) - names.indexOf(b.chainName)))
-})
+    .sort((a, b) => names.indexOf(a.chainName) - names.indexOf(b.chainName));
+});
 
-const chainStore = useBlockchain()
+const chainStore = useBlockchain();
 </script>
+
 <template>
   <div class="">
     <div class="flex md:!flex-row flex-col items-center justify-center mb-6 mt-14 gap-2">
@@ -191,7 +200,6 @@ const chainStore = useBlockchain()
 <path d="M0 0 C2.375 0.6875 2.375 0.6875 5 2 C6.3125 4.625 6.3125 4.625 7 7 C3.00003714 5.66667905 2.16217663 3.5042173 0 0 Z " fill="#A5C2D3" transform="translate(348,191)"/>
 <path d="M0 0 C0.66 0.33 1.32 0.66 2 1 C2 1.66 2 2.32 2 3 C0.1875 4.0625 0.1875 4.0625 -2 5 C-2.99 4.67 -3.98 4.34 -5 4 C-3.35 2.68 -1.7 1.36 0 0 Z " fill="#F6F6F6" transform="translate(213,103)"/>
 </svg>
-
       </div>
       <h1 class="text-primary dark:invert text-3xl md:!text-6xl font-bold">
         {{ $t('pages.title') }}
@@ -209,14 +217,14 @@ const chainStore = useBlockchain()
       <progress class="progress progress-info w-80 h-1"></progress>
     </div>
 
-    <div v-if="featured.length>0" class="text-center text-base mt-6 text-primary">
+    <div v-if="featured.length > 0" class="text-center text-base mt-6 text-primary">
       <h2 class="mb-6"> Featured Blockchains 🔥 </h2>
     </div>
 
-    <div v-if="featured.length>0"
+    <div v-if="featured.length > 0"
       class="grid grid-cols-1 gap-4 mt-6 md:!grid-cols-3 lg:!grid-cols-4 2xl:!grid-cols-5"
     >
-    <ChainSummary
+      <ChainSummary
         v-for="(chain, index) in featured"
         :key="index"
         :name="chain.chainName"
@@ -227,7 +235,7 @@ const chainStore = useBlockchain()
       <h2 class="mb-6">{{ $t('pages.description') }}</h2>
     </div>
 
-    <div class="flex items-center rounded-lg bg-base-100  border border-gray-200 dark:border-gray-700 mt-10">
+    <div class="flex items-center rounded-lg bg-base-100 border border-gray-200 dark:border-gray-700 mt-10">
       <Icon icon="mdi:magnify" class="text-2xl text-gray-400 ml-3"/>
       <input :placeholder="$t('pages.search_placeholder')" class="px-4 h-10 bg-transparent flex-1 outline-none text-base" v-model="keywords" />
       <div class="px-4 text-base hidden md:!block">{{ chains.length }}/{{ dashboard.length }}</div>
@@ -244,9 +252,3 @@ const chainStore = useBlockchain()
     </div>
   </div>
 </template>
-
-<style scoped>
- .logo path{
-  fill: #171d30;
-}
-</style>
