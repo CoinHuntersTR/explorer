@@ -2,13 +2,13 @@
     "chain_name": "Warden-Testnet",
     "api": [
         {
-            "address": "https://warden-api.chainad.org/", 
+            "address": "https://warden-testnet-api.itrocket.net:443", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://warden-rpc.chainad.org/", 
+            "address": "https://warden-testnet-rpc.itrocket.net:443", 
             "provider": "CoinHunters"
         }
     ],
