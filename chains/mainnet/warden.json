@@ -13,12 +13,12 @@
         }
     ],
     "sdk_version": "v0.50.5",
-    "coin_type": "60",
+    "coin_type": "118",
     "min_tx_fee": "500",
     "assets": [{
-        "base": "uward",
+        "base": "award",
         "symbol": "WARD",
-        "exponent": "6",
+        "exponent": "60",
         "coingecko_id": "warden", 
         "logo": "https://pbs.twimg.com/profile_images/1827100976152555520/N-CVNgTL_400x400.jpg"
     }],
