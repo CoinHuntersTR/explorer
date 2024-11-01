@@ -1,0 +1,28 @@
+{
+    "chain_name": "Mantra",
+    "api": [
+        {
+            "address": "https://mantramainnet-api.chainad.org:443", 
+            "provider": "CoinHunters"
+        }
+    ], 
+    "rpc": [
+        {
+            "address": "https://mantramainnet-rpc.chainad.org:443", 
+            "provider": "CoinHunters"
+        }
+    ],
+    "sdk_version": "v0.47.4",
+    "coin_type": "60",
+    "min_tx_fee": "500",
+    "assets": [{
+        "base": "uom",
+        "symbol": "OM",
+        "exponent": "6",
+        "coingecko_id": "mantra", 
+        "logo": "https://pbs.twimg.com/profile_images/1790339778346618880/ihlLQAMC_400x400.jpg"
+    }],
+    "addr_prefix": "mantra",
+    "theme_color": "#ea4335",
+    "logo": "https://pbs.twimg.com/profile_images/1790339778346618880/ihlLQAMC_400x400.jpg"
+}
