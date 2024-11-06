@@ -2,7 +2,7 @@
     "chain_name": "Story-Testnet",
     "api": [
         {
-            "address": "https://story-testnet-api.itrocket.net", 
+            "address": "https://api-story-testnet.itrocket.net", 
             "provider": "CoinHunters"
         }
     ], 
