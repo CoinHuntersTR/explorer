@@ -13,12 +13,12 @@
         }
     ],
     "sdk_version": "v0.47.3",
-    "coin_type": "60",
+    "coin_type": "118",
     "min_tx_fee": "0",
     "assets": [{
-        "base": "uip",
+        "base": "stake",
         "symbol": "IP",
-        "exponent": "6",
+        "exponent": "60",
         "coingecko_id": "story", 
         "logo": "https://pbs.twimg.com/profile_images/1820303986349805569/MKfPfLtz_400x400.jpg"
     }],
