@@ -2,7 +2,7 @@
     "chain_name": "Story-Testnet",
     "api": [
         {
-            "address": "https://api-story-testnet.itrocket.net", 
+            "address": "https://api.testnet.storyscan.app", 
             "provider": "CoinHunters"
         }
     ], 
@@ -13,7 +13,7 @@
         }
     ],
     "sdk_version": "v0.47.3",
-    "coin_type": "118",
+    "coin_type": "60",
     "min_tx_fee": "0",
     "assets": [{
         "base": "uip",
