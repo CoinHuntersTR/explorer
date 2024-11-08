@@ -17,7 +17,7 @@
     "min_tx_fee": "800",
     "assets": [{
         "base": "uside",
-        "symbol": "AMF",
+        "symbol": "SIDE",
         "exponent": "6",
         "coingecko_id": "SIDE", 
         "logo": "https://pbs.twimg.com/profile_images/1853678321894092800/n1Z8nS7d_400x400.jpg"
