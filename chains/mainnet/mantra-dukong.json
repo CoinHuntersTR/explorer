@@ -1,5 +1,5 @@
 {
-    "chain_name": "Mantra-Dukong-Testnet",
+    "chain_name": "Mantra-Testnet",
     "api": [
         {
             "address": "https://mantra-dukong-api.chainad.org:443", 
