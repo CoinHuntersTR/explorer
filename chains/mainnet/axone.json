@@ -1,0 +1,28 @@
+{
+    "chain_name": "Axone-Testnet",
+    "api": [
+        {
+            "address": "https://axone-testnet-api.polkachu.com/", 
+            "provider": "CoinHunters"
+        }
+    ], 
+    "rpc": [
+        {
+            "address": "https://axone-testnet-rpc.polkachu.com/", 
+            "provider": "CoinHunters"
+        }
+    ],
+    "sdk_version": "v0.47.4",
+    "coin_type": "60",
+    "min_tx_fee": "500",
+    "assets": [{
+        "base": "uaxone",
+        "symbol": "AXONE",
+        "exponent": "6",
+        "coingecko_id": "axone", 
+        "logo": "https://pbs.twimg.com/profile_images/1841523650043772928/EeZIYE7B_400x400.jpg"
+    }],
+    "addr_prefix": "sunrise",
+    "theme_color": "#c91a1a",
+    "logo": "https://pbs.twimg.com/profile_images/1841523650043772928/EeZIYE7B_400x400.jpg"
+}
