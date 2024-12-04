@@ -2,13 +2,13 @@
     "chain_name": "Sunrise-Testnet",
     "api": [
         {
-            "address": "https://sunrise-api.chainad.org:443", 
+            "address": "https://sunrise-testnet-api.polkachu.com/", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://sunrise-rpc.chainad.org:443", 
+            "address": "https://sunrise-testnet-rpc.polkachu.com/", 
             "provider": "CoinHunters"
         }
     ],
