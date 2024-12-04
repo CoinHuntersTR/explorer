@@ -2,13 +2,13 @@
     "chain_name": "Side-Testnet",
     "api": [
         {
-            "address": "https://side-api.chainad.org/", 
+            "address": "https://side-testnet-api.itrocket.net", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://side-rpc.chainad.org/", 
+            "address": "https://side-testnet-rpc.itrocket.net", 
             "provider": "CoinHunters"
         }
     ],
