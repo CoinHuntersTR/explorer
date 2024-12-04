@@ -2,13 +2,13 @@
     "chain_name": "Dymension-Testnet",
     "api": [
         {
-            "address": "https://dymensiontest-api.chainad.org/", 
+            "address": "https://api.froopyland-100-1.dymension.aviaone.com", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://dymensiontest-rpc.chainad.org/", 
+            "address": "https://rpc.froopyland-100-1.dymension.aviaone.com", 
             "provider": "CoinHunters"
         }
     ],
