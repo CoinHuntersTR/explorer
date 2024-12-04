@@ -2,13 +2,13 @@
     "chain_name": "Empeiria-Testnet",
     "api": [
         {
-            "address": "https://empeiria-api.chainad.org:443", 
+            "address": "https://empeiria-testnet-api.itrocket.net", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://empeiria-rpc.chainad.org:443", 
+            "address": "https://empeiria-testnet-rpc.itrocket.net", 
             "provider": "CoinHunters"
         }
     ],
