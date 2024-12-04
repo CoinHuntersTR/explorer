@@ -2,13 +2,13 @@
     "chain_name": "blockx",
     "api": [
         {
-            "address": "https://blockx-mainnet-api.itrocket.net:443", 
+            "address": "https://blockx-mainnet-api.itrocket.net", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://blockx-mainnet-rpc.itrocket.net:443", 
+            "address": "https://blockx-mainnet-rpc.itrocket.net", 
             "provider": "CoinHunters"
         }
     ],
