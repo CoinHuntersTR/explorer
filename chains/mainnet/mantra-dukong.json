@@ -2,13 +2,13 @@
     "chain_name": "Mantra-Testnet",
     "api": [
         {
-            "address": "https://mantra-dukong-api.chainad.org:443", 
+            "address": "https://mantra-testnet-api.itrocket.net", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://mantra-dukong-rpc.chainad.org:443", 
+            "address": "https://mantra-testnet-rpc.itrocket.net", 
             "provider": "CoinHunters"
         }
     ],
