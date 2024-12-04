@@ -2,13 +2,13 @@
     "chain_name": "Fiamma-Testnet",
     "api": [
         {
-            "address": "https://fiamma-api.chainad.org:443", 
+            "address": "https://fiamma-testnet-api.itrocket.net", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://fiamma-rpc.chainad.org:443", 
+            "address": "https://fiamma-testnet-rpc.itrocket.net", 
             "provider": "CoinHunters"
         }
     ],
