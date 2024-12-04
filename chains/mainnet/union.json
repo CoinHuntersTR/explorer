@@ -2,7 +2,7 @@
     "chain_name": "Union-Testnet",
     "api": [
         {
-            "address": "hhttps://union-testnet-api.itrocket.net:443", 
+            "address": "https://union-testnet-api.itrocket.net:443", 
             "provider": "CoinHunters"
         }
     ], 
