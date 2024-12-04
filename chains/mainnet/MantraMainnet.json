@@ -2,13 +2,13 @@
     "chain_name": "Mantra",
     "api": [
         {
-            "address": "https://mantramainnet-api.chainad.org:443", 
+            "address": "https://mantra-mainnet-api.itrocket.net", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://mantramainnet-rpc.chainad.org:443", 
+            "address": "https://mantra-mainnet-rpc.itrocket.net", 
             "provider": "CoinHunters"
         }
     ],
