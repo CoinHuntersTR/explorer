@@ -14,11 +14,11 @@
     ],
     "sdk_version": "v0.50.3",
     "coin_type": "60",
-    "min_tx_fee": "800",
+    "min_tx_fee": "30",
     "assets": [{
         "base": "apell",
         "symbol": "PELL",
-        "exponent": "6",
+        "exponent": "18",
         "coingecko_id": "PELL", 
         "logo": "https://pbs.twimg.com/profile_images/1811609717522989056/_jr_bub2_400x400.png"
     }],
