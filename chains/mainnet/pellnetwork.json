@@ -1,0 +1,28 @@
+{
+    "chain_name": "Airchains-Testnet",
+    "api": [
+        {
+            "address": "http://34.87.39.12:1317", 
+            "provider": "CoinHunters"
+        }
+    ], 
+    "rpc": [
+        {
+            "address": "http://34.87.39.12:26657", 
+            "provider": "CoinHunters"
+        }
+    ],
+    "sdk_version": "v0.50.3",
+    "coin_type": "60",
+    "min_tx_fee": "800",
+    "assets": [{
+        "base": "apell",
+        "symbol": "PELL",
+        "exponent": "6",
+        "coingecko_id": "PELL", 
+        "logo": "https://pbs.twimg.com/profile_images/1811609717522989056/_jr_bub2_400x400.png"
+    }],
+    "addr_prefix": "AMF",
+    "theme_color": "#ce4747",
+    "logo": "https://pbs.twimg.com/profile_images/1811609717522989056/_jr_bub2_400x400.png"
+}
