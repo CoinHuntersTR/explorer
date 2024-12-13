@@ -1,14 +1,14 @@
 {
-    "chain_name": "PellNework-Testnet",
+    "chain_name": "Pell-Testnet",
     "api": [
         {
-            "address": "http://34.87.39.12:1317", 
+            "address": "https://pell-testnet-api.itrocket.net", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "http://34.87.39.12:26657", 
+            "address": "https://pell-testnet-rpc.itrocket.net", 
             "provider": "CoinHunters"
         }
     ],
