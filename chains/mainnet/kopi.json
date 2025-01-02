@@ -1,5 +1,5 @@
 {
-    "chain_name": "Kopi-Testnet",
+    "chain_name": "Kopi-Money",
     "api": [
         {
             "address": "https://kopi-api.coinhunterstr.com", 
