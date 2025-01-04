@@ -2,13 +2,13 @@
     "chain_name": "Union-Testnet",
     "api": [
         {
-            "address": "https://union-testnet-api.itrocket.net:443", 
+            "address": "https://testnet-union-api.konsortech.xyz", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://union-testnet-rpc.itrocket.net:443", 
+            "address": "https://testnet-union-rpc.konsortech.xyz", 
             "provider": "CoinHunters"
         }
     ],
