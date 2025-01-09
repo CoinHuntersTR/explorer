@@ -1,0 +1,28 @@
+{
+    "chain_name": "Native-Testnet",
+    "api": [
+        {
+            "address": "https://native-api.coinhunterstr.com", 
+            "provider": "CoinHunters"
+        }
+    ], 
+    "rpc": [
+        {
+            "address": "https://native-rpc.coinhunterstr.com", 
+            "provider": "CoinHunters"
+        }
+    ],
+    "sdk_version": "v0.47.4",
+    "coin_type": "60",
+    "min_tx_fee": "500",
+    "assets": [{
+        "base": "untiv",
+        "symbol": "NATIVE",
+        "exponent": "6",
+        "coingecko_id": "native", 
+        "logo": "https://pbs.twimg.com/profile_images/1843715328716488704/H40G1hdt_400x400.jpg"
+    }],
+    "addr_prefix": "native",
+    "theme_color": "#ea4335",
+    "logo": "https://pbs.twimg.com/profile_images/1843715328716488704/H40G1hdt_400x400.jpg"
+}
