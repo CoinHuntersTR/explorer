@@ -25,16 +25,9 @@ function changeEndpoint(item: Endpoint) {
       </div>
       <div class="flex-1 w-0">
         <div
-          :key="baseStore.latest?.block?.header?.height || ''"
-          class="capitalize whitespace-nowrap text-base font-semibold text-gray-600 dark:text-gray-200 hidden md:!block"
-        >
-          {{ baseStore.latest?.block?.header?.height ? `#${baseStore.latest.block.header.height}` : '0' }}
-          <span class="text-error">{{ baseStore.connected ? '' : 'disconnected' }}</span>
-        </div>
-        <div
           class="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap hidden md:!block"
         >
-          {{ chainStore.connErr || chainStore.endpoint.address }}
+          <span class="text-error">{{ baseStore.connected ? '' : 'disconnected' }}</span>
         </div>
       </div>
     </label>
