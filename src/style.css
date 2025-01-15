@@ -6,10 +6,10 @@
 @tailwind utilities;
 
 :root {
-  --primary: #6366f1;
+  --primary: #4f46e5;
   --secondary: #3b82f6;
-  --bg: #f9fafb;
-  --text: #111827;
+  --bg: #f6f8fd;
+  --text: #2d3748;
   --text-main: #333;
   --text-secondary: #4b525d;
   --bg-active: #fbfbfc;
