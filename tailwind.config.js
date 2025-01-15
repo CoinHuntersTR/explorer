@@ -11,7 +11,15 @@ module.exports = {
         main: 'var(--text-main)',
         secondary: 'var(--text-secondary)',
         active: 'var(--bg-active)',
-      }
+        primary: '#4f46e5',
+        secondary: '#3b82f6',
+      },
+      borderRadius: {
+        DEFAULT: '10px',
+      },
+      boxShadow: {
+        card: '0 4px 20px rgba(0, 0, 0, 0.05)',
+      },
     },
   },
   plugins: [require('daisyui')],
