@@ -49,36 +49,7 @@ function changeEndpoint(item: Endpoint) {
       tabindex="0"
       class="dropdown-content -left-6 w-80 menu shadow bg-base-200 rounded-box overflow-auto"
     >
-      <!-- rest -->
-      <div
-        class="px-4 py-2 text-sm text-gray-400"
-        v-if="chainStore.current?.endpoints?.rest"
-      >
-        Rest Endpoint
-      </div>
-      <div
-        v-for="(item, index) in chainStore.current?.endpoints?.rest"
-        class="px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-[#384059] cursor-pointer"
-        :key="index"
-        @click="changeEndpoint(item)"
-      >
-        <div class="flex flex-col">
-          <div class="flex items-center justify-between w-full">
-            <div class="text-gray-500 dark:text-gray-200 capitalize">
-              {{ item.provider }}
-            </div>
-            <span
-              v-if="item.address === chainStore.endpoint?.address"
-              class="bg-yes inline-block h-2 w-2 rounded-full"
-            />
-          </div>
-          <div class="text-gray-400 text-xs whitespace-nowrap">
-            {{ item.address }}
-          </div>
-        </div>
-      </div>
 
-      <!-- rest -->
       <div class="px-4 py-2 text-sm text-gray-400">Information</div>
       <div class="w-full">
         <div class="py-2 px-4 flex items-center justify-between">
