@@ -1,121 +1,69 @@
-<script lang="ts" setup>
-import { Icon } from '@iconify/vue';
-import {
-  useDashboard,
-  LoadingStatus,
-  type ChainConfig,
-} from '@/stores/useDashboard';
-import ChainSummary from '@/components/ChainSummary.vue';
-import { computed, ref } from 'vue';
-import { useBlockchain } from '@/stores';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useBlockchain } from '@/stores'
 
-const dashboard = useDashboard();
+const blockchain = useBlockchain()
+const searchQuery = ref('')
+const activeTab = ref('Mainnets')
 
-const keywords = ref('');
-const chains = computed(() => {
-  const allChains = Object.values(dashboard.chains);
-
-  const filteredChains = keywords.value
-    ? allChains.filter(
-        (x: ChainConfig) =>
-          x.chainName.toLowerCase().includes(keywords.value.toLowerCase()) ||
-          x.prettyName.toLowerCase().includes(keywords.value.toLowerCase())
-      )
-    : allChains;
-
-  const testnetChains = filteredChains.filter((x: ChainConfig) =>
-    x.chainName.endsWith('-Testnet')
-  );
-  const mainnetChains = filteredChains.filter(
-    (x: ChainConfig) => !x.chainName.endsWith('-Testnet')
-  );
-
-  return { mainnetChains, testnetChains };
-});
-
-const featured = computed(() => {
-  const names = ["cosmos", "osmosis", "akash", "celestia", "evmos", "injective", "dydx", "noble"];
-  return [...chains.value.mainnetChains, ...chains.value.testnetChains]
-    .filter(x => names.includes(x.chainName))
-    .sort((a, b) => names.indexOf(a.chainName) - names.indexOf(b.chainName));
-});
-
-const chainStore = useBlockchain();
+const tabs = [
+  { name: 'Mainnets', count: '42' },
+  { name: 'Testnets', count: '44' }
+]
 </script>
 
 <template>
-  <div class="">
-    <div class="flex md:!flex-row flex-col items-center justify-center mb-6 mt-14 gap-2">
-      <div class="w-16 rounded-full">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30">
-        </svg>
+  <div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-indigo-600 mb-4">Nodes.Guru Blockchain Explorers</h1>
+        <p class="text-gray-600 text-lg">Try the best Cosmos-based network explorers</p>
       </div>
-      <h1 class="text-primary dark:invert text-3xl md:!text-6xl font-bold">
-        {{ $t('pages.title') }}
-      </h1>
-    </div>
-    <div class="text-center text-base">
-      <p class="mb-1">
-        {{ $t('pages.slogan') }}
-      </p>
-    </div>
-    <div
-      v-if="dashboard.status !== LoadingStatus.Loaded"
-      class="flex justify-center"
-    >
-      <progress class="progress progress-info w-80 h-1"></progress>
-    </div>
 
-    <div v-if="featured.length > 0" class="text-center text-base mt-6 text-primary">
-      <h2 class="mb-6"> Featured Blockchains 🔥 </h2>
-    </div>
+      <!-- Tabs -->
+      <div class="flex justify-center space-x-4 mb-8">
+        <div v-for="tab in tabs" :key="tab.name" 
+             @click="activeTab = tab.name"
+             class="inline-flex items-center px-4 py-2 rounded-full cursor-pointer"
+             :class="activeTab === tab.name ? 'bg-white shadow-sm' : 'hover:bg-white/50'">
+          <span :class="activeTab === tab.name ? 'text-indigo-600' : 'text-gray-600'">
+            {{ tab.name }}
+          </span>
+          <span class="ml-2 bg-gray-100 px-2 py-0.5 rounded-full text-sm text-gray-600">
+            {{ tab.count }}
+          </span>
+        </div>
+      </div>
 
-    <div v-if="featured.length > 0"
-      class="grid grid-cols-1 gap-4 mt-6 md:!grid-cols-3 lg:!grid-cols-4 2xl:!grid-cols-5"
-    >
-      <ChainSummary
-        v-for="(chain, index) in featured"
-        :key="index"
-        :name="chain.chainName"
-      />
-    </div>
+      <!-- Search -->
+      <div class="max-w-2xl mx-auto mb-12">
+        <div class="relative">
+          <input type="text" 
+                 v-model="searchQuery"
+                 placeholder="Enter network"
+                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+          <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+        </div>
+      </div>
 
-    <div class="text-center text-base mt-6 text-primary">
-      <h2 class="mb-6">{{ $t('pages.description') }}</h2>
-    </div>
-
-    <div class="flex items-center rounded-lg bg-base-100 border border-gray-200 dark:border-gray-700 mt-10">
-      <Icon icon="mdi:magnify" class="text-2xl text-gray-400 ml-3"/>
-      <input :placeholder="$t('pages.search_placeholder')" class="px-4 h-10 bg-transparent flex-1 outline-none text-base" v-model="keywords" />
-      <div class="px-4 text-base hidden md:!block">{{ chains.mainnetChains.length + chains.testnetChains.length }}/{{ dashboard.length }}</div>
-    </div>
-
-    <div v-if="chains.mainnetChains.length > 0" class="text-center text-base mt-6 text-primary">
-      <h2 class="mb-6">Mainnet Chains</h2>
-    </div>
-    <div
-      v-if="chains.mainnetChains.length > 0"
-      class="grid grid-cols-1 gap-4 mt-6 md:!grid-cols-3 lg:!grid-cols-4 2xl:!grid-cols-5"
-    >
-      <ChainSummary
-        v-for="(chain, index) in chains.mainnetChains"
-        :key="index"
-        :name="chain.chainName"
-      />
-    </div>
-
-    <div v-if="chains.testnetChains.length > 0" class="text-center text-base mt-6 text-primary">
-      <h2 class="mb-6">Testnet Chains</h2>
-    </div>
-    <div
-      v-if="chains.testnetChains.length > 0"
-      class="grid grid-cols-1 gap-4 mt-6 md:!grid-cols-3 lg:!grid-cols-4 2xl:!grid-cols-5"
-    >
-      <ChainSummary
-        v-for="(chain, index) in chains.testnetChains"
-        :key="index"
-        :name="chain.chainName"
-      />
+      <!-- Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div v-for="chain in blockchain.chains" :key="chain.name"
+             class="bg-white rounded-xl p-4 hover:shadow-lg transition-shadow duration-200 border border-gray-100">
+          <div class="flex items-center space-x-3">
+            <img :src="chain.logo" :alt="chain.name" class="w-8 h-8 rounded-full">
+            <div>
+              <h3 class="font-medium text-gray-900">{{ chain.name }}</h3>
+              <p class="text-sm text-gray-500">{{ chain.chain_name }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
