@@ -275,5 +275,4 @@ function selected(route: any, nav: NavLink) {
 
       <newFooter />
     </div>
-  </div>
 </template>
