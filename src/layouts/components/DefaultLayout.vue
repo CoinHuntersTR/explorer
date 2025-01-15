@@ -66,12 +66,6 @@ function selected(route: any, nav: NavLink) {
       :class="{ block: sidebarShow, 'hidden xl:!block': !sidebarShow }"
     >
       <div class="flex justify-between mt-1 pl-4 py-4 mb-1">
-        <RouterLink to="/" class="flex items-center">
-          <img class="w-10 h-10" src="../../assets/logo.svg" />
-          <h1 class="flex-1 ml-3 text-2xl font-semibold dark:text-white">
-            CoinHunters
-          </h1>
-        </RouterLink>
         <div
           class="pr-4 cursor-pointer xl:!hidden"
           @click="sidebarShow = false"
@@ -256,6 +250,13 @@ function selected(route: any, nav: NavLink) {
         <ChainProfile />
 
         <div class="flex-1 w-0"></div>
+        
+        <RouterLink to="/" class="flex items-center mr-4">
+          <img class="w-8 h-8" src="../../assets/logo.svg" />
+          <h1 class="ml-2 text-xl font-semibold dark:text-white">
+            CoinHunters
+          </h1>
+        </RouterLink>
 
         <!-- <NavSearchBar />-->
         <NavBarI18n class="hidden md:!inline-block" />
