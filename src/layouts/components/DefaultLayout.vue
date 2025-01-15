@@ -62,10 +62,10 @@ function selected(route: any, nav: NavLink) {
   <div class="bg-gray-100 dark:bg-[#171d30]">
     <!-- sidebar -->
     <div
-      class="w-64 fixed z-50 left-0 top-0 bottom-0 overflow-auto bg-base-100 border-r border-gray-100/10 dark:border-gray-700/50 backdrop-blur-xl"
+      class="w-64 fixed z-50 left-0 top-16 bottom-0 overflow-auto bg-base-100 border-r border-gray-100/10 dark:border-gray-700/50 backdrop-blur-xl"
       :class="{ block: sidebarShow, 'hidden xl:!block': !sidebarShow }"
     >
-      <div class="flex justify-between mt-1 pl-4 py-4 mb-1">
+      <div class="flex justify-between pl-4 py-4">
         <div
           class="pr-4 cursor-pointer xl:!hidden"
           @click="sidebarShow = false"
@@ -247,16 +247,16 @@ function selected(route: any, nav: NavLink) {
           <Icon icon="mdi-menu" />
         </div>
 
-        <ChainProfile />
-
-        <div class="flex-1 w-0"></div>
-        
-        <RouterLink to="/" class="flex items-center mr-4">
+        <RouterLink to="/" class="flex items-center">
           <img class="w-8 h-8" src="../../assets/logo.svg" />
           <h1 class="ml-2 text-xl font-semibold dark:text-white">
             CoinHunters
           </h1>
         </RouterLink>
+
+        <div class="flex-1 flex justify-center">
+          <ChainProfile />
+        </div>
 
         <!-- <NavSearchBar />-->
         <NavBarI18n class="hidden md:!inline-block" />
