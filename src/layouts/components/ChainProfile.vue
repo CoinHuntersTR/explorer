@@ -43,27 +43,7 @@ function changeEndpoint(item: Endpoint) {
       class="dropdown-content -left-6 w-80 menu shadow bg-base-200 rounded-box overflow-auto"
     >
 
-      <div class="px-4 py-2 text-sm text-gray-400">Information</div>
-      <div class="w-full">
-        <div class="py-2 px-4 flex items-center justify-between">
-          <span>Chain Name:</span>
-          <span class="font-medium">{{ chainStore.current?.prettyName || chainStore.chainName }}</span>
-        </div>
-        <div class="py-2 px-4 flex items-center justify-between">
-          <span>Chain ID:</span>
-          <span class="font-medium">{{ baseStore.latest.block?.header.chain_id || 'N/A' }}</span>
-        </div>
-        <div class="py-2 px-4 flex items-center justify-between">
-          <span>Block Height:</span>
-          <span class="font-medium">{{ baseStore.latest.block?.header.height || '0' }}</span>
-        </div>
-        <div class="py-2 px-4 flex items-center justify-between">
-          <span>Connection:</span>
-          <span :class="baseStore.connected ? 'text-success' : 'text-error'">
-            {{ baseStore.connected ? 'Connected' : 'Disconnected' }}
-          </span>
-        </div>
-      </div>
+      <!-- Removed Information section -->
       <!-- bottom-->
       <div class="px-4 py-2">&nbsp;</div>
     </div>
