@@ -62,7 +62,7 @@ function selected(route: any, nav: NavLink) {
   <div class="bg-gray-100 dark:bg-[#171d30] min-h-screen">
     <!-- sidebar -->
     <div
-      class="w-72 fixed z-40 left-4 top-20 bottom-4 overflow-auto bg-base-100 border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-xl rounded-xl shadow-sm"
+      class="w-64 fixed z-40 left-0 top-0 bottom-0 overflow-auto bg-white dark:bg-[#1a1f37] border-r border-gray-200/50 dark:border-gray-700/50 py-4"
       :class="{ block: sidebarShow, 'hidden xl:!block': !sidebarShow }"
     >
       <div class="flex justify-between pl-4 py-4">
@@ -235,10 +235,10 @@ function selected(route: any, nav: NavLink) {
     </a>
     </div>
     </div>
-    <div class="xl:!ml-80 px-4 pt-4">
+    <div class="xl:!ml-64 p-4">
       <!-- header -->
       <div
-        class="flex items-center py-3 bg-base-100 mb-4 rounded-xl px-6 sticky top-4 z-10 shadow-sm border border-gray-200/50 dark:border-gray-700/50"
+        class="flex items-center py-3 bg-white dark:bg-[#1a1f37] mb-4 rounded px-4 sticky top-0 z-10 border-b border-gray-200/50 dark:border-gray-700/50"
       >
         <div
           class="text-2xl pr-3 cursor-pointer xl:!hidden"
