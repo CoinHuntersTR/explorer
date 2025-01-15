@@ -1,9 +1,21 @@
 
 <template>
-  <div v-if="blockchain.chainName" class="flex items-center space-x-4 bg-base-100 px-4 py-2 rounded-lg">
-    <div class="flex items-center space-x-2">
+  <div v-if="blockchain.chainName" class="flex items-center space-x-4 bg-base-100 px-4 py-2 rounded-lg relative">
+    <div class="flex items-center space-x-2 group cursor-pointer">
       <img :src="blockchain.logo" class="h-6 w-6 rounded-full" :alt="blockchain.chainName"/>
       <span class="font-medium">{{ blockchain.current?.prettyName || blockchain.chainName }}</span>
+      
+      <!-- Dropdown Card -->
+      <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 z-50">
+        <div class="text-sm">
+          <div class="mb-2">
+            <span class="font-medium text-gray-600 dark:text-gray-300">Endpoint:</span>
+            <a :href="blockchain.endpoint?.address" target="_blank" class="ml-2 text-primary hover:underline">
+              {{ blockchain.endpoint?.address }}
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300">
@@ -25,12 +37,7 @@
         </span>
       </div>
 
-      <div class="flex items-center">
-        <span class="mr-1">Endpoint:</span>
-        <a :href="blockchain.endpoint?.address" target="_blank" class="font-medium text-primary hover:underline">
-          {{ blockchain.endpoint?.address || '-' }}
-        </a>
-      </div>
+      
     </div>
   </div>
 </template>
