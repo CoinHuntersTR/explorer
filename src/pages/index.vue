@@ -80,6 +80,21 @@ const chainStore = useBlockchain();
       <h2 class="mb-6">{{ $t('pages.description') }}</h2>
     </div>
 
+    <div class="bg-base-100 p-4 rounded-lg shadow mb-6">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Chain Information</h3>
+          <p><span class="text-gray-600">Chain ID:</span> {{ chainStore.current?.chainName }}</p>
+          <p><span class="text-gray-600">Height:</span> {{ chainStore.current?.height }}</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Rest Endpoint</h3>
+          <p><span class="text-gray-600">Provider:</span> {{ chainStore.endpoint?.provider || 'CoinHunters' }}</p>
+          <p><span class="text-gray-600">URL:</span> {{ chainStore.endpoint?.address }}</p>
+        </div>
+      </div>
+    </div>
+
     <div class="space-y-6">
       <div class="flex justify-center gap-4 mb-8">
         <button class="tab-button" :class="{ active: activeTab === 'mainnet' }" @click="activeTab = 'mainnet'">
