@@ -30,6 +30,37 @@ body {
   background: var(--bg-gradient-dark);
 }
 
+/* Modern Sidebar Styles */
+.collapse-title, .menu-item {
+  @apply transition-all duration-200 rounded-lg mx-1;
+}
+
+.collapse-title:hover, .menu-item:hover {
+  @apply bg-primary/10 transform;
+}
+
+.collapse-content .menu-item {
+  @apply ml-4 rounded-lg transition-all duration-200;
+}
+
+.collapse-content .menu-item:hover {
+  @apply bg-primary/5;
+}
+
+/* Active menu item */
+.router-link-active {
+  @apply bg-primary/20 font-medium;
+}
+
+/* Icons in menu */
+.menu-item .icon {
+  @apply transition-transform duration-200;
+}
+
+.menu-item:hover .icon {
+  @apply transform scale-110;
+}
+
 .search-input {
   @apply w-full px-4 py-2 rounded-full bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all;
 }
