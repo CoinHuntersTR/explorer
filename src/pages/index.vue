@@ -32,7 +32,7 @@ const chains = computed(() => {
     (x: ChainConfig) => !x.chainName.endsWith('-Testnet')
   );
 
-  return activeTab.value === 'mainnet' ? { mainnetChains, testnetChains: [] } : { mainnetChains: [], testnetChains };
+  return { mainnetChains, testnetChains }; // Always return both
 });
 
 const featured = computed(() => {
@@ -95,7 +95,7 @@ const chainStore = useBlockchain();
           Testnets ({{ chains.testnetChains.length }})
         </button>
       </div>
-      
+
       <div class="relative max-w-2xl mx-auto">
         <Icon icon="mdi:magnify" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"/>
         <input 
