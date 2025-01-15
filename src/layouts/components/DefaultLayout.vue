@@ -254,17 +254,16 @@ function selected(route: any, nav: NavLink) {
     </a>
     </div>
     </div>
-    <div class="xl:!ml-64 pt-20 px-4 pb-4">
-
+    <div class="xl:!ml-64 h-[calc(100vh-64px)] mt-16 overflow-y-auto">
       <!-- 👉 Pages -->
-      <div style="min-height: calc(100vh - 180px);">
+      <div class="px-4 pb-4">
         <RouterView v-slot="{ Component }">
           <Transition mode="out-in">
             <Component :is="Component" />
           </Transition>
         </RouterView>
-      </div>
 
-      <newFooter />
+        <newFooter />
+      </div>
     </div>
 </template>
