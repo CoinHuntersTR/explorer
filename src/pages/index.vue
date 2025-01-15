@@ -44,15 +44,17 @@ const chainStore = useBlockchain();
 </script>
 
 <template>
-  <div class="">
-    <div class="flex md:!flex-row flex-col items-center justify-center mb-6 mt-14 gap-2">
-      <div class="w-16 rounded-full">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30">
-        </svg>
-      </div>
-      <h1 class="text-primary dark:invert text-3xl md:!text-6xl font-bold">
-        {{ $t('pages.title') }}
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="text-center space-y-4 mb-12">
+      <h1 class="text-4xl md:text-6xl font-bold text-primary">
+        CoinHunters Dashboard
       </h1>
+      <p class="text-gray-600">
+        CoinHunters Dashboard is not just an explorer but also a wallet and more... ✨
+      </p>
+      <p class="text-primary">
+        Cosmos Ecosystem Blockchains 🚀
+      </p>
     </div>
     <div class="text-center text-base">
       <p class="mb-1">
@@ -84,10 +86,24 @@ const chainStore = useBlockchain();
       <h2 class="mb-6">{{ $t('pages.description') }}</h2>
     </div>
 
-    <div class="flex items-center rounded-lg bg-base-100 border border-gray-200 dark:border-gray-700 mt-10">
-      <Icon icon="mdi:magnify" class="text-2xl text-gray-400 ml-3"/>
-      <input :placeholder="$t('pages.search_placeholder')" class="px-4 h-10 bg-transparent flex-1 outline-none text-base" v-model="keywords" />
-      <div class="px-4 text-base hidden md:!block">{{ chains.mainnetChains.length + chains.testnetChains.length }}/{{ dashboard.length }}</div>
+    <div class="space-y-6">
+      <div class="flex justify-center gap-4 mb-8">
+        <button class="tab-button" :class="{ active: activeTab === 'mainnet' }" @click="activeTab = 'mainnet'">
+          Mainnets ({{ chains.mainnetChains.length }})
+        </button>
+        <button class="tab-button" :class="{ active: activeTab === 'testnet' }" @click="activeTab = 'testnet'">
+          Testnets ({{ chains.testnetChains.length }})
+        </button>
+      </div>
+      
+      <div class="relative max-w-2xl mx-auto">
+        <Icon icon="mdi:magnify" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"/>
+        <input 
+          :placeholder="$t('pages.search_placeholder')" 
+          class="search-input pl-12" 
+          v-model="keywords" 
+        />
+      </div>
     </div>
 
     <div v-if="chains.mainnetChains.length > 0" class="text-center text-base mt-6 text-primary">

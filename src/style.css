@@ -1,44 +1,54 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --primary: #4f46e5;
-  --secondary: #3b82f6;
-  --bg: #f6f8fd;
-  --text: #2d3748;
-  --text-main: #333;
-  --text-secondary: #4b525d;
-  --bg-active: #fbfbfc;
-}
-
-html.dark,
-html[data-theme='dark'] {
-  --text-main: #f7f7f7;
-  --text-secondary: #6f6e84;
-  --bg-active: #242b40;
-}
-
-html,body {
-  height: 100%;
-  background: linear-gradient(135deg, var(--bg), #fff);
+  --primary: #6366f1;
+  --bg-gradient: linear-gradient(145deg, #f8fafc 0%, #eef2ff 100%);
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100vh;
   transition: all 0.3s ease;
   line-height: 1.6;
-  font-family: 'Inter', sans-serif;
   font-size: 15px;
-  color: var(--text);
+  color: var(--text); /*This is kept from original*/
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Modern Button Styles */
+.search-input {
+  @apply w-full px-4 py-2 rounded-full bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all;
+}
+
+.chain-card {
+  @apply bg-white/90 backdrop-blur-lg rounded-xl border border-gray-100 p-4 transition-all hover:shadow-lg hover:scale-[1.02] cursor-pointer;
+}
+
+.tab-button {
+  @apply px-6 py-2 rounded-full text-sm font-medium transition-all;
+}
+
+.tab-button.active {
+  @apply bg-primary text-white;
+}
+
+.tab-button:not(.active) {
+  @apply text-gray-600 hover:bg-gray-100;
+}
+
+.section-title {
+  @apply text-xl font-semibold text-gray-800 mb-4;
+}
+
+/* Modern Button Styles -  kept some parts from original*/
 button, .btn {
   border-radius: 10px;
   transition: all 0.3s ease;
@@ -52,17 +62,17 @@ button:hover, .btn:hover {
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
 }
 
-/* Card Styles */
+/* Card Styles - kept some parts from original*/
 .card {
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--card-bg); /*updated from edited*/
   backdrop-filter: blur(10px);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow); /*updated from edited*/
   transition: all 0.3s ease;
 }
 
-/* Input Styles */
+/* Input Styles - kept some parts from original*/
 input, select, textarea {
   border-radius: 8px;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -76,7 +86,7 @@ input:focus, select:focus, textarea:focus {
   outline: none;
 }
 
-/* Table Styles */
+/* Table Styles - kept from original*/
 table {
   width: 100%;
   border-collapse: separate;
@@ -90,7 +100,7 @@ th, td {
   transition: all 0.3s ease;
 }
 
-/* Navigation Bar */
+/* Navigation Bar - kept from original*/
 nav {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
@@ -100,7 +110,7 @@ nav {
   z-index: 100;
 }
 
-/* Loading Animation */
+/* Loading Animation - kept from original*/
 .loading-logo {
   animation: float 3s ease-in-out infinite;
 }
