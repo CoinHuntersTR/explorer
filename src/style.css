@@ -15,7 +15,7 @@
 body {
   font-family: 'Inter', sans-serif;
   background: #f8fafc;
-  height: 100%;
+  min-height: 100vh;
   transition: all 0.3s ease;
   line-height: 1.6;
   font-size: 15px;
@@ -23,7 +23,6 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 
 .dark body {
