@@ -7,6 +7,7 @@
 :root {
   --primary: #6366f1;
   --bg-gradient: linear-gradient(145deg, #f8fafc 0%, #eef2ff 100%);
+  --bg-gradient-dark: linear-gradient(145deg, #1a1f2c 0%, #2a2f3f 100%);
   --card-bg: rgba(255, 255, 255, 0.9);
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
@@ -26,6 +27,7 @@ body {
 
 .dark body {
   color: #e2e8f0;
+  background: var(--bg-gradient-dark);
 }
 
 .search-input {
