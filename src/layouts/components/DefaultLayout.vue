@@ -60,9 +60,28 @@ function selected(route: any, nav: NavLink) {
 
 <template>
   <div class="bg-gray-100 dark:bg-[#171d30] min-h-screen">
+    <!-- header -->
+    <div class="w-full bg-white dark:bg-[#1a1f37] border-b border-gray-200/50 dark:border-gray-700/50 fixed top-0 left-0 right-0 z-50">
+      <div class="flex items-center h-16 px-4">
+        <div class="text-2xl pr-3 cursor-pointer xl:!hidden" @click="sidebarShow = true">
+          <Icon icon="mdi-menu" />
+        </div>
+        <RouterLink to="/" class="flex items-center">
+          <img class="w-8 h-8" src="../../assets/logo.svg" />
+          <h1 class="ml-2 text-xl font-semibold dark:text-white">CoinHunters</h1>
+        </RouterLink>
+        <div class="flex-1 flex justify-center">
+          <ChainProfile />
+        </div>
+        <NavBarI18n class="hidden md:!inline-block" />
+        <NavbarThemeSwitcher class="!inline-block" />
+        <NavbarSearch class="!inline-block" />
+        <NavBarWallet />
+      </div>
+    </div>
     <!-- sidebar -->
     <div
-      class="w-64 fixed z-40 left-0 top-0 bottom-0 overflow-auto bg-white dark:bg-[#1a1f37] border-r border-gray-200/50 dark:border-gray-700/50 py-4"
+      class="w-64 fixed z-40 left-0 top-16 bottom-0 overflow-auto bg-white dark:bg-[#1a1f37] border-r border-gray-200/50 dark:border-gray-700/50 py-4"
       :class="{ block: sidebarShow, 'hidden xl:!block': !sidebarShow }"
     >
       <div class="flex justify-between pl-4 py-4">
@@ -235,35 +254,7 @@ function selected(route: any, nav: NavLink) {
     </a>
     </div>
     </div>
-    <div class="xl:!ml-64 p-4">
-      <!-- header -->
-      <div
-        class="flex items-center py-3 bg-white dark:bg-[#1a1f37] mb-4 rounded px-4 sticky top-0 z-10 border-b border-gray-200/50 dark:border-gray-700/50"
-      >
-        <div
-          class="text-2xl pr-3 cursor-pointer xl:!hidden"
-          @click="sidebarShow = true"
-        >
-          <Icon icon="mdi-menu" />
-        </div>
-
-        <RouterLink to="/" class="flex items-center">
-          <img class="w-8 h-8" src="../../assets/logo.svg" />
-          <h1 class="ml-2 text-xl font-semibold dark:text-white">
-            CoinHunters
-          </h1>
-        </RouterLink>
-
-        <div class="flex-1 flex justify-center">
-          <ChainProfile />
-        </div>
-
-        <!-- <NavSearchBar />-->
-        <NavBarI18n class="hidden md:!inline-block" />
-        <NavbarThemeSwitcher class="!inline-block" />
-        <NavbarSearch class="!inline-block" />
-        <NavBarWallet />
-      </div>
+    <div class="xl:!ml-64 pt-20 px-4 pb-4">
 
       <!-- 👉 Pages -->
       <div style="min-height: calc(100vh - 180px);">
