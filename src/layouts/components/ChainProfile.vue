@@ -27,7 +27,9 @@
 
       <div class="flex items-center">
         <span class="mr-1">Endpoint:</span>
-        <span class="font-medium">{{ blockchain.endpoint?.address || '-' }}</span>
+        <a :href="blockchain.endpoint?.address" target="_blank" class="font-medium text-primary hover:underline">
+          {{ blockchain.endpoint?.address || '-' }}
+        </a>
       </div>
     </div>
   </div>
