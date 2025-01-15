@@ -254,9 +254,9 @@ function selected(route: any, nav: NavLink) {
     </a>
     </div>
     </div>
-    <div class="xl:!ml-64 min-h-screen pt-16">
+    <div class="xl:!ml-64 min-h-screen flex flex-col">
       <!-- 👉 Pages -->
-      <div class="px-4 pb-4 h-full">
+      <div class="flex-1 px-4 pb-4 mt-16">
         <RouterView v-slot="{ Component }">
           <Transition mode="out-in">
             <Component :is="Component" />
