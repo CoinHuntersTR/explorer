@@ -18,10 +18,14 @@ body {
   transition: all 0.3s ease;
   line-height: 1.6;
   font-size: 15px;
-  color: var(--text); /*This is kept from original*/
+  color: var(--text);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.dark body {
+  color: #e2e8f0;
 }
 
 .search-input {
@@ -48,7 +52,7 @@ body {
   @apply text-xl font-semibold text-gray-800 mb-4;
 }
 
-/* Modern Button Styles -  kept some parts from original*/
+/* Modern Button Styles */
 button, .btn {
   border-radius: 10px;
   transition: all 0.3s ease;
@@ -62,17 +66,22 @@ button:hover, .btn:hover {
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
 }
 
-/* Card Styles - kept some parts from original*/
+/* Card Styles */
 .card {
-  background: var(--card-bg); /*updated from edited*/
+  background: var(--card-bg);
   backdrop-filter: blur(10px);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: var(--shadow); /*updated from edited*/
+  box-shadow: var(--shadow);
   transition: all 0.3s ease;
 }
 
-/* Input Styles - kept some parts from original*/
+.dark .card {
+  background: var(--card-bg);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Input Styles */
 input, select, textarea {
   border-radius: 8px;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -86,7 +95,7 @@ input:focus, select:focus, textarea:focus {
   outline: none;
 }
 
-/* Table Styles - kept from original*/
+/* Table Styles */
 table {
   width: 100%;
   border-collapse: separate;
@@ -100,7 +109,7 @@ th, td {
   transition: all 0.3s ease;
 }
 
-/* Navigation Bar - kept from original*/
+/* Navigation Bar */
 nav {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
@@ -110,7 +119,7 @@ nav {
   z-index: 100;
 }
 
-/* Loading Animation - kept from original*/
+/* Loading Animation */
 .loading-logo {
   animation: float 3s ease-in-out infinite;
 }
