@@ -1,4 +1,3 @@
-
 <template>
   <div v-if="blockchain.chainName" class="flex items-center space-x-4 bg-base-100 px-4 py-2 rounded-lg">
     <div class="flex items-center space-x-2">
@@ -9,12 +8,12 @@
     <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300">
       <div class="flex items-center">
         <span class="mr-1">Height:</span>
-        <span class="font-medium">{{ baseStore.latest?.block?.header?.height || '-' }}</span>
+        <span class="font-medium">{{ baseStore.block?.height || '-' }}</span>
       </div>
 
       <div class="flex items-center">
         <span class="mr-1">Chain ID:</span>
-        <span class="font-medium">{{ baseStore.latest?.block?.header?.chain_id || '-' }}</span>
+        <span class="font-medium">{{ blockchain.current?.chain_id || '-' }}</span>
       </div>
 
       <div class="flex items-center">
@@ -26,6 +25,7 @@
       </div>
 
       <div class="flex items-center">
+        <span class="mr-1">Endpoint:</span>
         <span class="font-medium">{{ blockchain.endpoint?.address || '-' }}</span>
       </div>
     </div>
