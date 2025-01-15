@@ -22,6 +22,7 @@
     "@osmonauts/lcd": "^0.8.0",
     "@ping-pub/chain-registry-client": "^0.0.25",
     "@vitejs/plugin-vue-jsx": "^3.0.0",
+    "@vue/runtime-core": "^3.5.13",
     "@vueuse/core": "^9.12.0",
     "@vueuse/integrations": "^10.1.2",
     "@vueuse/math": "^9.12.0",
