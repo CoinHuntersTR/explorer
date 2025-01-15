@@ -49,9 +49,6 @@ const chainStore = useBlockchain();
   <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="text-center space-y-4 mb-12">
       <img src="https://coinhunterstr.com/wp-content/uploads/2022/12/CH_logo.webp" alt="CoinHunters Logo" class="mx-auto h-24 mb-4"/>
-      <p class="text-gray-600">
-        CoinHunters Dashboard is not just an explorer but also a wallet and more... ✨
-      </p>
       <p class="text-primary">
         Cosmos Ecosystem Blockchains 🚀
       </p>
