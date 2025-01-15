@@ -43,36 +43,12 @@ const featured = computed(() => {
 });
 
 const chainStore = useBlockchain();
-const height = ref(0);
-
-// Update height when chain is selected
-watch(() => chainStore.chainName, async (newChain) => {
-  if (newChain && chainStore.rpc) {
-    try {
-      const status = await chainStore.rpc.getStatus();
-      height.value = status.sync_info.latest_block_height;
-    } catch (e) {
-      console.error('Failed to fetch block height:', e);
-    }
-  }
-}, { immediate: true });
 </script>
 
 <template>
   <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="text-center space-y-4 mb-12">
       <img src="https://coinhunterstr.com/wp-content/uploads/2022/12/CH_logo.webp" alt="CoinHunters Logo" class="mx-auto h-24 mb-4"/>
-      <div v-if="chainStore.current" class="flex items-center justify-center gap-4 bg-white/80 backdrop-blur p-4 rounded-lg shadow-sm">
-        <img :src="chainStore.logo" :alt="chainStore.current.chainName" class="w-10 h-10 rounded-full"/>
-        <div class="flex flex-col items-start">
-          <span class="font-medium text-lg">{{ chainStore.current.prettyName }}</span>
-          <div class="text-sm text-gray-600">
-            <span>Chain ID: {{ chainStore.current.chainId }}</span>
-            <span class="mx-2">•</span>
-            <span>Height: {{ chainStore.height || 'Loading...' }}</span>
-          </div>
-        </div>
-      </div>
       <p class="text-gray-600">
         CoinHunters Dashboard is not just an explorer but also a wallet and more... ✨
       </p>
