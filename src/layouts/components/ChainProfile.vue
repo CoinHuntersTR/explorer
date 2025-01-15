@@ -6,11 +6,11 @@
       <span class="font-medium">{{ blockchain.current?.prettyName || blockchain.chainName }}</span>
       
       <!-- Dropdown Card -->
-      <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 z-50">
+      <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-white dark:bg-slate-800 shadow-lg rounded-lg p-4 z-50 border border-gray-100 dark:border-gray-700">
         <div class="text-sm">
           <div class="mb-2">
-            <span class="font-medium text-gray-600 dark:text-gray-300">Endpoint:</span>
-            <a :href="blockchain.endpoint?.address" target="_blank" class="ml-2 text-primary hover:underline">
+            <span class="font-medium text-gray-700 dark:text-gray-200">Endpoint:</span>
+            <a :href="blockchain.endpoint?.address" target="_blank" class="ml-2 text-primary dark:text-primary-400 hover:underline">
               {{ blockchain.endpoint?.address }}
             </a>
           </div>
