@@ -1,6 +1,6 @@
 
 <template>
-  <div v-if="blockchain.chainName" class="flex items-center space-x-4 bg-base-100 px-4 py-2 rounded-lg relative">
+  <div v-if="blockchain.chainName" class="flex items-center space-x-6 relative">
     <div class="flex items-center space-x-2 group cursor-pointer">
       <img :src="blockchain.logo" class="h-6 w-6 rounded-full" :alt="blockchain.chainName"/>
       <span class="font-medium">{{ blockchain.current?.prettyName || blockchain.chainName }}</span>

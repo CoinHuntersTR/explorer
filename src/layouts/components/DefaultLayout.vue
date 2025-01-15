@@ -235,10 +235,10 @@ function selected(route: any, nav: NavLink) {
     </a>
     </div>
     </div>
-    <div class="xl:!ml-64 px-3 pt-4">
+    <div class="xl:!ml-64">
       <!-- header -->
       <div
-        class="flex items-center py-3 bg-base-100 mb-4 rounded px-4 sticky top-0 z-10"
+        class="flex items-center py-3 bg-base-100 sticky top-0 z-10 w-full border-b border-gray-200 dark:border-gray-700 px-4"
       >
         <div
           class="text-2xl pr-3 cursor-pointer xl:!hidden"
@@ -266,9 +266,9 @@ function selected(route: any, nav: NavLink) {
       </div>
 
       <!-- 👉 Pages -->
-      <div style="min-height: calc(100vh - 180px);">
+      <div class="p-4">
         <RouterView v-slot="{ Component }">
-          <Transition mode="out-in">
+          <Transition mode="out-in" class="transition-all duration-300 ease-in-out">
             <Component :is="Component" />
           </Transition>
         </RouterView>
