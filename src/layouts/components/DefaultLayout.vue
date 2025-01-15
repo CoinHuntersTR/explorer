@@ -62,7 +62,7 @@ function selected(route: any, nav: NavLink) {
   <div class="bg-gray-100 dark:bg-[#171d30]">
     <!-- sidebar -->
     <div
-      class="w-72 fixed z-50 left-4 top-20 bottom-4 overflow-auto bg-base-100 border-r border-gray-100/10 dark:border-gray-700/50 backdrop-blur-xl rounded-xl"
+      class="w-64 fixed z-50 left-0 top-16 bottom-0 overflow-auto bg-base-100 border-r border-gray-100/10 dark:border-gray-700/50 backdrop-blur-xl"
       :class="{ block: sidebarShow, 'hidden xl:!block': !sidebarShow }"
     >
       <div class="flex justify-between pl-4 py-4">

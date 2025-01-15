@@ -14,7 +14,7 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background: #f8fafc;
+  background: var(--bg-gradient);
   min-height: 100vh;
   transition: all 0.3s ease;
   line-height: 1.6;
@@ -27,7 +27,7 @@ body {
 
 .dark body {
   color: #e2e8f0;
-  background: #1a1f2c;
+  background: var(--bg-gradient-dark);
 }
 
 /* Modern Sidebar Styles */
