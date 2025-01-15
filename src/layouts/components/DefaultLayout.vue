@@ -210,100 +210,36 @@ function selected(route: any, nav: NavLink) {
           {{ item?.heading }}
         </div>
       </div>
-      <div class="px-2">
-        <div class="px-4 text-sm pt-2 text-gray-400 pb-2 uppercase">
-          {{ $t('module.sponsors') }}
-        </div>
-        <a
-          href="https://dymension.xyz/"
-          target="_blank"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <img
-            src="https://pbs.twimg.com/profile_images/1663159896701820928/by0GLREA_400x400.jpg"
-            class="w-6 h-6 rounded-full mr-3"
-          />
-          <div
-            class="text-sm capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            Dymension
-          </div>
-        </a>
-            <a
-          href="https://lavanet.xyz/"
-          target="_blank"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <img
-            src="https://pbs.twimg.com/profile_images/1628433459977850882/l4oqDz8R_400x400.jpg"
-            class="w-6 h-6 rounded-full mr-3"
-          />
-          <div
-            class="text-sm capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            Lava Network
-          </div>
-        </a>
-        <a
-          href="https://crossfi.org/"
-          target="_blank"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <img
-            src="https://pbs.twimg.com/profile_images/1719733805483790336/9rtdiMS-_400x400.jpg"
-            class="w-6 h-6 rounded-full mr-3"
-          />
-          <div
-            class="text-sm capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            CrossFi
-          </div>
-        </a>
-        <a
-          href="https://www.plumenetwork.xyz/"
-          target="_blank"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <img
-            src="https://pbs.twimg.com/profile_images/1854933222569975808/no3lt9ZL_400x400.jpg"
-            class="w-6 h-6 rounded-full mr-3"
-          />
-          <div
-            class="text-sm capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            Plume Network
-          </div>
-        </a>
 
-          <div class="px-4 text-sm pt-2 text-gray-400 pb-2 uppercase">
-            Tools
-          </div>
-          <RouterLink to="/wallet/suggest"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-          >
-            <Icon icon="mdi:frequently-asked-questions" class="text-xl mr-2" />
-            <div
-              class="text-base capitalize flex-1 text-gray-600 dark:text-gray-200"
-            >
-              Wallet Helper
-            </div>
-          </RouterLink>
-
-        
-        <a
-          v-if="showDiscord"
-          href="https://discord.gg/ydZX5ZhyBv"
-          target="_blank"
-          class="py-2 px-4 flex items-center rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <Icon icon="mdi:discord" class="text-xl mr-2" />
-          <div
-            class="text-base capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            Discord
-          </div>
-        </a>
+      <div class="px-4 text-sm pt-2 text-gray-400 pb-2 uppercase">
+          Tools
       </div>
+      <RouterLink to="/wallet/suggest"
+      class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
+      >
+        <Icon icon="mdi:frequently-asked-questions" class="text-xl mr-2" />
+        <div
+          class="text-base capitalize flex-1 text-gray-600 dark:text-gray-200"
+        >
+          Wallet Helper
+        </div>
+      </RouterLink>
+
+
+    <a
+      v-if="showDiscord"
+      href="https://discord.gg/ydZX5ZhyBv"
+      target="_blank"
+      class="py-2 px-4 flex items-center rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-[#373f59]"
+    >
+      <Icon icon="mdi:discord" class="text-xl mr-2" />
+      <div
+        class="text-base capitalize flex-1 text-gray-600 dark:text-gray-200"
+      >
+        Discord
+      </div>
+    </a>
+    </div>
     </div>
     <div class="xl:!ml-64 px-3 pt-4">
       <!-- header -->
