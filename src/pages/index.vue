@@ -12,6 +12,8 @@ import { useBlockchain } from '@/stores';
 const dashboard = useDashboard();
 
 const keywords = ref('');
+const activeTab = ref('mainnet');
+
 const chains = computed(() => {
   const allChains = Object.values(dashboard.chains);
 
@@ -30,7 +32,7 @@ const chains = computed(() => {
     (x: ChainConfig) => !x.chainName.endsWith('-Testnet')
   );
 
-  return { mainnetChains, testnetChains };
+  return activeTab.value === 'mainnet' ? { mainnetChains, testnetChains: [] } : { mainnetChains: [], testnetChains };
 });
 
 const featured = computed(() => {
@@ -46,9 +48,7 @@ const chainStore = useBlockchain();
 <template>
   <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="text-center space-y-4 mb-12">
-      <h1 class="text-4xl md:text-6xl font-bold text-primary">
-        CoinHunters Dashboard
-      </h1>
+      <img src="https://coinhunterstr.com/wp-content/uploads/2022/12/CH_logo.webp" alt="CoinHunters Logo" class="mx-auto h-24 mb-4"/>
       <p class="text-gray-600">
         CoinHunters Dashboard is not just an explorer but also a wallet and more... ✨
       </p>
