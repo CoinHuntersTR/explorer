@@ -1,32 +1,33 @@
 
 <template>
-  <div class="relative">
-    <div class="absolute -left-10 mt-1">
-      <div :class="`w-6 h-6 rounded-full flex items-center justify-center ${
-        active ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'
-      }`">
-        <i :class="icon" class="text-xs"></i>
-      </div>
+  <div class="relative flex items-start mb-8">
+    <div class="absolute -left-3 mt-1.5">
+      <span :class="`flex h-6 w-6 items-center justify-center rounded-full ${active ? 'bg-primary text-white' : 'bg-gray-200 text-gray-500'}`">
+        <i :class="icon"></i>
+      </span>
     </div>
-    <div class="ml-4">
-      <h3 class="text-lg font-semibold">{{ title }}</h3>
-      <p class="text-sm text-gray-500">{{ format.toDay(date) }}</p>
-      <p class="text-xs text-gray-400">{{ timeAgo }}</p>
+    <div class="ml-6">
+      <h3 :class="`text-lg font-semibold ${active ? 'text-primary' : 'text-gray-600'}`">{{ title }}</h3>
+      <div class="flex items-center text-sm text-gray-500">
+        <span>{{ formatDate(date) }}</span>
+        <span class="mx-2">•</span>
+        <span>{{ timeAgo }}</span>
+      </div>
       <slot name="extra"></slot>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useFormatter } from '@/stores'
+defineProps<{
+  icon: string
+  title: string
+  date: string
+  timeAgo: string
+  active: boolean
+}>()
 
-const format = useFormatter()
-
-defineProps({
-  icon: String,
-  active: Boolean,
-  title: String,
-  date: String,
-  timeAgo: String
-})
+function formatDate(date: string) {
+  return new Date(date).toLocaleString()
+}
 </script>
