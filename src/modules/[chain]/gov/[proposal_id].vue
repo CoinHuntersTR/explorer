@@ -21,6 +21,7 @@ import { ref, reactive } from 'vue';
 import Countdown from '@/components/Countdown.vue';
 import PaginationBar from '@/components/PaginationBar.vue';
 import { fromBech32, toHex } from '@cosmjs/encoding';
+import DonutChart from "@/components/DonutChart.vue"; // Assuming this component exists
 
 
 const props = defineProps(['proposal_id', 'chain']);
@@ -255,27 +256,26 @@ function metaItem(metadata: string|undefined): { title: string; summary: string 
       <!-- flex-1 -->
       <div class="bg-base-100 px-4 pt-3 pb-4 rounded shadow">
         <h2 class="card-title mb-1">{{ $t('gov.tally') }}</h2>
-        <div class="mb-1" v-for="(item, index) of processList" :key="index">
-          <label class="block text-sm mb-1">{{ item.name }}</label>
-          <div class="h-5 w-full relative">
-            <div
-              class="absolute inset-x-0 inset-y-0 w-full opacity-10 rounded-sm"
-              :class="`${item.class}`"
-            ></div>
-            <div
-              class="absolute inset-x-0 inset-y-0 rounded-sm"
-              :class="`${item.class}`"
-              :style="`width: ${
-                item.value === '-' || item.value === 'NaN%' ? '0%' : item.value
-              }`"
-            ></div>
-            <p
-              class="absolute inset-x-0 inset-y-0 text-center text-sm text-[#666] dark:text-[#eee] flex items-center justify-center"
-            >
-              {{ item.value }}
-            </p>
+        <div class="flex flex-col items-center">
+        <DonutChart
+          :data="[
+            { name: 'Yes', value: Number(proposal?.final_tally_result?.yes || 0) },
+            { name: 'No', value: Number(proposal?.final_tally_result?.no || 0) },
+            { name: 'No With Veto', value: Number(proposal?.final_tally_result?.no_with_veto || 0) },
+            { name: 'Abstain', value: Number(proposal?.final_tally_result?.abstain || 0) }
+          ]"
+          :colors="['#4CAF50', '#f44336', '#d32f2f', '#ffa726']"
+          height="200"
+          class="mb-4"
+        />
+        <div class="grid grid-cols-2 gap-4 w-full mt-4">
+          <div v-for="(item, index) of processList" :key="index" 
+               class="flex items-center justify-between p-3 rounded-lg bg-base-200">
+            <span class="font-medium">{{ item.name }}</span>
+            <span class="text-sm" :class="item.class">{{ item.value }}</span>
           </div>
         </div>
+      </div>
         <div class="mt-6 grid grid-cols-2">
           <label
             for="vote"
