@@ -1,10 +1,10 @@
-
 <template>
-  <div v-if="blockchain.chainName" class="flex items-center space-x-6 relative">
+  <div v-if="blockchain.chainName" class="flex items-center justify-between w-full relative">
+    <!-- Left side -->
     <div class="flex items-center space-x-2 group cursor-pointer">
       <img :src="blockchain.logo" class="h-6 w-6 rounded-full" :alt="blockchain.chainName"/>
-      <span class="font-medium">{{ blockchain.current?.prettyName || blockchain.chainName }}</span>
-      
+      <span class="font-medium md:block hidden">{{ blockchain.current?.prettyName || blockchain.chainName }}</span>
+
       <!-- Dropdown Card -->
       <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-base-100 shadow-lg rounded-lg p-4 z-50 border border-gray-100 dark:border-gray-700">
         <div class="text-sm">
@@ -18,26 +18,25 @@
       </div>
     </div>
 
+    <!-- Center - Chain Info -->
     <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300">
-      <div class="flex items-center">
+      <div class="flex items-center lg:block hidden">
         <span class="mr-1">Height:</span>
         <span class="font-medium">{{ baseStore.latest?.block?.header?.height || '-' }}</span>
       </div>
 
-      <div class="flex items-center">
+      <div class="flex items-center md:block hidden">
         <span class="mr-1">Chain ID:</span>
         <span class="font-medium">{{ baseStore.latest?.block?.header?.chain_id || '-' }}</span>
       </div>
 
-      <div class="flex items-center">
+      <div class="flex items-center sm:block hidden">
         <span class="mr-1">Provider:</span>
         <span class="font-medium flex items-center">
           {{ blockchain.endpoint?.provider || '-' }}
           <span v-if="blockchain.endpoint?.provider" class="ml-1 w-2 h-2 rounded-full bg-success"></span>
         </span>
       </div>
-
-      
     </div>
   </div>
 </template>
