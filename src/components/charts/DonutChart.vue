@@ -1,45 +1,6 @@
-<script lang="ts" setup>
-import ApexCharts from 'vue3-apexcharts';
-import { computed } from 'vue';
-import { useBaseStore } from '@/stores';
-import { getDonutChartConfig } from './apexChartConfig';
-
-const props = defineProps(['series', 'labels']);
-
-const baseStore = useBaseStore();
-
-const expenseRationChartConfig = computed(() => {
-  const theme = baseStore.theme;
-  return getDonutChartConfig(theme, props?.labels);
-});
-</script>
-
-<template>
-  <ApexCharts
-    type="donut"
-    height="410"
-    :options="expenseRationChartConfig"
-    :series="series"
-  />
-</template>
-
-<script lang="ts">
-export default {
-  name: 'DonetChart',
-};
-</script>
-<template>
-  <apexchart
-    type="donut"
-    :options="chartOptions"
-    :series="chartData"
-    :height="height"
-  />
-</template>
-
 <script setup lang="ts">
-import { computed } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
+import { computed } from 'vue'
 
 const props = defineProps({
   data: {
@@ -78,3 +39,12 @@ const chartOptions = computed(() => ({
   },
 }))
 </script>
+
+<template>
+  <VueApexCharts
+    type="donut"
+    :options="chartOptions"
+    :series="chartData"
+    :height="height"
+  />
+</template>
