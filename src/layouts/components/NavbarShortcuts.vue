@@ -1,28 +1,38 @@
+
 <script setup lang="ts">
 const shortcuts = [
   {
-    icon: 'mdi-calendar',
-    title: 'Calendar',
-    subtitle: 'Appointments',
-    to: { name: 'apps-calendar' },
-  },
-  {
-    icon: 'mdi-file-document-outline',
-    title: 'Invoice App',
-    subtitle: 'Manage Accounts',
-    to: { name: 'apps-invoice-list' },
-  },
-  {
-    icon: 'mdi-account-outline',
-    title: 'Users',
-    subtitle: 'Manage Users',
-    to: { name: 'apps-user-list' },
-  },
-  {
-    icon: 'mdi-view-dashboard-outline',
-    title: 'Dashboard',
-    subtitle: 'Dashboard Analytics',
-    to: { name: 'dashboards-analytics' },
+    icon: 'mdi-earth',
+    title: 'Networks',
+    subtitle: 'Choose Network',
+    children: [
+      {
+        title: 'Mainnet',
+        icon: 'mdi-check-circle',
+        children: [
+          {
+            title: 'Crossfi Mainnet',
+            to: { name: 'CrossfiMainnet' },
+          },
+          {
+            title: 'Mantra Mainnet',
+            to: { name: 'MantraMainnet' },
+          },
+          // Add other mainnet networks here
+        ],
+      },
+      {
+        title: 'Testnet',
+        icon: 'mdi-test-tube',
+        children: [
+          {
+            title: 'Crossfi Testnet',
+            to: { name: 'crossfi-testnet' },
+          },
+          // Add other testnet networks here
+        ],
+      },
+    ],
   },
   {
     icon: 'mdi-cog-outline',
