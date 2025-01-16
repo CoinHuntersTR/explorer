@@ -108,6 +108,7 @@ export const useBlockchain = defineStore('blockchain', {
       Object.keys(this.dashboard.favoriteMap).forEach((name) => {
         const ch = this.dashboard.chains[name];
         if (ch && this.dashboard.favoriteMap?.[name]) {
+  ch.features = [...(ch.features || []), 'governance'];
           favNavItems.push({
             title: ch.prettyName || ch.chainName || name,
             to: { path: `/${ch.chainName || name}` },
