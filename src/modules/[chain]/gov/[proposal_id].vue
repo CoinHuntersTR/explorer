@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed } from '@vue/reactivity';
 import MdEditor from 'md-editor-v3';
+import TimelineItem from '@/components/TimelineItem.vue';
 import ObjectElement from '@/components/dynamic/ObjectElement.vue';
 import {
   useBaseStore,
