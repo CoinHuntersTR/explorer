@@ -35,13 +35,16 @@ const chainStore = useBlockchain();
 onMounted(async () => {
   try {
     const res = await store.fetchProposal(props.proposal_id);
-    const proposalDetail = reactive(res?.proposal || res);
-    
-    if (proposalDetail?.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-      const tallRes = await store.fetchTally(props.proposal_id);
-      proposalDetail.final_tally_result = tallRes?.tally;
+    if (res) {
+      const proposalDetail = res.proposal || res;
+      if (proposalDetail?.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+        const tallRes = await store.fetchTally(props.proposal_id);
+        if (tallRes?.tally) {
+          proposalDetail.final_tally_result = tallRes.tally;
+        }
+      }
+      proposal.value = proposalDetail;
     }
-    proposal.value = proposalDetail;
     
     if(proposalDetail.content?.changes) {
       for (const item of proposalDetail.content.changes) {
