@@ -42,6 +42,16 @@ const changeOpen = (index: Number) => {
   }
 };
 const showDiscord = window.location.host.search('ping.pub') > -1;
+const searchNetwork = ref('');
+
+const filteredNetworks = computed(() => {
+  if (!searchNetwork.value) return Object.values(dashboard.chains);
+  const search = searchNetwork.value.toLowerCase();
+  return Object.values(dashboard.chains).filter(chain => 
+    chain.prettyName?.toLowerCase().includes(search) || 
+    chain.chainName.toLowerCase().includes(search)
+  );
+});
 
 function isNavGroup(nav: VerticalNavItems | any): nav is NavGroup {
    return (<NavGroup>nav).children !== undefined;
@@ -247,26 +257,37 @@ function selected(route: any, nav: NavLink) {
           <Icon icon="mdi-menu" />
         </div>
 
-        <RouterLink to="/" class="flex items-center">
+        <RouterLink to="/" class="flex items-center mr-8">
           <img class="w-8 h-8" src="../../assets/logo.svg" />
           <h1 class="ml-2 text-xl font-semibold dark:text-white">
             CoinHunters
           </h1>
         </RouterLink>
 
-        <div class="flex-1 flex justify-center items-center gap-4">
-          <ChainProfile />
+        <div class="flex-1 flex justify-start items-center">
           <div class="dropdown dropdown-hover">
-            <label tabindex="0" class="btn btn-ghost m-1">Networks</label>
-            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 max-h-96 overflow-y-auto">
-              <li v-for="chain in dashboard.chains" :key="chain.chainName">
-                <a @click="blockchain.switchChain(chain.chainName)" class="flex items-center gap-2">
-                  <img :src="chain.logo" class="w-6 h-6 rounded-full" />
-                  <span>{{ chain.prettyName || chain.chainName }}</span>
-                </a>
-              </li>
-            </ul>
+            <label tabindex="0" class="btn btn-ghost flex items-center gap-2">
+              <img v-if="blockchain.current?.logo" :src="blockchain.current.logo" class="w-6 h-6 rounded-full" />
+              <span>{{ blockchain.current?.prettyName || blockchain.chainName }}</span>
+              <Icon icon="mdi:chevron-down" />
+            </label>
+            <div tabindex="0" class="dropdown-content z-[1] card card-compact w-96 p-2 shadow bg-base-100 dark:bg-[#1d2433]">
+              <div class="card-body">
+                <input type="text" v-model="searchNetwork" placeholder="Search networks..." class="input input-bordered w-full mb-2" />
+                <div class="max-h-[400px] overflow-y-auto">
+                  <ul class="menu menu-compact">
+              <li v-for="chain in filteredNetworks" :key="chain.chainName">
+                      <a @click="blockchain.switchChain(chain.chainName)" class="flex items-center gap-2 py-2">
+                        <img :src="chain.logo" class="w-6 h-6 rounded-full" />
+                        <span>{{ chain.prettyName || chain.chainName }}</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
+          <ChainProfile class="ml-4" />
         </div>
 
         <!-- <NavSearchBar />-->
