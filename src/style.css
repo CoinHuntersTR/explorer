@@ -147,6 +147,17 @@ nav {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+
+/* Validator Card Hover Effects */
+.validator-card {
+  transition: all 0.3s ease;
+}
+
+.validator-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
   position: sticky;
   top: 0;
   z-index: 100;
