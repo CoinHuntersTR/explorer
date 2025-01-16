@@ -221,9 +221,6 @@ function metaItem(metadata: string|undefined): { title: string; summary: string 
 <template>
   <div>
     <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
-      <div v-if="chainStore.current" class="mb-2 text-sm">
-        {{ chainStore.current.prettyName || chainStore.chainName }}
-      </div>
       <h2 class="card-title flex flex-col md:!justify-between md:!flex-row mb-2">
         <p class="truncate w-full">
           {{ proposal_id }}. {{ proposal.title || proposal.content?.title || metaItem(proposal?.metadata)?.title  }}
