@@ -1,4 +1,3 @@
-
 <template>
   <div class="container mx-auto p-4">
     <div class="flex flex-col md:flex-row gap-4 mb-6">
@@ -16,6 +15,8 @@
           <option value="PROPOSAL_STATUS_VOTING_PERIOD">Voting Period</option>
           <option value="PROPOSAL_STATUS_PASSED">Passed</option>
           <option value="PROPOSAL_STATUS_REJECTED">Rejected</option>
+          <option value="PROPOSAL_STATUS_DEPOSIT_PERIOD">Deposit Period</option>
+          <option value="PROPOSAL_STATUS_FAILED">Failed</option>
         </select>
       </div>
     </div>
@@ -32,11 +33,11 @@
               #{{ proposal.proposal_id }}
             </h3>
           </div>
-          
+
           <h4 class="text-lg font-medium mb-2 line-clamp-2">
             {{ proposal.content?.title || proposal.title }}
           </h4>
-          
+
           <p class="text-gray-500 dark:text-gray-400 line-clamp-3 mb-4">
             {{ proposal.content?.description }}
           </p>
@@ -46,7 +47,7 @@
               <span>Submit: {{ formatTime(proposal.submit_time) }}</span>
               <span>Ends: {{ formatTime(proposal.voting_end_time) }}</span>
             </div>
-            
+
             <div class="flex justify-between items-center mt-2">
               <div class="w-32">
                 <DonutChart 
@@ -96,27 +97,38 @@ const searchQuery = ref('')
 const selectedStatus = ref('')
 
 onMounted(() => {
-  store.fetchProposals('2')
-  store.fetchProposals('3')
-  store.fetchProposals('4')
+  store.fetchAllProposals()
 })
 
+const statusMapping = {
+    'PROPOSAL_STATUS_DEPOSIT_PERIOD': '1',
+    'PROPOSAL_STATUS_VOTING_PERIOD': '2',
+    'PROPOSAL_STATUS_PASSED': '3',
+    'PROPOSAL_STATUS_REJECTED': '4',
+    'PROPOSAL_STATUS_FAILED': '5'
+  }
+
 const filteredProposals = computed(() => {
-  let proposals = store?.proposals[tab.value]?.proposals || []
+  let allProposals = []
+  Object.values(store.proposals).forEach(statusProposals => {
+    if (statusProposals?.proposals) {
+      allProposals.push(...statusProposals.proposals)
+    }
+  })
 
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
-    proposals = proposals.filter(p => 
+    allProposals = allProposals.filter(p => 
       p.content?.title?.toLowerCase().includes(query) ||
       p.proposal_id.toString().includes(query)
     )
   }
 
   if (selectedStatus.value) {
-    proposals = proposals.filter(p => p.status === selectedStatus.value)
+    allProposals = allProposals.filter(p => p.status === selectedStatus.value)
   }
 
-  return proposals
+  return allProposals
 })
 
 const formatTime = (time: string) => {
@@ -131,7 +143,9 @@ const getStatusBadgeClass = (status: string) => {
   const classes = {
     'PROPOSAL_STATUS_VOTING_PERIOD': 'badge-info',
     'PROPOSAL_STATUS_PASSED': 'badge-success',
-    'PROPOSAL_STATUS_REJECTED': 'badge-error'
+    'PROPOSAL_STATUS_REJECTED': 'badge-error',
+    'PROPOSAL_STATUS_DEPOSIT_PERIOD': 'badge-warning',
+    'PROPOSAL_STATUS_FAILED': 'badge-error'
   }
   return `${classes[status] || 'badge-ghost'}`
 }
