@@ -139,6 +139,10 @@ export const useBlockchain = defineStore('blockchain', {
     },
   },
   actions: {
+    switchChain(chainName: string) {
+      this.chainName = chainName;
+      this.randomSetupEndpoint();
+    },
     async initial() {
       // this.current?.themeColor {
       //     const { global } = useTheme();

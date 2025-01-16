@@ -254,8 +254,19 @@ function selected(route: any, nav: NavLink) {
           </h1>
         </RouterLink>
 
-        <div class="flex-1 flex justify-center">
+        <div class="flex-1 flex justify-center items-center gap-4">
           <ChainProfile />
+          <div class="dropdown dropdown-hover">
+            <label tabindex="0" class="btn btn-ghost m-1">Networks</label>
+            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 max-h-96 overflow-y-auto">
+              <li v-for="chain in dashboard.chains" :key="chain.chainName">
+                <a @click="blockchain.switchChain(chain.chainName)" class="flex items-center gap-2">
+                  <img :src="chain.logo" class="w-6 h-6 rounded-full" />
+                  <span>{{ chain.prettyName || chain.chainName }}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <!-- <NavSearchBar />-->
