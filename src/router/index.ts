@@ -1,5 +1,6 @@
 import { useBlockchain } from "@/stores";
 import { createRouter, createWebHistory } from "vue-router";
+import GovView from '@/modules/[chain]/gov/index.vue'
 // @ts-ignore
 import { setupLayouts } from "virtual:generated-layouts";
 // @ts-ignore

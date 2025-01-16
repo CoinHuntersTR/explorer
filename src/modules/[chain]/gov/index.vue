@@ -1,34 +1,24 @@
-
 <template>
   <div class="container mx-auto p-4">
-    <!-- Search and Filter Section -->
     <div class="flex flex-col md:flex-row gap-4 mb-6">
       <div class="flex-grow">
         <input 
           type="text" 
           v-model="searchQuery" 
           class="input input-bordered w-full" 
-          placeholder="Search proposals by title or ID..."
+          placeholder="Search proposals..."
         />
       </div>
       <div class="flex gap-4">
         <select v-model="selectedStatus" class="select select-bordered">
           <option value="">All Status</option>
-          <option value="PROPOSAL_STATUS_DEPOSIT_PERIOD">Deposit Period</option>
           <option value="PROPOSAL_STATUS_VOTING_PERIOD">Voting Period</option>
           <option value="PROPOSAL_STATUS_PASSED">Passed</option>
           <option value="PROPOSAL_STATUS_REJECTED">Rejected</option>
         </select>
-        <select v-model="selectedType" class="select select-bordered">
-          <option value="">All Types</option>
-          <option value="TextProposal">Text</option>
-          <option value="ParameterChangeProposal">Parameter Change</option>
-          <option value="SoftwareUpgradeProposal">Software Upgrade</option>
-        </select>
       </div>
     </div>
 
-    <!-- Proposals List -->
     <div class="grid gap-4">
       <div v-for="proposal in filteredProposals" :key="proposal.proposal_id" 
            class="card bg-base-200 hover:shadow-lg transition-all duration-200">
@@ -54,11 +44,11 @@
               </div>
             </div>
           </div>
-          
+
           <div class="flex justify-between items-center mt-4">
             <div class="flex gap-4 text-sm opacity-70">
-              <div>Submit Time: {{ formatTime(proposal.submit_time) }}</div>
-              <div>Voting End: {{ formatTime(proposal.voting_end_time) }}</div>
+              <div>Submit: {{ formatTime(proposal.submit_time) }}</div>
+              <div>Ends: {{ formatTime(proposal.voting_end_time) }}</div>
             </div>
             <router-link 
               :to="`/${blockchain.chain}/gov/${proposal.proposal_id}`" 
@@ -71,7 +61,10 @@
       </div>
     </div>
 
-    <!-- Pagination -->
+    <div v-if="filteredProposals.length === 0" class="text-center py-8">
+      No proposals found
+    </div>
+
     <PaginationBar 
       :total="store?.proposals[tab]?.pagination?.total" 
       :limit="pageRequest.limit" 
@@ -81,7 +74,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useGovStore } from '@/stores'
 import { useBlockchain } from '@/stores'
 import { ref, computed, onMounted } from 'vue'
@@ -94,22 +87,16 @@ const tab = ref('2')
 const pageRequest = ref(new PageRequest())
 const searchQuery = ref('')
 const selectedStatus = ref('')
-const selectedType = ref('')
 
 onMounted(() => {
-  store.fetchProposals('2').then((x) => {
-    if (x?.proposals?.length === 0) {
-      tab.value = '3'
-      store.fetchProposals('3')
-    }
-    store.fetchProposals('3')
-    store.fetchProposals('4')
-  })
+  store.fetchProposals('2')
+  store.fetchProposals('3')
+  store.fetchProposals('4')
 })
 
 const filteredProposals = computed(() => {
   let proposals = store?.proposals[tab.value]?.proposals || []
-  
+
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     proposals = proposals.filter(p => 
@@ -120,12 +107,6 @@ const filteredProposals = computed(() => {
 
   if (selectedStatus.value) {
     proposals = proposals.filter(p => p.status === selectedStatus.value)
-  }
-
-  if (selectedType.value) {
-    proposals = proposals.filter(p => 
-      p.content?.['@type']?.includes(selectedType.value)
-    )
   }
 
   return proposals
@@ -141,7 +122,6 @@ const formatStatus = (status: string) => {
 
 const getStatusBadgeClass = (status: string) => {
   const classes = {
-    'PROPOSAL_STATUS_DEPOSIT_PERIOD': 'badge-warning',
     'PROPOSAL_STATUS_VOTING_PERIOD': 'badge-info',
     'PROPOSAL_STATUS_PASSED': 'badge-success',
     'PROPOSAL_STATUS_REJECTED': 'badge-error'
