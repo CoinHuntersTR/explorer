@@ -33,17 +33,28 @@ const stakingStore = useStakingStore();
 const chainStore = useBlockchain();
 
 async function loadProposalData() {
-  const res = await store.fetchProposal(props.proposal_id);
-  if (!res || (!res.proposal && !res)) return;
-  
-  const proposalDetail = reactive(res.proposal || res);
-  
-  if (proposalDetail.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-    const tallRes = await store.fetchTally(props.proposal_id);
-    if (tallRes?.tally) {
-      proposalDetail.final_tally_result = tallRes.tally;
+  try {
+    const res = await store.fetchProposal(props.proposal_id);
+    if (!res || (!res.proposal && !res)) return;
+    
+    const proposalDetail = reactive(res.proposal || res);
+    
+    // Initialize empty tally result if not present
+    if (!proposalDetail.final_tally_result) {
+      proposalDetail.final_tally_result = {
+        yes: '0',
+        abstain: '0',
+        no: '0',
+        no_with_veto: '0'
+      };
     }
-  }
+    
+    if (proposalDetail.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+      const tallRes = await store.fetchTally(props.proposal_id);
+      if (tallRes?.tally) {
+        proposalDetail.final_tally_result = tallRes.tally;
+      }
+    }
   
   // Fetch votes
   const votesRes = await store.fetchProposalVotes(props.proposal_id, pageRequest.value);
