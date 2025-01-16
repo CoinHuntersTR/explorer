@@ -31,3 +31,27 @@ function formatDate(date: string) {
   return new Date(date).toLocaleString()
 }
 </script>
+<template>
+  <div class="relative pb-8">
+    <div class="flex items-center">
+      <div class="min-w-0 flex-1 flex justify-between space-x-4">
+        <div>
+          <p class="text-sm font-medium">{{ title }}</p>
+          <p class="text-sm text-gray-500">
+            {{ timeAgo }}
+          </p>
+        </div>
+        <slot name="extra"></slot>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+defineProps<{
+  title: string
+  date?: string
+  timeAgo?: string
+  active?: boolean
+}>()
+</script>

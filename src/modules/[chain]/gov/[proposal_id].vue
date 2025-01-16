@@ -32,14 +32,17 @@ const stakingStore = useStakingStore();
 const chainStore = useBlockchain();
 
 store.fetchProposal(props.proposal_id).then((res) => {
-  const proposalDetail = reactive(res.proposal);
-  // when status under the voting, final_tally_result are no data, should request fetchTally
-  if (res.proposal?.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-    store.fetchTally(props.proposal_id).then((tallRes) => {
-      proposalDetail.final_tally_result = tallRes?.tally;
-    });
-  }
-  proposal.value = proposalDetail;
+  if (res && (res.proposal || res)) {
+    const proposalDetail = reactive(res.proposal || res);
+    proposal.value = proposalDetail;
+    
+    if (proposalDetail?.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+      store.fetchTally(props.proposal_id).then((tallRes) => {
+        if (tallRes?.tally) {
+          proposal.value.final_tally_result = tallRes.tally;
+        }
+      });
+    }
   // load origin params if the proposal is param change
   if(proposalDetail.content?.changes) {
     proposalDetail.content?.changes.forEach((item) => {  
