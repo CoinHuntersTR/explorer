@@ -31,15 +31,31 @@ const dialog = useTxDialog();
 const stakingStore = useStakingStore();
 const chainStore = useBlockchain();
 
-store.fetchProposal(props.proposal_id).then((res) => {
-  const proposalDetail = reactive(res.proposal);
-  // when status under the voting, final_tally_result are no data, should request fetchTally
-  if (res.proposal?.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-    store.fetchTally(props.proposal_id).then((tallRes) => {
-      proposalDetail.final_tally_result = tallRes?.tally;
-    });
+async function loadProposalData() {
+  const res = await store.fetchProposal(props.proposal_id);
+  if (!res || (!res.proposal && !res)) return;
+  
+  const proposalDetail = reactive(res.proposal || res);
+  
+  if (proposalDetail.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+    const tallRes = await store.fetchTally(props.proposal_id);
+    if (tallRes?.tally) {
+      proposalDetail.final_tally_result = tallRes.tally;
+    }
   }
+  
+  // Fetch votes
+  const votesRes = await store.fetchProposalVotes(props.proposal_id, pageRequest.value);
+  if (votesRes) {
+    votes.value = votesRes.votes;
+    pageResponse.value = votesRes.pagination;
+  }
+  
   proposal.value = proposalDetail;
+}
+
+// Call the function when component mounts
+loadProposalData();
   // load origin params if the proposal is param change
   if(proposalDetail.content?.changes) {
     proposalDetail.content?.changes.forEach((item) => {  

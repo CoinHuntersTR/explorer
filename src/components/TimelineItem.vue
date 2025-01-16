@@ -1,32 +1,28 @@
 
 <template>
-  <div class="relative">
-    <div class="absolute -left-10 mt-1">
-      <div :class="`w-6 h-6 rounded-full flex items-center justify-center ${
-        active ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'
-      }`">
-        <i :class="icon" class="text-xs"></i>
+  <div class="relative flex pb-8">
+    <div class="absolute left-0 top-0 h-full w-0.5 bg-gray-200"></div>
+    <div class="relative flex items-center">
+      <div class="h-8 w-8 rounded-full border-2 flex items-center justify-center" :class="active ? 'border-primary bg-primary/10' : 'border-gray-300'">
+        <i :class="icon" class="text-sm"></i>
       </div>
-    </div>
-    <div class="ml-4">
-      <h3 class="text-lg font-semibold">{{ title }}</h3>
-      <p class="text-sm text-gray-500">{{ format.toDay(date) }}</p>
-      <p class="text-xs text-gray-400">{{ timeAgo }}</p>
-      <slot name="extra"></slot>
+      <div class="ml-4 flex min-w-0 flex-1 justify-between space-x-4">
+        <div>
+          <p class="text-sm font-medium">{{ title }}</p>
+          <p class="text-sm text-gray-500">{{ date }} {{ timeAgo ? `(${timeAgo})` : '' }}</p>
+        </div>
+        <slot name="extra"></slot>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useFormatter } from '@/stores'
-
-const format = useFormatter()
-
-defineProps({
-  icon: String,
-  active: Boolean,
-  title: String,
-  date: String,
-  timeAgo: String
-})
+defineProps<{
+  icon?: string
+  title: string
+  date?: string
+  timeAgo?: string
+  active?: boolean
+}>()
 </script>
