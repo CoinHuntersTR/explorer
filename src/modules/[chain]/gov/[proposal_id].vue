@@ -35,9 +35,9 @@ const chainStore = useBlockchain();
 onMounted(async () => {
   try {
     const res = await store.fetchProposal(props.proposal_id);
-    const proposalDetail = reactive(res.proposal);
+    const proposalDetail = reactive(res?.proposal || res);
     
-    if (res.proposal?.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+    if (proposalDetail?.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
       const tallRes = await store.fetchTally(props.proposal_id);
       proposalDetail.final_tally_result = tallRes?.tally;
     }

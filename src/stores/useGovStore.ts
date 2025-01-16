@@ -92,7 +92,13 @@ export const useGovStore = defineStore('govStore', {
       return await this.blockchain.rpc.getGovProposalTally(proposalId);
     },
     async fetchProposal(proposalId: string) {
-      return this.blockchain.rpc.getGovProposal(proposalId);
+      try {
+        const response = await this.blockchain.rpc.getGovProposal(proposalId);
+        return response.proposal ? response : { proposal: response };
+      } catch (error) {
+        console.error('Error fetching proposal:', error);
+        throw error;
+      }
     },
     async fetchProposalDeposits(proposalId: string) {
       return this.blockchain.rpc.getGovProposalDeposits(proposalId);
