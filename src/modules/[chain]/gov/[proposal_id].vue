@@ -1,5 +1,6 @@
+
 <script lang="ts" setup>
-import { computed } from '@vue/reactivity';
+import { computed, onMounted } from 'vue';
 import MdEditor from 'md-editor-v3';
 import ObjectElement from '@/components/dynamic/ObjectElement.vue';
 import {
@@ -21,8 +22,7 @@ import { ref, reactive } from 'vue';
 import Countdown from '@/components/Countdown.vue';
 import PaginationBar from '@/components/PaginationBar.vue';
 import { fromBech32, toHex } from '@cosmjs/encoding';
-import DonutChart from "@/components/DonutChart.vue"; // Assuming this component exists
-
+import DonutChart from "@/components/DonutChart.vue";
 
 const props = defineProps(['proposal_id', 'chain']);
 const proposal = ref({} as GovProposal);
@@ -32,49 +32,48 @@ const dialog = useTxDialog();
 const stakingStore = useStakingStore();
 const chainStore = useBlockchain();
 
-store.fetchProposal(props.proposal_id).then((res) => {
-  const proposalDetail = reactive(res.proposal);
-  // when status under the voting, final_tally_result are no data, should request fetchTally
-  if (res.proposal?.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-    store.fetchTally(props.proposal_id).then((tallRes) => {
+onMounted(async () => {
+  try {
+    const res = await store.fetchProposal(props.proposal_id);
+    const proposalDetail = reactive(res.proposal);
+    
+    if (res.proposal?.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+      const tallRes = await store.fetchTally(props.proposal_id);
       proposalDetail.final_tally_result = tallRes?.tally;
-    });
-  }
-  proposal.value = proposalDetail;
-  // load origin params if the proposal is param change
-  if(proposalDetail.content?.changes) {
-    proposalDetail.content?.changes.forEach((item) => {  
-        chainStore.rpc.getParams(item.subspace, item.key).then((res) => {
-          if(proposal.value.content && res.param) {
-            if(proposal.value.content.current){
-              proposal.value.content.current.push(res.param);
-            } else {
-              proposal.value.content.current = [res.param];
-            };
-          }
-        })
-    })
-  }
-
-  const msgType = proposalDetail.content['@type'] || '';
-  if(msgType.endsWith('MsgUpdateParams')) {
-    if(msgType.indexOf('staking') > -1) {
-      chainStore.rpc.getStakingParams().then((res) => {
-        addCurrentParams(res);
-      });
-    } else if(msgType.indexOf('gov') > -1) {
-      chainStore.rpc.getGovParamsVoting().then((res) => {
-        addCurrentParams(res);
-      });
-    } else if(msgType.indexOf('distribution') > -1) {
-      chainStore.rpc.getDistributionParams().then((res) => {
-        addCurrentParams(res);
-      });
-    } else if(msgType.indexOf('slashing') > -1) {
-      chainStore.rpc.getSlashingParams().then((res) => {
-        addCurrentParams(res);
-      });
     }
+    proposal.value = proposalDetail;
+    
+    if(proposalDetail.content?.changes) {
+      for (const item of proposalDetail.content.changes) {
+        const res = await chainStore.rpc.getParams(item.subspace, item.key);
+        if(proposal.value.content && res.param) {
+          if(proposal.value.content.current){
+            proposal.value.content.current.push(res.param);
+          } else {
+            proposal.value.content.current = [res.param];
+          }
+        }
+      }
+    }
+
+    const msgType = proposalDetail.content['@type'] || '';
+    if(msgType.endsWith('MsgUpdateParams')) {
+      if(msgType.indexOf('staking') > -1) {
+        const res = await chainStore.rpc.getStakingParams();
+        addCurrentParams(res);
+      } else if(msgType.indexOf('gov') > -1) {
+        const res = await chainStore.rpc.getGovParamsVoting();
+        addCurrentParams(res);
+      } else if(msgType.indexOf('distribution') > -1) {
+        const res = await chainStore.rpc.getDistributionParams();
+        addCurrentParams(res);
+      } else if(msgType.indexOf('slashing') > -1) {
+        const res = await chainStore.rpc.getSlashingParams();
+        addCurrentParams(res);
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching proposal:', error);
   }
 });
 
@@ -84,6 +83,7 @@ function addCurrentParams(res: any) {
     proposal.value.content.current = [res.params];
   }
 }
+
 const color = computed(() => {
   if (proposal.value.status === 'PROPOSAL_STATUS_PASSED') {
     return 'success';
@@ -92,6 +92,7 @@ const color = computed(() => {
   }
   return '';
 });
+
 const status = computed(() => {
   if (proposal.value.status) {
     return proposal.value.status.replace('PROPOSAL_STATUS_', '');
@@ -187,6 +188,7 @@ const abstain = computed(() => {
   }
   return 0;
 });
+
 const processList = computed(() => {
   return [
     { name: 'Turnout', value: turnout.value, class: 'bg-info' },
@@ -220,81 +222,70 @@ function metaItem(metadata: string|undefined): { title: string; summary: string 
 </script>
 
 <template>
-  <div>
+  <div v-if="proposal">
     <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
       <h2 class="card-title flex flex-col md:!justify-between md:!flex-row mb-2">
         <p class="truncate w-full">
-          {{ proposal_id }}. {{ proposal.title || proposal.content?.title || metaItem(proposal?.metadata)?.title  }}
+          {{ proposal_id }}. {{ proposal.title || proposal.content?.title || metaItem(proposal?.metadata)?.title }}
         </p>
         <div
           class="badge badge-ghost"
-          :class="
-            color === 'success'
-              ? 'text-yes'
-              : color === 'error'
-              ? 'text-no'
-              : 'text-info'
-          "
+          :class="color === 'success' ? 'text-yes' : color === 'error' ? 'text-no' : 'text-info'"
         >
           {{ status }}
         </div>
       </h2>
-      <div class="">
+      <div v-if="proposal.content">
         <ObjectElement :value="proposal.content" />
       </div>
-      <div v-if="proposal.summary && !proposal.content?.description || metaItem(proposal?.metadata)?.summary ">
+      <div v-if="proposal.summary && !proposal.content?.description || metaItem(proposal?.metadata)?.summary">
         <MdEditor
           :model-value="format.multiLine(proposal.summary || metaItem(proposal?.metadata)?.summary)"
           previewOnly
           class="md-editor-recover"
-        ></MdEditor>
+        />
       </div>
     </div>
-    <!-- grid lg:!!grid-cols-3 auto-rows-max-->
-    <!-- flex-col lg:!!flex-row flex -->
-    <div class="gap-4 mb-4 grid lg:!!grid-cols-3 auto-rows-max">
-      <!-- flex-1 -->
+
+    <div class="gap-4 mb-4 grid lg:grid-cols-3 auto-rows-max">
       <div class="bg-base-100 px-4 pt-3 pb-4 rounded shadow">
         <h2 class="card-title mb-1">{{ $t('gov.tally') }}</h2>
         <div class="flex flex-col items-center">
-        <DonutChart
-          :data="[
-            { name: 'Yes', value: Number(proposal?.final_tally_result?.yes || 0) },
-            { name: 'No', value: Number(proposal?.final_tally_result?.no || 0) },
-            { name: 'No With Veto', value: Number(proposal?.final_tally_result?.no_with_veto || 0) },
-            { name: 'Abstain', value: Number(proposal?.final_tally_result?.abstain || 0) }
-          ]"
-          :colors="['#4CAF50', '#f44336', '#d32f2f', '#ffa726']"
-          height="200"
-          class="mb-4"
-        />
-        <div class="grid grid-cols-2 gap-4 w-full mt-4">
-          <div v-for="(item, index) of processList" :key="index" 
-               class="flex items-center justify-between p-3 rounded-lg bg-base-200">
-            <span class="font-medium">{{ item.name }}</span>
-            <span class="text-sm" :class="item.class">{{ item.value }}</span>
+          <DonutChart
+            :data="[
+              { name: 'Yes', value: Number(proposal?.final_tally_result?.yes || 0) },
+              { name: 'No', value: Number(proposal?.final_tally_result?.no || 0) },
+              { name: 'No With Veto', value: Number(proposal?.final_tally_result?.no_with_veto || 0) },
+              { name: 'Abstain', value: Number(proposal?.final_tally_result?.abstain || 0) }
+            ]"
+            :colors="['#4CAF50', '#f44336', '#d32f2f', '#ffa726']"
+            height="200"
+            class="mb-4"
+          />
+          <div class="grid grid-cols-2 gap-4 w-full mt-4">
+            <div v-for="(item, index) of processList" :key="index" 
+                 class="flex items-center justify-between p-3 rounded-lg bg-base-200">
+              <span class="font-medium">{{ item.name }}</span>
+              <span class="text-sm" :class="item.class">{{ item.value }}</span>
+            </div>
           </div>
         </div>
-      </div>
         <div class="mt-6 grid grid-cols-2">
           <label
             for="vote"
             class="btn btn-primary float-right btn-sm mx-1"
             @click="dialog.open('vote', { proposal_id })"
-            >{{ $t('gov.btn_vote') }}</label
-          >
+          >{{ $t('gov.btn_vote') }}</label>
           <label
             for="deposit"
             class="btn btn-primary float-right btn-sm mx-1"
             @click="dialog.open('deposit', { proposal_id })"
-            >{{ $t('gov.btn_deposit') }}</label
-          >
+          >{{ $t('gov.btn_deposit') }}</label>
         </div>
       </div>
 
-      <div class="bg-base-100 px-4 pt-3 pb-5 rounded shadow lg:!!col-span-2">
+      <div class="bg-base-100 px-4 pt-3 pb-5 rounded shadow lg:col-span-2">
         <h2 class="card-title">{{ $t('gov.timeline') }}</h2>
-
         <div class="px-1">
           <div class="flex items-center mb-4 mt-2">
             <div class="w-2 h-2 rounded-full bg-error mr-3"></div>
@@ -307,22 +298,10 @@ function metaItem(metadata: string|undefined): { title: string; summary: string 
             <div class="w-2 h-2 rounded-full bg-primary mr-3"></div>
             <div class="text-base flex-1 text-main">
               {{ $t('gov.deposited_at') }}:
-              {{
-                format.toDay(
-                  proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD'
-                    ? proposal.deposit_end_time
-                    : proposal.voting_start_time
-                )
-              }}
+              {{ format.toDay(proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD' ? proposal.deposit_end_time : proposal.voting_start_time) }}
             </div>
             <div class="text-sm">
-              {{
-                shortTime(
-                  proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD'
-                    ? proposal.deposit_end_time
-                    : proposal.voting_start_time
-                )
-              }}
+              {{ shortTime(proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD' ? proposal.deposit_end_time : proposal.voting_start_time) }}
             </div>
           </div>
           <div class="mb-4">
@@ -331,9 +310,7 @@ function metaItem(metadata: string|undefined): { title: string; summary: string 
               <div class="text-base flex-1 text-main">
                 {{ $t('gov.vote_start_from') }} {{ format.toDay(proposal.voting_start_time) }}
               </div>
-              <div class="text-sm">
-                {{ shortTime(proposal.voting_start_time) }}
-              </div>
+              <div class="text-sm">{{ shortTime(proposal.voting_start_time) }}</div>
             </div>
             <div class="pl-5 text-sm mt-2">
               <Countdown :time="votingCountdown" />
@@ -345,35 +322,22 @@ function metaItem(metadata: string|undefined): { title: string; summary: string 
               <div class="text-base flex-1 text-main">
                 {{ $t('gov.vote_end') }} {{ format.toDay(proposal.voting_end_time) }}
               </div>
-              <div class="text-sm">
-                {{ shortTime(proposal.voting_end_time) }}
-              </div>
+              <div class="text-sm">{{ shortTime(proposal.voting_end_time) }}</div>
             </div>
             <div class="pl-5 text-sm">
               {{ $t('gov.current_status') }}: {{ $t(`gov.proposal_statuses.${proposal.status}`) }}
             </div>
           </div>
 
-          <div
-            class="mt-4"
-            v-if="
-              proposal?.content?.['@type']?.endsWith('SoftwareUpgradeProposal')
-            "
-          >
+          <div v-if="proposal?.content?.['@type']?.endsWith('SoftwareUpgradeProposal')" class="mt-4">
             <div class="flex items-center">
               <div class="w-2 h-2 rounded-full bg-warning mr-3"></div>
               <div class="text-base flex-1 text-main">
                 {{ $t('gov.upgrade_plan') }}:
-                <span v-if="Number(proposal.content?.plan?.height || '0') > 0">
-                  (EST)</span
-                >
-                <span v-else>{{
-                  format.toDay(proposal.content?.plan?.time)
-                }}</span>
+                <span v-if="Number(proposal.content?.plan?.height || '0') > 0">(EST)</span>
+                <span v-else>{{ format.toDay(proposal.content?.plan?.time) }}</span>
               </div>
-              <div class="text-sm">
-                {{ shortTime(proposal.voting_end_time) }}
-              </div>
+              <div class="text-sm">{{ shortTime(proposal.voting_end_time) }}</div>
             </div>
             <div class="pl-5 text-sm mt-2">
               <Countdown :time="upgradeCountdown" />
@@ -400,10 +364,7 @@ function metaItem(metadata: string|undefined): { title: string; summary: string 
               >
                 {{ String(item.option).replace('VOTE_OPTION_', '') }}
               </td>
-              <td
-                v-if="item.options"
-                class="py-2 text-sm"
-              >
+              <td v-if="item.options" class="py-2 text-sm">
                 {{ item.options.map(x => `${x.option.replace('VOTE_OPTION_', '')}:${format.percent(x.weight)}`).join(', ') }}
               </td>
             </tr>
