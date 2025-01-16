@@ -38,6 +38,9 @@ async function loadProposalData() {
     if (!res || (!res.proposal && !res)) return;
     
     const proposalDetail = reactive(res.proposal || res);
+  } catch (error) {
+    console.error('Error loading proposal data:', error);
+  }
     
     // Initialize empty tally result if not present
     if (!proposalDetail.final_tally_result) {
