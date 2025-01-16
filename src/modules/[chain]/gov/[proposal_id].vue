@@ -219,192 +219,131 @@ function metaItem(metadata: string|undefined): { title: string; summary: string 
 </script>
 
 <template>
-  <div>
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
-      <h2 class="card-title flex flex-col md:!justify-between md:!flex-row mb-2">
-        <p class="truncate w-full">
-          {{ proposal_id }}. {{ proposal.title || proposal.content?.title || metaItem(proposal?.metadata)?.title  }}
-        </p>
-        <div
-          class="badge badge-ghost"
-          :class="
-            color === 'success'
-              ? 'text-yes'
-              : color === 'error'
-              ? 'text-no'
-              : 'text-info'
-          "
-        >
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Header Section -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 mb-6 shadow-lg">
+      <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold">
+          #{{ proposal_id }}. {{ proposal.title || proposal.content?.title || metaItem(proposal?.metadata)?.title }}
+        </h1>
+        <div :class="`px-4 py-2 rounded-full text-sm font-semibold ${
+          status === 'PASSED' ? 'bg-green-100 text-green-700' :
+          status === 'REJECTED' ? 'bg-red-100 text-red-700' :
+          'bg-blue-100 text-blue-700'
+        }`">
           {{ status }}
         </div>
-      </h2>
-      <div class="">
-        <ObjectElement :value="proposal.content" />
       </div>
-      <div v-if="proposal.summary && !proposal.content?.description || metaItem(proposal?.metadata)?.summary ">
-        <MdEditor
-          :model-value="format.multiLine(proposal.summary || metaItem(proposal?.metadata)?.summary)"
-          previewOnly
-          class="md-editor-recover"
-        ></MdEditor>
-      </div>
-    </div>
-    <!-- grid lg:!!grid-cols-3 auto-rows-max-->
-    <!-- flex-col lg:!!flex-row flex -->
-    <div class="gap-4 mb-4 grid lg:!!grid-cols-3 auto-rows-max">
-      <!-- flex-1 -->
-      <div class="bg-base-100 px-4 pt-3 pb-4 rounded shadow">
-        <h2 class="card-title mb-1">{{ $t('gov.tally') }}</h2>
-        <div class="mb-1" v-for="(item, index) of processList" :key="index">
-          <label class="block text-sm mb-1">{{ item.name }}</label>
-          <div class="h-5 w-full relative">
-            <div
-              class="absolute inset-x-0 inset-y-0 w-full opacity-10 rounded-sm"
-              :class="`${item.class}`"
-            ></div>
-            <div
-              class="absolute inset-x-0 inset-y-0 rounded-sm"
-              :class="`${item.class}`"
-              :style="`width: ${
-                item.value === '-' || item.value === 'NaN%' ? '0%' : item.value
-              }`"
-            ></div>
-            <p
-              class="absolute inset-x-0 inset-y-0 text-center text-sm text-[#666] dark:text-[#eee] flex items-center justify-center"
-            >
-              {{ item.value }}
-            </p>
+
+      <!-- Type and Description Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+          <div class="flex items-center mb-2">
+            <i class="fas fa-code-branch mr-2"></i>
+            <h3 class="font-semibold">Type</h3>
           </div>
+          <p class="text-gray-600 dark:text-gray-300">{{ proposal.content?.['@type'] }}</p>
         </div>
-        <div class="mt-6 grid grid-cols-2">
-          <label
-            for="vote"
-            class="btn btn-primary float-right btn-sm mx-1"
-            @click="dialog.open('vote', { proposal_id })"
-            >{{ $t('gov.btn_vote') }}</label
-          >
-          <label
-            for="deposit"
-            class="btn btn-primary float-right btn-sm mx-1"
-            @click="dialog.open('deposit', { proposal_id })"
-            >{{ $t('gov.btn_deposit') }}</label
-          >
-        </div>
-      </div>
-
-      <div class="bg-base-100 px-4 pt-3 pb-5 rounded shadow lg:!!col-span-2">
-        <h2 class="card-title">{{ $t('gov.timeline') }}</h2>
-
-        <div class="px-1">
-          <div class="flex items-center mb-4 mt-2">
-            <div class="w-2 h-2 rounded-full bg-error mr-3"></div>
-            <div class="text-base flex-1 text-main">
-              {{ $t('gov.submit_at') }}: {{ format.toDay(proposal.submit_time) }}
-            </div>
-            <div class="text-sm">{{ shortTime(proposal.submit_time) }}</div>
+        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+          <div class="flex items-center mb-2">
+            <i class="fas fa-file-alt mr-2"></i>
+            <h3 class="font-semibold">Description</h3>
           </div>
-          <div class="flex items-center mb-4">
-            <div class="w-2 h-2 rounded-full bg-primary mr-3"></div>
-            <div class="text-base flex-1 text-main">
-              {{ $t('gov.deposited_at') }}:
-              {{
-                format.toDay(
-                  proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD'
-                    ? proposal.deposit_end_time
-                    : proposal.voting_start_time
-                )
-              }}
-            </div>
-            <div class="text-sm">
-              {{
-                shortTime(
-                  proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD'
-                    ? proposal.deposit_end_time
-                    : proposal.voting_start_time
-                )
-              }}
-            </div>
-          </div>
-          <div class="mb-4">
-            <div class="flex items-center">
-              <div class="w-2 h-2 rounded-full bg-yes mr-3"></div>
-              <div class="text-base flex-1 text-main">
-                {{ $t('gov.vote_start_from') }} {{ format.toDay(proposal.voting_start_time) }}
-              </div>
-              <div class="text-sm">
-                {{ shortTime(proposal.voting_start_time) }}
-              </div>
-            </div>
-            <div class="pl-5 text-sm mt-2">
-              <Countdown :time="votingCountdown" />
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center mb-1">
-              <div class="w-2 h-2 rounded-full bg-success mr-3"></div>
-              <div class="text-base flex-1 text-main">
-                {{ $t('gov.vote_end') }} {{ format.toDay(proposal.voting_end_time) }}
-              </div>
-              <div class="text-sm">
-                {{ shortTime(proposal.voting_end_time) }}
-              </div>
-            </div>
-            <div class="pl-5 text-sm">
-              {{ $t('gov.current_status') }}: {{ $t(`gov.proposal_statuses.${proposal.status}`) }}
-            </div>
-          </div>
-
-          <div
-            class="mt-4"
-            v-if="
-              proposal?.content?.['@type']?.endsWith('SoftwareUpgradeProposal')
-            "
-          >
-            <div class="flex items-center">
-              <div class="w-2 h-2 rounded-full bg-warning mr-3"></div>
-              <div class="text-base flex-1 text-main">
-                {{ $t('gov.upgrade_plan') }}:
-                <span v-if="Number(proposal.content?.plan?.height || '0') > 0">
-                  (EST)</span
-                >
-                <span v-else>{{
-                  format.toDay(proposal.content?.plan?.time)
-                }}</span>
-              </div>
-              <div class="text-sm">
-                {{ shortTime(proposal.voting_end_time) }}
-              </div>
-            </div>
-            <div class="pl-5 text-sm mt-2">
-              <Countdown :time="upgradeCountdown" />
-            </div>
+          <div class="prose dark:prose-invert max-w-none">
+            <MdEditor
+              :model-value="proposal.content?.description || metaItem(proposal?.metadata)?.summary"
+              previewOnly
+              class="!bg-transparent"
+            />
           </div>
         </div>
       </div>
     </div>
 
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
-      <h2 class="card-title">{{ $t('gov.votes') }}</h2>
+    <!-- Voting Status -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg col-span-1">
+        <h2 class="text-xl font-bold mb-4">Voting Status</h2>
+        <div class="space-y-4">
+          <div v-for="(item, index) of processList" :key="index" 
+               class="relative">
+            <div class="flex justify-between mb-1">
+              <span class="text-sm font-medium">{{ item.name }}</span>
+              <span class="text-sm font-medium">{{ item.value }}</span>
+            </div>
+            <div class="h-4 w-full bg-gray-200 rounded-full overflow-hidden">
+              <div :class="item.class" 
+                   class="h-full rounded-full transition-all duration-300"
+                   :style="`width: ${item.value === '-' || item.value === 'NaN%' ? '0%' : item.value}`">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg col-span-2">
+        <h2 class="text-xl font-bold mb-6">Timeline</h2>
+        <div class="relative pl-8 space-y-8">
+          <div class="absolute left-0 top-0 h-full w-0.5 bg-gray-200"></div>
+
+          <TimelineItem icon="fas fa-paper-plane" 
+                       :active="true"
+                       title="Submitted"
+                       :date="proposal.submit_time"
+                       :timeAgo="shortTime(proposal.submit_time)" />
+
+          <TimelineItem icon="fas fa-coins"
+                       :active="proposal.status !== 'PROPOSAL_STATUS_DEPOSIT_PERIOD'"
+                       title="Deposit Period"
+                       :date="proposal.deposit_end_time"
+                       :timeAgo="shortTime(proposal.deposit_end_time)" />
+
+          <TimelineItem icon="fas fa-vote-yea"
+                       :active="proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD'"
+                       title="Voting Period"
+                       :date="proposal.voting_end_time"
+                       :timeAgo="shortTime(proposal.voting_end_time)">
+            <template #extra>
+              <Countdown v-if="proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD'" 
+                        :time="votingCountdown" 
+                        class="text-sm text-blue-500" />
+            </template>
+          </TimelineItem>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex gap-4 mb-6">
+      <button @click="dialog.open('vote', { proposal_id })"
+              class="flex-1 bg-primary hover:bg-primary-dark text-white py-3 px-6 rounded-lg transition duration-200">
+        Vote
+      </button>
+      <button @click="dialog.open('deposit', { proposal_id })"
+              class="flex-1 bg-secondary hover:bg-secondary-dark text-white py-3 px-6 rounded-lg transition duration-200">
+        Deposit
+      </button>
+    </div>
+
+    <!-- Votes List -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+      <h2 class="text-xl font-bold mb-4">Votes</h2>
       <div class="overflow-x-auto">
-        <table class="table w-full table-zebra">
-          <tbody>
-            <tr v-for="(item, index) of votes" :key="index">
-              <td class="py-2 text-sm">{{ showValidatorName(item.voter) }}</td>
-              <td
-                v-if="item.option"
-                class="py-2 text-sm"
-                :class="{
-                  'text-yes': item.option === 'VOTE_OPTION_YES',
-                  'text-gray-400': item.option === 'VOTE_OPTION_ABSTAIN',
-                }"
-              >
-                {{ String(item.option).replace('VOTE_OPTION_', '') }}
-              </td>
-              <td
-                v-if="item.options"
-                class="py-2 text-sm"
-              >
-                {{ item.options.map(x => `${x.option.replace('VOTE_OPTION_', '')}:${format.percent(x.weight)}`).join(', ') }}
+        <table class="min-w-full divide-y divide-gray-200">
+          <tbody class="divide-y divide-gray-200">
+            <tr v-for="(item, index) of votes" :key="index"
+                class="hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-150">
+              <td class="py-4 px-6">{{ showValidatorName(item.voter) }}</td>
+              <td class="py-4 px-6">
+                <span :class="{
+                  'text-green-500': item.option === 'VOTE_OPTION_YES',
+                  'text-red-500': item.option === 'VOTE_OPTION_NO',
+                  'text-yellow-500': item.option === 'VOTE_OPTION_ABSTAIN',
+                  'text-purple-500': item.option === 'VOTE_OPTION_NO_WITH_VETO'
+                }">
+                  {{ String(item.option).replace('VOTE_OPTION_', '') }}
+                </span>
               </td>
             </tr>
           </tbody>
