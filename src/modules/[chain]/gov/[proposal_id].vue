@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed } from '@vue/reactivity';
 import MdEditor from 'md-editor-v3';
+import TimelineItem from '../../../components/TimelineItem.vue';
 import TimelineItem from '@/components/TimelineItem.vue';
 import ObjectElement from '@/components/dynamic/ObjectElement.vue';
 import {
@@ -38,12 +39,29 @@ async function loadProposalData() {
     if (!res || (!res.proposal && !res)) return;
     
     const proposalDetail = reactive(res.proposal || res);
-  } catch (error) {
-    console.error('Error loading proposal data:', error);
-  }
     
     // Initialize empty tally result if not present
     if (!proposalDetail.final_tally_result) {
+      proposalDetail.final_tally_result = {
+        yes: '0',
+        abstain: '0',
+        no: '0',
+        no_with_veto: '0'
+      };
+    }
+    
+    if (proposalDetail.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+      const tallRes = await store.fetchTally(props.proposal_id);
+      if (tallRes?.tally) {
+        proposalDetail.final_tally_result = tallRes.tally;
+      }
+    }
+
+    proposal.value = proposalDetail;
+  } catch (error) {
+    console.error('Error loading proposal data:', error);
+  }
+}
       proposalDetail.final_tally_result = {
         yes: '0',
         abstain: '0',
