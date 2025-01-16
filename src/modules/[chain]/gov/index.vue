@@ -1,3 +1,4 @@
+
 <template>
   <div class="container mx-auto p-4">
     <div class="flex flex-col md:flex-row gap-4 mb-6">
@@ -19,43 +20,48 @@
       </div>
     </div>
 
-    <div class="grid gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <div v-for="proposal in filteredProposals" :key="proposal.proposal_id" 
            class="card bg-base-200 hover:shadow-lg transition-all duration-200">
         <div class="card-body">
-          <div class="flex items-start justify-between">
-            <div class="flex-grow">
-              <div class="flex items-center gap-2 mb-2">
-                <span :class="getStatusBadgeClass(proposal.status)" class="badge">
-                  {{ formatStatus(proposal.status) }}
-                </span>
-                <h3 class="text-lg font-medium">
-                  #{{ proposal.proposal_id }} {{ proposal.content?.title }}
-                </h3>
-              </div>
-              <p class="text-gray-500 dark:text-gray-400 line-clamp-2">
-                {{ proposal.content?.description }}
-              </p>
-            </div>
-            <div class="text-right">
-              <div class="text-sm opacity-70">Total Votes</div>
-              <div class="text-xl font-semibold">
-                {{ formatVoteCount(proposal.final_tally_result) }}
-              </div>
-            </div>
+          <div class="flex justify-between items-start mb-4">
+            <span :class="getStatusBadgeClass(proposal.status)" class="badge">
+              {{ formatStatus(proposal.status) }}
+            </span>
+            <h3 class="card-title text-xl">
+              #{{ proposal.proposal_id }}
+            </h3>
           </div>
+          
+          <h4 class="text-lg font-medium mb-2 line-clamp-2">
+            {{ proposal.content?.title || proposal.title }}
+          </h4>
+          
+          <p class="text-gray-500 dark:text-gray-400 line-clamp-3 mb-4">
+            {{ proposal.content?.description }}
+          </p>
 
-          <div class="flex justify-between items-center mt-4">
-            <div class="flex gap-4 text-sm opacity-70">
-              <div>Submit: {{ formatTime(proposal.submit_time) }}</div>
-              <div>Ends: {{ formatTime(proposal.voting_end_time) }}</div>
+          <div class="flex flex-col gap-2 mt-auto">
+            <div class="flex justify-between text-sm opacity-70">
+              <span>Submit: {{ formatTime(proposal.submit_time) }}</span>
+              <span>Ends: {{ formatTime(proposal.voting_end_time) }}</span>
             </div>
-            <router-link 
-              :to="`/${blockchain.chain}/gov/${proposal.proposal_id}`" 
-              class="btn btn-primary btn-sm"
-            >
-              View Details
-            </router-link>
+            
+            <div class="flex justify-between items-center mt-2">
+              <div class="w-32">
+                <DonutChart 
+                  :data="getVoteData(proposal.final_tally_result)"
+                  :colors="['#4CAF50', '#f44336', '#ff9800', '#9e9e9e']"
+                  height="80"
+                />
+              </div>
+              <router-link 
+                :to="`/${blockchain.chain}/gov/${proposal.proposal_id}`" 
+                class="btn btn-primary btn-sm"
+              >
+                View Details
+              </router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -79,6 +85,7 @@ import { useGovStore } from '@/stores'
 import { useBlockchain } from '@/stores'
 import { ref, computed, onMounted } from 'vue'
 import PaginationBar from '@/components/PaginationBar.vue'
+import DonutChart from '@/components/charts/DonutChart.vue'
 import { PageRequest } from '@/types'
 
 const store = useGovStore()
@@ -129,9 +136,14 @@ const getStatusBadgeClass = (status: string) => {
   return `${classes[status] || 'badge-ghost'}`
 }
 
-const formatVoteCount = (tally: any) => {
-  if (!tally) return 0
-  return Object.values(tally).reduce((a: number, b: string) => a + parseInt(b || '0'), 0)
+const getVoteData = (tally: any) => {
+  if (!tally) return []
+  return [
+    { name: 'Yes', value: parseInt(tally.yes || '0') },
+    { name: 'No', value: parseInt(tally.no || '0') },
+    { name: 'NoWithVeto', value: parseInt(tally.no_with_veto || '0') },
+    { name: 'Abstain', value: parseInt(tally.abstain || '0') }
+  ]
 }
 
 const page = (p: number) => {
@@ -139,12 +151,3 @@ const page = (p: number) => {
   store.fetchProposals(tab.value, pageRequest.value)
 }
 </script>
-
-<style scoped>
-.card {
-  @apply transition-all duration-200;
-}
-.card:hover {
-  @apply transform -translate-y-1;
-}
-</style>
