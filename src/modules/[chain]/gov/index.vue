@@ -23,7 +23,8 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <div v-for="proposal in filteredProposals" :key="proposal.proposal_id" 
-           class="card bg-base-200 hover:shadow-lg transition-all duration-200">
+           class="card bg-base-200 hover:shadow-lg transition-all duration-200 cursor-pointer"
+           @click="router.push(`/${blockchain.chain}/gov/${proposal.proposal_id}`)">
         <div class="card-body">
           <div class="flex justify-between items-start mb-4">
             <span :class="getStatusBadgeClass(proposal.status)" class="badge">
@@ -85,12 +86,14 @@
 import { useGovStore } from '@/stores'
 import { useBlockchain } from '@/stores'
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import PaginationBar from '@/components/PaginationBar.vue'
 import DonutChart from '@/components/charts/DonutChart.vue'
 import { PageRequest } from '@/types'
 
 const store = useGovStore()
 const blockchain = useBlockchain()
+const router = useRouter()
 const tab = ref('2')
 const pageRequest = ref(new PageRequest())
 const searchQuery = ref('')
