@@ -14,7 +14,10 @@
           <div class="space-y-4">
             <div class="flex justify-between items-center">
               <span>Turnout</span>
-              <span>{{ turnoutPercent }}%</span>
+              <span>{{ (Number(turnoutPercent)/1e18).toFixed(2) }}%</span>
+            </div>
+            <div v-if="proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD'" class="mt-2">
+              <Countdown :end-time="proposal.voting_end_time" />
             </div>
             <div v-for="(value, key) in tallies" :key="key" class="space-y-2">
               <div class="flex justify-between items-center">
@@ -89,6 +92,7 @@ import { useRoute } from 'vue-router';
 import { useGovStore, useBlockchain } from '@/stores';
 import MdEditor from 'md-editor-v3';
 import TimelineItem from '@/components/TimelineItem.vue';
+import Countdown from '@/components/Countdown.vue'; // Added import for Countdown component
 import type { GovProposal, GovVote } from '@/types';
 
 const route = useRoute();
@@ -134,7 +138,7 @@ const turnoutPercent = computed(() => {
                 Number(proposal.value.final_tally_result.no) +
                 Number(proposal.value.final_tally_result.abstain) +
                 Number(proposal.value.final_tally_result.no_with_veto);
-  return ((total / 100000000) * 100).toFixed(2);
+  return total; // Corrected to return the raw total
 });
 
 const status = computed(() => {
