@@ -3,29 +3,39 @@
   <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="bg-white dark:bg-gray-800 rounded-xl p-6 mb-6 shadow-lg">
       <h1 class="text-2xl font-bold mb-4">#{{ proposal_id }}. {{ proposal.title }}</h1>
-      <div :class="`inline-block px-3 py-1 rounded-full text-sm ${color ? `text-${color}` : ''}`">
+      <div :class="`inline-block px-3 py-1 rounded-full text-sm ${color}`">
         {{ status }}
       </div>
 
-      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <p class="text-gray-600 dark:text-gray-400">Submit Time: {{ shortTime(proposal.submit_time) }}</p>
-          <p class="text-gray-600 dark:text-gray-400">Voting Start: {{ shortTime(proposal.voting_start_time) }}</p>
-          <p class="text-gray-600 dark:text-gray-400">Voting End: {{ shortTime(proposal.voting_end_time) }}</p>
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Voting Status -->
+        <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+          <h2 class="text-lg font-semibold mb-4">Voting Status</h2>
+          <div class="space-y-4">
+            <div class="flex justify-between items-center">
+              <span>Turnout</span>
+              <span>{{ turnoutPercent }}%</span>
+            </div>
+            <div v-for="(value, key) in tallies" :key="key" class="space-y-2">
+              <div class="flex justify-between items-center">
+                <span>{{ key }}</span>
+                <span>{{ (value.percent || 0).toFixed(2) }}%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-primary h-2 rounded-full" :style="`width: ${value.percent || 0}%`"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <div v-if="proposal.final_tally_result" class="mt-4">
-          <h3 class="font-semibold mb-2">Voting Results</h3>
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <p>Yes: {{ format.formatNumber(proposal.final_tally_result.yes) }}</p>
-              <p>No: {{ format.formatNumber(proposal.final_tally_result.no) }}</p>
-              <p>Abstain: {{ format.formatNumber(proposal.final_tally_result.abstain) }}</p>
-              <p>No with Veto: {{ format.formatNumber(proposal.final_tally_result.no_with_veto) }}</p>
-            </div>
-            <div>
-              <p>Total: {{ format.formatNumber(total) }}</p>
-            </div>
+
+        <!-- Timeline -->
+        <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+          <h2 class="text-lg font-semibold mb-4">Timeline</h2>
+          <div class="space-y-4">
+            <TimelineItem label="Submit Time" :time="proposal.submit_time" />
+            <TimelineItem label="Deposit End Time" :time="proposal.deposit_end_time" />
+            <TimelineItem label="Voting Start Time" :time="proposal.voting_start_time" />
+            <TimelineItem label="Voting End Time" :time="proposal.voting_end_time" />
           </div>
         </div>
       </div>
@@ -39,105 +49,103 @@
       </div>
     </div>
 
+    <!-- Votes Section -->
     <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
-      <h2 class="text-xl font-bold mb-4">Validators Votes</h2>
-      
-      <div class="mb-4 flex gap-2">
-        <button 
-          v-for="option in ['Yes', 'No', 'Veto', 'Abstain', 'Did Not Vote']" 
-          :key="option"
-          class="px-4 py-2 rounded-full text-sm"
-          :class="selectedVoteType === option ? 'bg-primary text-white' : 'bg-gray-200 dark:bg-gray-700'"
-          @click="selectedVoteType = option"
-        >
-          {{ option }}
-        </button>
-      </div>
-
-      <div class="mb-4">
+      <h2 class="text-xl font-bold mb-4">Votes</h2>
+      <div class="space-y-4">
+        <div class="flex gap-2 mb-4">
+          <button
+            v-for="option in ['Yes', 'No', 'Veto', 'Abstain', 'Did Not Vote']"
+            :key="option"
+            class="px-4 py-2 rounded-full text-sm"
+            :class="selectedVoteType === option ? 'bg-primary text-white' : 'bg-gray-200 dark:bg-gray-700'"
+            @click="selectedVoteType = option"
+          >
+            {{ option }}
+          </button>
+        </div>
         <input
           type="text"
           v-model="searchQuery"
           placeholder="Search moniker / valoper"
           class="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
         />
-      </div>
-
-      <div class="overflow-x-auto">
-        <table class="min-w-full">
-          <tbody>
-            <tr v-for="vote in filteredVotes" :key="vote.voter" class="border-b">
-              <td class="py-3">{{ vote.voter }}</td>
-              <td class="py-3">{{ vote.option }}</td>
-              <td class="py-3">{{ shortTime(vote.time) }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-if="votes.length" class="space-y-2">
+          <div v-for="vote in filteredVotes" :key="vote.voter" 
+            class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-900 rounded">
+            <span>{{ vote.voter }}</span>
+            <span>{{ vote.option }}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup>
-import { computed, ref, onMounted } from 'vue';
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { useGovStore, useBlockchain } from '@/stores';
 import MdEditor from 'md-editor-v3';
-import {
-  useBaseStore,
-  useBlockchain,
-  useFormatter,
-  useGovStore,
-  useStakingStore,
-  useTxDialog,
-} from '@/stores';
-import { PageRequest, type GovProposal, type GovVote } from '@/types';
+import TimelineItem from '@/components/TimelineItem.vue';
+import type { GovProposal, GovVote } from '@/types';
 
-const props = defineProps(['proposal_id', 'chain']);
-const proposal = ref({} as GovProposal);
-const format = useFormatter();
+const route = useRoute();
 const store = useGovStore();
-const dialog = useTxDialog();
-const stakingStore = useStakingStore();
-const chainStore = useBlockchain();
+const blockchain = useBlockchain();
+const proposal_id = route.params.proposal_id as string;
 
+const proposal = ref({} as GovProposal);
 const votes = ref([] as GovVote[]);
-const pageRequest = ref(new PageRequest());
-const pageResponse = ref({});
 const searchQuery = ref('');
 const selectedVoteType = ref('Yes');
 
-async function loadProposalData() {
-  try {
-    const res = await store.fetchProposal(props.proposal_id);
-    if (!res) return;
-
-    const proposalDetail = res.proposal || res;
-    if (!proposalDetail.final_tally_result) {
-      proposalDetail.final_tally_result = {
-        yes: '0',
-        abstain: '0',
-        no: '0',
-        no_with_veto: '0'
-      };
+const tallies = computed(() => {
+  if (!proposal.value.final_tally_result) return {};
+  const total = Number(proposal.value.final_tally_result.yes) +
+                Number(proposal.value.final_tally_result.no) +
+                Number(proposal.value.final_tally_result.abstain) +
+                Number(proposal.value.final_tally_result.no_with_veto);
+  
+  return {
+    Yes: {
+      amount: proposal.value.final_tally_result.yes,
+      percent: (Number(proposal.value.final_tally_result.yes) / total) * 100
+    },
+    No: {
+      amount: proposal.value.final_tally_result.no,
+      percent: (Number(proposal.value.final_tally_result.no) / total) * 100
+    },
+    Abstain: {
+      amount: proposal.value.final_tally_result.abstain,
+      percent: (Number(proposal.value.final_tally_result.abstain) / total) * 100
+    },
+    'No With Veto': {
+      amount: proposal.value.final_tally_result.no_with_veto,
+      percent: (Number(proposal.value.final_tally_result.no_with_veto) / total) * 100
     }
+  };
+});
 
-    if (proposalDetail.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-      const tallRes = await store.fetchTally(props.proposal_id);
-      if (tallRes?.tally) {
-        proposalDetail.final_tally_result = tallRes.tally;
-      }
-    }
+const turnoutPercent = computed(() => {
+  // Calculate turnout percentage
+  return 0; // Implement actual calculation
+});
 
-    proposal.value = proposalDetail;
+const status = computed(() => {
+  return proposal.value.status ? proposal.value.status.replace('PROPOSAL_STATUS_', '') : '';
+});
 
-    const votesRes = await store.fetchProposalVotes(props.proposal_id, pageRequest.value);
-    if (votesRes) {
-      votes.value = votesRes.votes;
-      pageResponse.value = votesRes.pagination;
-    }
-  } catch (error) {
-    console.error('Error loading proposal data:', error);
+const color = computed(() => {
+  switch (proposal.value.status) {
+    case 'PROPOSAL_STATUS_PASSED':
+      return 'bg-green-100 text-green-800';
+    case 'PROPOSAL_STATUS_REJECTED':
+      return 'bg-red-100 text-red-800';
+    default:
+      return 'bg-blue-100 text-blue-800';
   }
-}
+});
 
 const filteredVotes = computed(() => {
   return votes.value.filter(vote => {
@@ -147,27 +155,29 @@ const filteredVotes = computed(() => {
   });
 });
 
-const color = computed(() => {
-  if (proposal.value.status === 'PROPOSAL_STATUS_PASSED') return 'success';
-  if (proposal.value.status === 'PROPOSAL_STATUS_REJECTED') return 'error';
-  return '';
-});
-
-const status = computed(() => {
-  return proposal.value.status ? proposal.value.status.replace('PROPOSAL_STATUS_', '') : '';
-});
-
-const total = computed(() => {
-  const tally = proposal.value.final_tally_result;
-  if (!tally) return 0;
-  return Number(tally.abstain || 0) +
-         Number(tally.yes || 0) +
-         Number(tally.no || 0) +
-         Number(tally.no_with_veto || 0);
-});
-
-function shortTime(v: string) {
-  return v ? format.toDay(v, 'from') : '';
+async function loadProposalData() {
+  try {
+    const res = await store.fetchProposal(proposal_id);
+    if (res) {
+      proposal.value = res.proposal || res;
+      
+      // Fetch votes
+      const votesRes = await store.fetchProposalVotes(proposal_id);
+      if (votesRes) {
+        votes.value = votesRes.votes;
+      }
+      
+      // Fetch tally if in voting period
+      if (proposal.value.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+        const tallyRes = await store.fetchTally(proposal_id);
+        if (tallyRes?.tally) {
+          proposal.value.final_tally_result = tallyRes.tally;
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error loading proposal data:', error);
+  }
 }
 
 onMounted(() => {
