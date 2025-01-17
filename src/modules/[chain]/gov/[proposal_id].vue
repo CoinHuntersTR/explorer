@@ -2,6 +2,7 @@
 <template>
   <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="bg-white dark:bg-gray-800 rounded-xl p-6 mb-6 shadow-lg">
+      <!-- Header -->
       <h1 class="text-2xl font-bold mb-4">#{{ proposal_id }}. {{ proposal.title }}</h1>
       <div :class="`inline-block px-3 py-1 rounded-full text-sm ${color}`">
         {{ status }}
@@ -40,6 +41,7 @@
         </div>
       </div>
 
+      <!-- Description -->
       <div class="mt-6">
         <MdEditor
           :model-value="proposal.content?.description"
@@ -128,8 +130,12 @@ const tallies = computed(() => {
 });
 
 const turnoutPercent = computed(() => {
-  // Calculate turnout percentage
-  return 0; // Implement actual calculation
+  if (!proposal.value.final_tally_result) return 0;
+  const total = Number(proposal.value.final_tally_result.yes) +
+                Number(proposal.value.final_tally_result.no) +
+                Number(proposal.value.final_tally_result.abstain) +
+                Number(proposal.value.final_tally_result.no_with_veto);
+  return ((total / 100000000) * 100).toFixed(2);
 });
 
 const status = computed(() => {
@@ -160,14 +166,11 @@ async function loadProposalData() {
     const res = await store.fetchProposal(proposal_id);
     if (res) {
       proposal.value = res.proposal || res;
-      
-      // Fetch votes
       const votesRes = await store.fetchProposalVotes(proposal_id);
       if (votesRes) {
         votes.value = votesRes.votes;
       }
       
-      // Fetch tally if in voting period
       if (proposal.value.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
         const tallyRes = await store.fetchTally(proposal_id);
         if (tallyRes?.tally) {
