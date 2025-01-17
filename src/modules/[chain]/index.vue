@@ -135,13 +135,13 @@ const amount = computed({
 
 <template>
   <div class="fade-in">
-  <div v-if="isLoading" class="flex justify-center items-center min-h-[200px]">
-    <div class="loading-spinner"></div>
-  </div>
+    <div v-if="isLoading" class="flex justify-center items-center min-h-[200px]">
+      <div class="loading-spinner"></div>
+    </div>
 
-  <div v-else-if="loadError" class="bg-red-100 dark:bg-red-900/30 p-4 rounded-lg mb-4">
-    <p class="text-red-600 dark:text-red-400">{{ loadError }}</p>
-  </div>
+    <div v-else-if="loadError" class="bg-red-100 dark:bg-red-900/30 p-4 rounded-lg mb-4">
+      <p class="text-red-600 dark:text-red-400">{{ loadError }}</p>
+    </div>
 
   <template v-else>
     <div>
@@ -440,9 +440,7 @@ const amount = computed({
       <ArrayObjectElement :value="paramStore.nodeVersion?.items" :thead="false" />      
       <div class="h-4"></div>
     </div>
-    </div>
-  </template>
-</div>
+</template>
 
 <route>
   {
