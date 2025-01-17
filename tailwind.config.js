@@ -13,12 +13,20 @@ module.exports = {
         active: 'var(--bg-active)',
         primary: '#4f46e5',
         secondary: '#3b82f6',
+        dark: '#2d3748',
       },
       borderRadius: {
         DEFAULT: '10px',
       },
       boxShadow: {
-        card: '0 4px 20px rgba(0, 0, 0, 0.05)',
+        card: '0 8px 32px rgba(0, 0, 0, 0.1)',
+        glass: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )',
+      },
+      fontFamily: {
+        'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+      },
+      backdropBlur: {
+        glass: '8px',
       },
     },
   },

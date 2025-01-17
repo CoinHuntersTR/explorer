@@ -22,7 +22,7 @@ const isPositive = controlledComputed(
 </script>
 
 <template>
-  <div class="bg-base-100 shadow rounded p-4">
+  <div :class="[color, 'glass-card p-4 hover:translate-y-[-2px] transition-all duration-300']">
     <div class="flex items-center justify-center">
       <div
         v-if="props.icon"

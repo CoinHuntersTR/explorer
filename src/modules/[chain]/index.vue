@@ -125,8 +125,31 @@ const amount = computed({
 </script>
 
 <template>
-  <div>
-    <div v-if="coinInfo && coinInfo.name" class="bg-base-100 rounded shadow mb-4">
+  <div class="fade-in">
+    <!-- Header Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-glass p-4 rounded-lg shadow-glass">
+        <div class="text-sm text-gray-600 dark:text-gray-400">Latest Block</div>
+        <div class="text-2xl font-semibold text-dark dark:text-white">{{paramStore.nodeVersion?.height || '...'}}</div>
+        <div class="text-sm text-primary mt-1">~{{blocktime.toFixed(2)}}s per block</div>
+      </div>
+      <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-glass p-4 rounded-lg shadow-glass">
+        <div class="text-sm text-gray-600 dark:text-gray-400">Chain ID</div>
+        <div class="text-2xl font-semibold text-dark dark:text-white truncate">{{currentChainId}}</div>
+      </div>
+      <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-glass p-4 rounded-lg shadow-glass">
+        <div class="text-sm text-gray-600 dark:text-gray-400">API Endpoint</div>
+        <div class="text-2xl font-semibold text-dark dark:text-white truncate">{{blockchain.endpoint?.provider}}</div>
+      </div>
+      <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-glass p-4 rounded-lg shadow-glass">
+        <div class="text-sm text-gray-600 dark:text-gray-400">Block Time</div>
+        <div class="text-2xl font-semibold text-dark dark:text-white pulse-animation">
+          <Countdown :time="blocktime * 1000" :auto-start="true" />
+        </div>
+      </div>
+    </div>
+
+    <div v-if="coinInfo && coinInfo.name" class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-glass rounded-lg shadow-glass mb-4">
       <div class="grid grid-cols-2 md:grid-cols-3 p-4">
         <div class="col-span-2 md:col-span-1">
           <div class="text-xl font-semibold text-main">
