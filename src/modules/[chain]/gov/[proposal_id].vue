@@ -1,4 +1,3 @@
-
 <template>
   <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="bg-white dark:bg-gray-800 rounded-xl p-6 mb-6 shadow-lg">
@@ -20,7 +19,7 @@
             <div v-for="(value, key) in tallies" :key="key" class="space-y-2">
               <div class="flex justify-between items-center">
                 <span>{{ key }}</span>
-                <span>{{ (value.percent || 0).toFixed(2) }}%</span>
+                <span class="font-medium">{{ (value.percent || 0).toFixed(2) }}%</span>
               </div>
               <div class="w-full bg-gray-200 rounded-full h-2">
                 <div class="bg-primary h-2 rounded-full" :style="`width: ${value.percent || 0}%`"></div>
@@ -108,7 +107,7 @@ const tallies = computed(() => {
                 Number(proposal.value.final_tally_result.no) +
                 Number(proposal.value.final_tally_result.abstain) +
                 Number(proposal.value.final_tally_result.no_with_veto);
-  
+
   return {
     Yes: {
       amount: proposal.value.final_tally_result.yes,
@@ -170,7 +169,7 @@ async function loadProposalData() {
       if (votesRes) {
         votes.value = votesRes.votes;
       }
-      
+
       if (proposal.value.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
         const tallyRes = await store.fetchTally(proposal_id);
         if (tallyRes?.tally) {
