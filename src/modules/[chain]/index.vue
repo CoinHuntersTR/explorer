@@ -138,12 +138,13 @@ const amount = computed({
   <div v-if="isLoading" class="flex justify-center items-center min-h-[200px]">
     <div class="loading-spinner"></div>
   </div>
-  
+
   <div v-else-if="loadError" class="bg-red-100 dark:bg-red-900/30 p-4 rounded-lg mb-4">
     <p class="text-red-600 dark:text-red-400">{{ loadError }}</p>
   </div>
-  
+
   <template v-else>
+    <div>
     <!-- Header Stats -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
       <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-glass p-4 rounded-lg shadow-glass">
@@ -439,7 +440,7 @@ const amount = computed({
       <ArrayObjectElement :value="paramStore.nodeVersion?.items" :thead="false" />      
       <div class="h-4"></div>
     </div>
-  </div>
+    </div>
   </template>
 </div>
 
