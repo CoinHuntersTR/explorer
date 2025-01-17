@@ -32,12 +32,21 @@ const coinInfo = computed(() => {
   return store.coinInfo;
 });
 
-onMounted(() => {
-  store.loadDashboard();
-  walletStore.loadMyAsset();
-  paramStore.handleAbciInfo()
-  // if(!(coinInfo.value && coinInfo.value.name)) {
-  // }
+const isLoading = ref(true);
+const loadError = ref('');
+
+onMounted(async () => {
+  try {
+    isLoading.value = true;
+    await store.loadDashboard();
+    await walletStore.loadMyAsset();
+    await paramStore.handleAbciInfo();
+    isLoading.value = false;
+  } catch (error) {
+    console.error('Dashboard loading error:', error);
+    loadError.value = 'Failed to load dashboard data. Please check your network connection.';
+    isLoading.value = false;
+  }
 });
 const ticker = computed(() => store.coinInfo.tickers[store.tickerIndex]);
 
@@ -126,6 +135,15 @@ const amount = computed({
 
 <template>
   <div class="fade-in">
+  <div v-if="isLoading" class="flex justify-center items-center min-h-[200px]">
+    <div class="loading-spinner"></div>
+  </div>
+  
+  <div v-else-if="loadError" class="bg-red-100 dark:bg-red-900/30 p-4 rounded-lg mb-4">
+    <p class="text-red-600 dark:text-red-400">{{ loadError }}</p>
+  </div>
+  
+  <template v-else>
     <!-- Header Stats -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
       <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-glass p-4 rounded-lg shadow-glass">
@@ -422,7 +440,8 @@ const amount = computed({
       <div class="h-4"></div>
     </div>
   </div>
-</template>
+  </template>
+</div>
 
 <route>
   {
