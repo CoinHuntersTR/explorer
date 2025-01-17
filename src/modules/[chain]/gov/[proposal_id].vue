@@ -75,10 +75,33 @@
           class="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
         />
         <div v-if="votes.length" class="space-y-2">
-          <div v-for="vote in filteredVotes" :key="vote.voter" 
+          <div v-for="vote in sortedFilteredVotes" :key="vote.voter" 
             class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-900 rounded">
-            <span>{{ vote.voter }}</span>
-            <span>{{ vote.option }}</span>
+            <div class="flex flex-col">
+              <span class="font-medium">{{ getValidatorName(vote.voter) }}</span>
+              <span class="text-sm text-gray-500">{{ vote.voter }}</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <span :class="getVoteStatusClass(vote.option)">{{ formatVoteOption(vote.option) }}</span>
+              <span class="text-sm">{{ formatVotingPower(vote.voting_power) }}</span>
+            </div>
+          </div>
+          <div class="mt-4">
+            <nav class="flex items-center justify-between">
+              <button 
+                class="px-4 py-2 text-sm rounded bg-primary text-white disabled:opacity-50"
+                :disabled="currentPage === 1"
+                @click="currentPage--">
+                Previous
+              </button>
+              <span class="text-sm">Page {{ currentPage }} of {{ totalPages }}</span>
+              <button 
+                class="px-4 py-2 text-sm rounded bg-primary text-white disabled:opacity-50"
+                :disabled="currentPage >= totalPages"
+                @click="currentPage++">
+                Next
+              </button>
+            </nav>
           </div>
         </div>
       </div>
@@ -132,13 +155,20 @@ const tallies = computed(() => {
   };
 });
 
+const formatNumber = (num: number) => {
+  return new Intl.NumberFormat('en-US', {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2
+  }).format(num);
+};
+
 const turnoutPercent = computed(() => {
-  if (!proposal.value.final_tally_result) return 0;
+  if (!proposal.value.final_tally_result) return '0.00%';
   const total = Number(proposal.value.final_tally_result.yes) +
                 Number(proposal.value.final_tally_result.no) +
                 Number(proposal.value.final_tally_result.abstain) +
                 Number(proposal.value.final_tally_result.no_with_veto);
-  return total; // Corrected to return the raw total
+  return `${formatNumber((total / 1e18) * 100)}%`;
 });
 
 const status = computed(() => {
@@ -156,13 +186,50 @@ const color = computed(() => {
   }
 });
 
+const currentPage = ref(1);
+const itemsPerPage = 10;
+
 const filteredVotes = computed(() => {
   return votes.value.filter(vote => {
     const matchesSearch = vote.voter.toLowerCase().includes(searchQuery.value.toLowerCase());
-    const matchesType = selectedVoteType.value === vote.option;
+    const matchesType = selectedVoteType.value === formatVoteOption(vote.option);
     return matchesSearch && matchesType;
   });
 });
+
+const sortedFilteredVotes = computed(() => {
+  const sorted = [...filteredVotes.value].sort((a, b) => Number(b.voting_power) - Number(a.voting_power));
+  const start = (currentPage.value - 1) * itemsPerPage;
+  return sorted.slice(start, start + itemsPerPage);
+});
+
+const totalPages = computed(() => Math.ceil(filteredVotes.value.length / itemsPerPage));
+
+const formatVoteOption = (option: string) => {
+  return option.replace('VOTE_OPTION_', '').split('_').map(word => 
+    word.charAt(0) + word.slice(1).toLowerCase()
+  ).join(' ');
+};
+
+const formatVotingPower = (power: string) => {
+  return `${formatNumber(Number(power) / 1e18)} voting power`;
+};
+
+const getVoteStatusClass = (option: string) => {
+  const baseClasses = 'px-3 py-1 rounded-full text-sm';
+  switch(option) {
+    case 'VOTE_OPTION_YES': return `${baseClasses} bg-green-100 text-green-800`;
+    case 'VOTE_OPTION_NO': return `${baseClasses} bg-red-100 text-red-800`;
+    case 'VOTE_OPTION_ABSTAIN': return `${baseClasses} bg-gray-100 text-gray-800`;
+    case 'VOTE_OPTION_NO_WITH_VETO': return `${baseClasses} bg-yellow-100 text-yellow-800`;
+    default: return baseClasses;
+  }
+};
+
+const getValidatorName = (address: string) => {
+  // You can implement validator name lookup here if available
+  return address.slice(0, 12) + '...' + address.slice(-8);
+};
 
 async function loadProposalData() {
   try {
