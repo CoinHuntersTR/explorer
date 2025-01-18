@@ -1,4 +1,3 @@
-
 <template>
   <div class="bg-base-100 dark:bg-base-200 rounded-xl shadow-lg backdrop-blur-lg p-6">
     <div class="flex justify-between items-center mb-6">
@@ -54,19 +53,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { Icon } from '@iconify/vue';
-import { useFormatter, useBlockchain, useBaseStore } from '@/stores';
+import { useFormatter, useBlockchain } from '@/stores';
 import type { Block } from '@/types';
 
 const props = defineProps(['chain']);
 const blockchain = useBlockchain();
-const baseStore = useBaseStore();
 const format = useFormatter();
 const blocks = ref<Block[]>([]);
 const loading = ref(true);
 const error = ref('');
-let timer: NodeJS.Timer | null = null;
+let timer: NodeJS.Timeout | null = null;
 
 const formatHash = (hash: string) => {
   if (!hash) return '';
@@ -82,26 +80,21 @@ const fetchBlocks = async () => {
   try {
     loading.value = true;
     error.value = '';
-    
-    // Fetch latest block
     const latestBlock = await blockchain.rpc.getBaseBlockLatest();
+
     if (!latestBlock || !latestBlock.block) {
       throw new Error('Failed to fetch latest block');
     }
-    
+
     const latestHeight = parseInt(latestBlock.block.header.height);
-    const promises: Promise<Block>[] = [];
-    
-    // Fetch last 10 blocks
-    for (let i = 0; i < 10; i++) {
+    const fetchPromises = [];
+
+    for (let i = 0; i < 10 && (latestHeight - i) > 0; i++) {
       const height = latestHeight - i;
-      if (height > 0) {
-        promises.push(blockchain.rpc.getBaseBlockAt(height.toString()));
-      }
+      fetchPromises.push(blockchain.rpc.getBaseBlockAt(height.toString()));
     }
-    
-    const fetchedBlocks = await Promise.all(promises);
-    blocks.value = fetchedBlocks.filter(block => block && block.block);
+
+    blocks.value = (await Promise.all(fetchPromises)).filter(block => block && block.block);
   } catch (err: any) {
     error.value = err.message || 'Failed to fetch blocks';
     console.error('Error fetching blocks:', err);
@@ -110,16 +103,8 @@ const fetchBlocks = async () => {
   }
 };
 
-watch(() => props.chain, () => {
-  if (timer) {
-    clearInterval(timer);
-  }
+onMounted(() => {
   fetchBlocks();
-  timer = setInterval(fetchBlocks, 6000);
-}, { immediate: true });
-
-onMounted(async () => {
-  await fetchBlocks();
   timer = setInterval(fetchBlocks, 6000);
 });
 
