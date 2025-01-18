@@ -10,6 +10,7 @@ import {
   useWalletStore,
   useStakingStore,
   useParamStore,
+  useGovStore
 } from '@/stores';
 import { onMounted, ref } from 'vue';
 import { useIndexModule, colorMap } from './indexStore';
@@ -19,6 +20,8 @@ import LatestBlocks from '@/components/LatestBlocks.vue'; // Imported LatestBloc
 import CardStatisticsVertical from '@/components/CardStatisticsVertical.vue';
 import ProposalListItem from '@/components/ProposalListItem.vue';
 import ArrayObjectElement from '@/components/dynamic/ArrayObjectElement.vue'
+import { useRouter } from 'vue-router'
+import ProposalProcess from '@/components/ProposalProcess.vue'
 
 const props = defineProps(['chain']);
 
@@ -29,16 +32,17 @@ const format = useFormatter();
 const dialog = useTxDialog();
 const stakingStore = useStakingStore();
 const paramStore = useParamStore()
+const govStore = useGovStore()
+const router = useRouter()
 const coinInfo = computed(() => {
   return store.coinInfo;
 });
 
-onMounted(() => {
+onMounted(async () => {
   store.loadDashboard();
   walletStore.loadMyAsset();
   paramStore.handleAbciInfo()
-  // if(!(coinInfo.value && coinInfo.value.name)) {
-  // }
+  activeProposals.value = await govStore.fetchProposals('2') // Fetch voting period proposals
 });
 const ticker = computed(() => store.coinInfo.tickers[store.tickerIndex]);
 
@@ -122,6 +126,8 @@ const amount = computed({
     quantity.value = val / ticker.value.converted_last.usd || 0
   }
 })
+
+const activeProposals = ref()
 
 </script>
 
@@ -263,15 +269,27 @@ const amount = computed({
       </div>
     </div>
 
-    <div v-if="blockchain.supportModule('governance')" class="bg-base-100 rounded mt-4 shadow">
-      <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main">
-        {{ $t('index.active_proposals') }}
-      </div>
-      <div class="px-4 pb-4">
-        <ProposalListItem :proposals="store?.proposals" />
-      </div>
-      <div class="pb-8 text-center" v-if="store.proposals?.proposals?.length === 0">
-        {{ $t('index.no_active_proposals') }}
+    <!-- Active Proposals Section -->
+    <div v-if="activeProposals?.proposals?.length > 0" class="mb-6">
+      <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main dark:text-white">Active Proposals</div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div v-for="proposal in activeProposals.proposals" :key="proposal.proposal_id" 
+             class="card bg-base-100 hover:shadow-lg transition-all duration-200 cursor-pointer dark:bg-gray-800"
+             @click="router.push(`/${chain}/gov/${proposal.proposal_id}`)">
+          <div class="card-body">
+            <div class="flex justify-between items-start">
+              <div class="badge badge-info">VOTING</div>
+              <h3 class="text-xl font-bold">#{{ proposal.proposal_id }}</h3>
+            </div>
+            <h4 class="text-lg font-medium mt-2 line-clamp-2">{{ proposal.content?.title || proposal.title }}</h4>
+            <div class="mt-4">
+              <ProposalProcess :pool="stakingStore.pool" :tally="proposal.final_tally_result" />
+            </div>
+            <div class="flex justify-between text-sm mt-4">
+              <span class="text-gray-500">Ends: {{ format.toDay(proposal.voting_end_time, 'from') }}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
