@@ -18,13 +18,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-if="loading" class="animate-pulse">
+          <tr v-if="loading && !error" class="animate-pulse">
             <td colspan="5" class="text-center py-4">Loading blocks...</td>
+          </tr>
+          <tr v-else-if="error" class="text-error">
+            <td colspan="5" class="text-center py-4">{{ error }}</td>
           </tr>
           <tr v-else-if="blocks.length === 0">
             <td colspan="5" class="text-center py-4">No blocks found</td>
           </tr>
-          <tr v-for="block in blocks" :key="block.height" class="hover:bg-base-200 dark:hover:bg-base-300 border-b border-base-200 dark:border-base-300">
+          <tr v-for="block in blocks" :key="block.block?.header?.height" class="hover:bg-base-200 dark:hover:bg-base-300 border-b border-base-200 dark:border-base-300">
             <td class="py-3">
               <RouterLink :to="`/${chain}/block/${block.block?.header?.height}`" class="text-primary hover:text-primary-focus">
                 {{ block.block?.header?.height }}
@@ -61,6 +64,7 @@ const baseStore = useBaseStore();
 const format = useFormatter();
 const blocks = ref([]);
 const loading = ref(true);
+const error = ref('');
 let timer: any = null;
 
 const formatHash = (hash: string) => {
@@ -76,10 +80,12 @@ const formatValidator = (address: string) => {
 const fetchBlocks = async () => {
   try {
     loading.value = true;
+    error.value = '';
     await baseStore.fetchLatest();
     blocks.value = baseStore.recents.slice(0, 10);
-  } catch (error) {
-    console.error('Error fetching blocks:', error);
+  } catch (err: any) {
+    error.value = err.message || 'Failed to fetch blocks';
+    console.error('Error fetching blocks:', err);
   } finally {
     loading.value = false;
   }
@@ -91,6 +97,9 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
-  if (timer) clearInterval(timer);
+  if (timer) {
+    clearInterval(timer);
+    timer = null;
+  }
 });
 </script>
