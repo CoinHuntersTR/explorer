@@ -32,21 +32,12 @@ const coinInfo = computed(() => {
   return store.coinInfo;
 });
 
-const isLoading = ref(true);
-const loadError = ref('');
-
-onMounted(async () => {
-  try {
-    isLoading.value = true;
-    await store.loadDashboard();
-    await walletStore.loadMyAsset();
-    await paramStore.handleAbciInfo();
-    isLoading.value = false;
-  } catch (error) {
-    console.error('Dashboard loading error:', error);
-    loadError.value = 'Failed to load dashboard data. Please check your network connection.';
-    isLoading.value = false;
-  }
+onMounted(() => {
+  store.loadDashboard();
+  walletStore.loadMyAsset();
+  paramStore.handleAbciInfo()
+  // if(!(coinInfo.value && coinInfo.value.name)) {
+  // }
 });
 const ticker = computed(() => store.coinInfo.tickers[store.tickerIndex]);
 
@@ -134,40 +125,8 @@ const amount = computed({
 </script>
 
 <template>
-  <div class="fade-in">
-    <div v-if="isLoading" class="flex justify-center items-center min-h-[200px]">
-      <div class="loading-spinner"></div>
-    </div>
-
-    <div v-else-if="loadError" class="bg-red-100 dark:bg-red-900/30 p-4 rounded-lg mb-4">
-      <p class="text-red-600 dark:text-red-400">{{ loadError }}</p>
-    </div>
-
-  <template v-else>
-    <!-- Header Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-      <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-glass p-4 rounded-lg shadow-glass">
-        <div class="text-sm text-gray-600 dark:text-gray-400">Latest Block</div>
-        <div class="text-2xl font-semibold text-dark dark:text-white">{{paramStore.nodeVersion?.height || '...'}}</div>
-        <div class="text-sm text-primary mt-1">~{{blocktime.toFixed(2)}}s per block</div>
-      </div>
-      <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-glass p-4 rounded-lg shadow-glass">
-        <div class="text-sm text-gray-600 dark:text-gray-400">Chain ID</div>
-        <div class="text-2xl font-semibold text-dark dark:text-white truncate">{{currentChainId}}</div>
-      </div>
-      <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-glass p-4 rounded-lg shadow-glass">
-        <div class="text-sm text-gray-600 dark:text-gray-400">API Endpoint</div>
-        <div class="text-2xl font-semibold text-dark dark:text-white truncate">{{blockchain.endpoint?.provider}}</div>
-      </div>
-      <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-glass p-4 rounded-lg shadow-glass">
-        <div class="text-sm text-gray-600 dark:text-gray-400">Block Time</div>
-        <div class="text-2xl font-semibold text-dark dark:text-white pulse-animation">
-          <Countdown :time="blocktime * 1000" :auto-start="true" />
-        </div>
-      </div>
-    </div>
-
-    <div v-if="coinInfo && coinInfo.name" class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-glass rounded-lg shadow-glass mb-4">
+  <div>
+    <div v-if="coinInfo && coinInfo.name" class="bg-base-100 rounded shadow mb-4">
       <div class="grid grid-cols-2 md:grid-cols-3 p-4">
         <div class="col-span-2 md:col-span-1">
           <div class="text-xl font-semibold text-main">
@@ -439,8 +398,7 @@ const amount = computed({
       <ArrayObjectElement :value="paramStore.nodeVersion?.items" :thead="false" />      
       <div class="h-4"></div>
     </div>
-  </template>
-</div>
+  </div>
 </template>
 
 <route>

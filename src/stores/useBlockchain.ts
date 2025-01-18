@@ -146,20 +146,17 @@ export const useBlockchain = defineStore('blockchain', {
       this.randomSetupEndpoint();
     },
     async initial() {
-      try {
-        useWalletStore().$reset();
-        await useStakingStore().init();
-        await Promise.all([
-          useBankStore().initial(),
-          useBaseStore().initial(),
-          useGovStore().initial(),
-          useMintStore().initial(),
-          useBlockModule().initial()
-        ]);
-      } catch (error) {
-        console.error('Blockchain initialization error:', error);
-        throw new Error('Failed to initialize blockchain data');
-      }
+      // this.current?.themeColor {
+      //     const { global } = useTheme();
+      //     global.current
+      // }
+      useWalletStore().$reset();
+      await useStakingStore().init();
+      useBankStore().initial();
+      useBaseStore().initial();
+      useGovStore().initial();
+      useMintStore().initial();
+      useBlockModule().initial();
     },
 
     randomEndpoint(chainName: string) : Endpoint | undefined {
