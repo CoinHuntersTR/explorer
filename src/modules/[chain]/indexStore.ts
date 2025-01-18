@@ -141,13 +141,31 @@ export const useIndexModule = defineStore('module-index', {
       return gov.proposals['2']
     },
 
-    stats() {
+    height() {
       const base = useBaseStore();
+      return String(base?.latest?.block?.header?.height || 0);
+    },
+    validatorCount() {
+      const base = useBaseStore();
+      return String(base?.latest?.block?.last_commit?.signatures.length || 0);
+    },
+    supply() {
       const bank = useBankStore();
+      return bank.supply;
+    },
+    bondedTokens() {
       const staking = useStakingStore();
+      return {
+        amount: String(staking.pool?.bonded_tokens || 0),
+        denom: staking.params.bond_denom,
+      };
+    },
+    inflation() {
       const mintStore = useMintStore();
+      return mintStore.inflation;
+    },
+    stats() {
       const formatter = useFormatter();
-
       return [
         {
           title: 'Height',
@@ -214,7 +232,10 @@ export const useIndexModule = defineStore('module-index', {
     async loadDashboard() {
       this.$reset();
       this.initCoingecko();
-      useMintStore().fetchInflation();
+      await useMintStore().fetchInflation();
+      await useStakingStore().fetchPool();
+      await useBankStore().fetchSupply();
+      await useBaseStore().fetchLatest();
       useDistributionStore()
         .fetchCommunityPool()
         .then((x) => {
