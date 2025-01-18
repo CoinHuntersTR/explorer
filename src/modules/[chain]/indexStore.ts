@@ -206,8 +206,8 @@ export const useIndexModule = defineStore('module-index', {
         {
           title: 'Inflation',
           color: 'success',
-          icon: 'mdi-chart-multiple',
-          stats: `%${(Number(mintStore.inflation) * 100).toFixed(1)}`,
+          icon: 'mdi-chart-multiple', 
+          stats: `%${(Number(mintStore.inflation || 0) * 100).toFixed(2)}`,
           change: 0,
         },
         {
@@ -215,7 +215,7 @@ export const useIndexModule = defineStore('module-index', {
           color: 'primary',
           icon: 'mdi-bank',
           stats: this.communityPool?.length > 0 ? formatter.formatTokenAmount({
-            amount: String(parseInt(this.communityPool[0].amount)),
+            amount: String(Math.floor(Number(this.communityPool[0].amount))),
             denom: this.communityPool[0].denom,
           }) : '-',
           change: 0,
