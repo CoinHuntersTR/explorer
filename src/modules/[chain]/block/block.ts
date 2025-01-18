@@ -1,3 +1,4 @@
+
 import { defineStore } from 'pinia';
 import { decodeTxRaw, type DecodedTxRaw } from '@cosmjs/proto-signing';
 import { useBlockchain } from '@/stores';
@@ -10,6 +11,8 @@ export const useBlockModule = defineStore('blockModule', {
       latest: {} as Block,
       current: {} as Block,
       recents: [] as Block[],
+      isLoading: false,
+      error: null as string | null,
     };
   },
   getters: {
@@ -18,10 +21,14 @@ export const useBlockModule = defineStore('blockModule', {
     },
     blocktime() {
       if (this.recents.length < 2) return 6000;
-      return 6000; // todo later
+      const latest = this.recents[0];
+      const oldest = this.recents[this.recents.length - 1];
+      if (!latest?.block?.header?.time || !oldest?.block?.header?.time) return 6000;
+      const diff = new Date(latest.block.header.time).getTime() - new Date(oldest.block.header.time).getTime();
+      return Math.floor(diff / this.recents.length);
     },
     txsInRecents() {
-      const txs = [] as { hash: string; tx: DecodedTxRaw }[];
+      const txs = [] as { hash: string; tx: DecodedTxRaw; height?: string }[];
       this.recents.forEach((x) =>
         x.block?.data?.txs.forEach((tx: Uint8Array) => {
           if (tx) {
@@ -29,6 +36,7 @@ export const useBlockModule = defineStore('blockModule', {
               txs.push({
                 hash: hashTx(tx),
                 tx: decodeTxRaw(tx),
+                height: x.block?.header?.height
               });
             } catch (e) {}
           }
@@ -38,31 +46,55 @@ export const useBlockModule = defineStore('blockModule', {
     },
   },
   actions: {
-    initial() {
+    async initial() {
       this.clearRecentBlocks();
-      this.autoFetch();
+      await this.autoFetch();
     },
-    async clearRecentBlocks() {
+    clearRecentBlocks() {
       this.recents = [];
+      this.error = null;
     },
-    autoFetch() {
-      this.fetchLatest().then((x) => {
-        const timer = this.autoFetch;
-        this.latest = x;
-        // if(this.recents.length >= 50) this.recents.pop()
-        // this.recents.push(x)
-        // setTimeout(timer, 6000)
-      });
+    async autoFetch() {
+      try {
+        const block = await this.fetchLatest();
+        this.latest = block;
+        setTimeout(() => this.autoFetch(), 6000);
+      } catch (e) {
+        console.error('Failed to fetch latest block:', e);
+        setTimeout(() => this.autoFetch(), 6000);
+      }
     },
     async fetchLatest() {
-      this.latest = await this.blockchain.rpc?.getBaseBlockLatest();
-      if (this.recents.length >= 50) this.recents.shift();
-      this.recents.push(this.latest);
-      return this.latest;
+      this.isLoading = true;
+      try {
+        const latest = await this.blockchain.rpc?.getBaseBlockLatest();
+        if (!latest) throw new Error('Failed to fetch latest block');
+        
+        if (this.recents.length >= 50) this.recents.shift();
+        this.recents.push(latest);
+        
+        return latest;
+      } catch (e: any) {
+        this.error = e.message;
+        throw e;
+      } finally {
+        this.isLoading = false;
+      }
     },
     async fetchBlock(height: string) {
-      this.current = await this.blockchain.rpc?.getBaseBlockAt(height);
-      return this.current;
+      this.isLoading = true;
+      try {
+        const block = await this.blockchain.rpc?.getBaseBlockAt(height);
+        if (!block) throw new Error('Failed to fetch block');
+        
+        this.current = block;
+        return block;
+      } catch (e: any) {
+        this.error = e.message;
+        throw e;
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
 });
