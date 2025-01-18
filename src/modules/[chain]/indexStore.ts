@@ -207,7 +207,7 @@ export const useIndexModule = defineStore('module-index', {
           title: 'Inflation',
           color: 'success',
           icon: 'mdi-chart-multiple', 
-          stats: `%${(Number(mintStore.inflation || 0) * 100).toFixed(2)}`,
+          stats: `${(Number(mintStore.inflation || 0) * 100).toFixed(1)}%`,
           change: 0,
         },
         {
