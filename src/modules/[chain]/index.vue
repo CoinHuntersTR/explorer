@@ -14,6 +14,7 @@ import {
 import { onMounted, ref } from 'vue';
 import { useIndexModule, colorMap } from './indexStore';
 import { computed } from '@vue/reactivity';
+import LatestBlocks from '@/components/LatestBlocks.vue'; // Imported LatestBlocks component
 
 import CardStatisticsVertical from '@/components/CardStatisticsVertical.vue';
 import ProposalListItem from '@/components/ProposalListItem.vue';
@@ -383,11 +384,8 @@ const amount = computed({
     </div>
 
     <div class="bg-base-100 rounded mt-4">
-      <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main">
-        {{ $t('index.app_versions') }}
-      </div>
-      <!-- Application Version -->
-      <ArrayObjectElement :value="paramStore.appVersion?.items" :thead="false" />
+      <!-- Latest Blocks -->
+      <LatestBlocks :chain="$route.params.chain" />
       <div class="h-4"></div>
     </div>
 
