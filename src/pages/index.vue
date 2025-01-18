@@ -6,6 +6,8 @@ import {
   type ChainConfig,
 } from '@/stores/useDashboard';
 import ChainSummary from '@/components/ChainSummary.vue';
+import CardStatisticsVertical from '@/components/CardStatisticsVertical.vue';
+import LatestBlocks from '@/components/LatestBlocks.vue';
 import { computed, ref } from 'vue';
 import { useBlockchain } from '@/stores';
 

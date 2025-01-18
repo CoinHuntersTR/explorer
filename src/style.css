@@ -20,6 +20,34 @@ body {
 
 .dark body {
   background: var(--bg-gradient-dark);
+  color: #e2e8f0;
+}
+
+.dark .bg-base-100 {
+  background-color: rgba(42, 51, 76, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .card {
+  background: rgba(42, 51, 76, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .stats-card {
+  background: rgba(42, 51, 76, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .text-gray-500 {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.dark .text-gray-600 {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.dark .text-gray-700 {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .stats-card {
