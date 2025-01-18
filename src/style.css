@@ -16,39 +16,15 @@
 .dark .block-card,
 .dark .stats-card,
 .dark .card {
-  background: rgba(30, 41, 59, 0.95);
+  background: rgba(30, 41, 59, 0.8);
   border-color: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-}
-
-.dark .bg-gray-100 {
-  background-color: rgba(30, 41, 59, 0.6) !important;
-}
-
-.dark .stats-card {
-  background: rgba(42, 51, 76, 0.95);
-}
-
-.dark .card-title {
-  color: rgba(255, 255, 255, 0.95);
-}
-
-.dark .text-main {
-  color: rgba(255, 255, 255, 0.95) !important;
 }
 
 .dark .text-gray-600,
 .dark .text-gray-700,
-.dark .text-gray-800,
-.dark .text-main,
-.dark .font-semibold {
+.dark .text-gray-800 {
   color: rgba(255, 255, 255, 0.9);
-}
-
-.dark .text-lg,
-.dark .card-title {
-  color: rgba(255, 255, 255, 0.95);
 }
 
 .dark .bg-base-100 {
@@ -77,14 +53,9 @@
   --bg-gradient: linear-gradient(135deg, #f6f8fd 0%, #f1f4f9 100%);
   --bg-gradient-dark: linear-gradient(145deg, #1a1f2c 0%, #2a2f3f 100%);
   --text-main: #2d3748;
-  --text-main-dark: #e2e8f0;
   --card-bg: rgba(255, 255, 255, 0.8);
   --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   --border-radius: 12px;
-}
-
-.dark {
-  --text-main: var(--text-main-dark);
 }
 
 body {
@@ -102,29 +73,10 @@ body {
 
 .block-card {
   @apply bg-base-100/95 backdrop-blur border border-base-200 hover:shadow-lg hover:scale-[1.02] transition-all duration-200;
-  min-height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1rem;
-  border-radius: 1rem;
-  margin-bottom: 0.5rem;
 }
 
 .dark .block-card {
   @apply border-base-300/10 hover:shadow-primary/5;
-  background: rgba(30, 41, 59, 0.95);
-}
-
-.block-card .text-primary {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.block-card .text-gray-600 {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
 }
 
 .tabs-container {
