@@ -46,7 +46,19 @@ const chainStore = useBlockchain();
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto px-4 py-8">
+  <div class="max-w-7xl mx-auto px-4 py-8 fade-enter-active">
+  <div class="grid-layout">
+    <CardStatisticsVertical
+      v-for="stat in dashboard.stats"
+      :key="stat.title"
+      :title="stat.title"
+      :color="stat.color"
+      :icon="stat.icon"
+      :stats="stat.stats"
+      :change="stat.change"
+      :block-time="stat.title === 'Height' ? baseStore.blocktime / 1000 : undefined"
+    />
+  </div>
     <div class="text-center space-y-4 mb-12">
       <img src="https://coinhunterstr.com/wp-content/uploads/2022/12/CH_logo.webp" alt="CoinHunters Logo" class="mx-auto h-24 mb-4"/>
     </div>
