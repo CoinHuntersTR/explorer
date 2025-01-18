@@ -277,7 +277,7 @@ const activeProposals = ref()
                 </div>
                 <span class="text-sm text-gray-600 dark:text-gray-300">Height</span>
               </div>
-              <div class="text-xl font-semibold">{{ store.stats[0]?.value }}</div>
+              <div class="text-xl font-semibold">{{ store.height || '-' }}</div>
             </div>
 
             <!-- Validators -->
@@ -288,7 +288,7 @@ const activeProposals = ref()
                 </div>
                 <span class="text-sm text-gray-600 dark:text-gray-300">Validators</span>
               </div>
-              <div class="text-xl font-semibold">{{ store.stats[1]?.value }}</div>
+              <div class="text-xl font-semibold">{{ store.validatorCount || '-' }}</div>
             </div>
 
             <!-- Supply -->
@@ -299,7 +299,7 @@ const activeProposals = ref()
                 </div>
                 <span class="text-sm text-gray-600 dark:text-gray-300">Supply</span>
               </div>
-              <div class="text-xl font-semibold">{{ store.stats[2]?.value || '-' }}</div>
+              <div class="text-xl font-semibold">{{ format.formatToken(store.supply) || '-' }}</div>
             </div>
 
             <!-- Bonded Tokens -->
@@ -310,7 +310,7 @@ const activeProposals = ref()
                 </div>
                 <span class="text-sm text-gray-600 dark:text-gray-300">Bonded Tokens</span>
               </div>
-              <div class="text-xl font-semibold">{{ store.stats[3]?.value || '-' }}</div>
+              <div class="text-xl font-semibold">{{ format.formatToken(store.bondedTokens) || '-' }}</div>
             </div>
 
             <!-- Inflation -->
@@ -321,7 +321,7 @@ const activeProposals = ref()
                 </div>
                 <span class="text-sm text-gray-600 dark:text-gray-300">Inflation</span>
               </div>
-              <div class="text-xl font-semibold">{{ store.stats[4]?.value }}</div>
+              <div class="text-xl font-semibold">{{ store.inflation || '-' }}</div>
             </div>
 
             <!-- Community Pool -->
@@ -332,7 +332,7 @@ const activeProposals = ref()
                 </div>
                 <span class="text-sm text-gray-600 dark:text-gray-300">Community Pool</span>
               </div>
-              <div class="text-xl font-semibold">{{ store.stats[5]?.value }}</div>
+              <div class="text-xl font-semibold">{{ format.formatTokens(store.communityPool) || '-' }}</div>
             </div>
           </div>
         </div>
