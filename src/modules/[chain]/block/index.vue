@@ -10,6 +10,7 @@ const format = useFormatter();
 
 onMounted(async () => {
   blockStore.clearRecentBlocks();
+  await blockStore.initial();
   await blockStore.fetchLatest();
   await blockStore.startAutoFetch();
 });

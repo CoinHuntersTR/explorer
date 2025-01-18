@@ -80,8 +80,10 @@ export const useBlockModule = defineStore('blockModule', {
         
         this.latest = latest;
         if (!this.recents.find(b => b.block?.header?.height === latest.block?.header?.height)) {
-          if (this.recents.length >= 50) this.recents.shift();
-          this.recents.push(latest);
+          this.recents = [latest, ...this.recents];
+          if (this.recents.length > 50) {
+            this.recents = this.recents.slice(0, 50);
+          }
         }
         
         this.isLoading = false;
