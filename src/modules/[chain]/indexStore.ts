@@ -141,12 +141,35 @@ export const useIndexModule = defineStore('module-index', {
       return gov.proposals['2']
     },
 
-    stats() {
+    height() {
       const base = useBaseStore();
+      return String(base?.latest?.block?.header?.height || 0);
+    },
+    validatorCount() {
+      const base = useBaseStore();
+      return String(base?.latest?.block?.last_commit?.signatures.length || 0);
+    },
+    supply() {
       const bank = useBankStore();
+      return bank.supply;
+    },
+    bondedTokens() {
+      const staking = useStakingStore();
+      return {
+        amount: String(staking.pool?.bonded_tokens || 0),
+        denom: staking.params.bond_denom,
+      };
+    },
+    inflation() {
+      const mintStore = useMintStore();
+      return mintStore.inflation;
+    },
+    stats() {
+      const formatter = useFormatter();
       const staking = useStakingStore();
       const mintStore = useMintStore();
-      const formatter = useFormatter();
+      const base = useBaseStore();
+      const bank = useBankStore();
 
       return [
         {
@@ -175,8 +198,7 @@ export const useIndexModule = defineStore('module-index', {
           color: 'warning',
           icon: 'mdi-lock',
           stats: formatter.formatTokenAmount({
-            // @ts-ignore
-            amount: this.pool.bonded_tokens,
+            amount: String(this.pool?.bonded_tokens || 0),
             denom: staking.params.bond_denom,
           }),
           change: 0,
@@ -184,20 +206,18 @@ export const useIndexModule = defineStore('module-index', {
         {
           title: 'Inflation',
           color: 'success',
-          icon: 'mdi-chart-multiple',
-          stats: formatter.formatDecimalToPercent(mintStore.inflation),
+          icon: 'mdi-chart-multiple', 
+          stats: `${(Number(mintStore.inflation || 0) * 100).toFixed(1)}%`,
           change: 0,
         },
         {
           title: 'Community Pool',
           color: 'primary',
           icon: 'mdi-bank',
-          stats: formatter.formatTokens(
-            // @ts-ignore
-            this.communityPool?.filter(
-              (x: Coin) => x.denom === staking.params.bond_denom
-            )
-          ),
+          stats: this.communityPool?.length > 0 ? formatter.formatTokenAmount({
+            amount: String(Math.floor(Number(this.communityPool[0].amount))),
+            denom: this.communityPool[0].denom,
+          }) : '-',
           change: 0,
         },
       ];
@@ -214,7 +234,10 @@ export const useIndexModule = defineStore('module-index', {
     async loadDashboard() {
       this.$reset();
       this.initCoingecko();
-      useMintStore().fetchInflation();
+      await useMintStore().fetchInflation();
+      await useStakingStore().fetchPool();
+      await useBankStore().fetchSupply();
+      await useBaseStore().fetchLatest();
       useDistributionStore()
         .fetchCommunityPool()
         .then((x) => {

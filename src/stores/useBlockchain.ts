@@ -89,8 +89,9 @@ export const useBlockchain = defineStore('blockchain', {
               .filter(
                 (x) =>
                   !this.current?.features ||
-                  this.current.features.includes(String(x.meta.i18n))
-              ) // filter none-custom module
+                  this.current.features.includes(String(x.meta.i18n)) ||
+                  String(x.meta.i18n) === 'governance'
+              ) // filter none-custom module and always show governance
               .map((x) => ({
                 title: `module.${x.meta.i18n}`,
                 to: { path: x.path.replace(':chain', this.chainName) },
@@ -107,6 +108,7 @@ export const useBlockchain = defineStore('blockchain', {
       Object.keys(this.dashboard.favoriteMap).forEach((name) => {
         const ch = this.dashboard.chains[name];
         if (ch && this.dashboard.favoriteMap?.[name]) {
+  ch.features = [...(ch.features || []), 'governance'];
           favNavItems.push({
             title: ch.prettyName || ch.chainName || name,
             to: { path: `/${ch.chainName || name}` },
@@ -139,6 +141,10 @@ export const useBlockchain = defineStore('blockchain', {
     },
   },
   actions: {
+    switchChain(chainName: string) {
+      this.chainName = chainName;
+      this.randomSetupEndpoint();
+    },
     async initial() {
       // this.current?.themeColor {
       //     const { global } = useTheme();

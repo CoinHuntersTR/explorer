@@ -1,99 +1,51 @@
-<script setup lang="ts">
-import { useBlockchain, useBaseStore, type Endpoint } from '@/stores';
-import { useRouter } from 'vue-router';
-const chainStore = useBlockchain();
-const baseStore = useBaseStore();
-chainStore.initial();
-const router = useRouter();
-function changeEndpoint(item: Endpoint) {
-  chainStore.setRestEndpoint(item);
-  if (chainStore.current) router.push(`/${chainStore.current.chainName}`);
-}
-</script>
 
 <template>
-  <div class="dropdown">
-    <label tabindex="0" class="flex items-center">
-      <div class="p-1 relative mr-3 cursor-pointer">
-        <img v-lazy="chainStore.logo" class="w-9 h-9 rounded-full" />
-        <div
-          class="w-2 h-2 rounded-full absolute right-0 bottom-0 shadow" :class="{
-            'bg-success': baseStore.connected,
-            'bg-error': !baseStore.connected
-          }"
-        ></div>
-      </div>
-      <div class="flex-1 w-0">
-        <div
-          :key="
-            baseStore.latest?.block?.header?.height ||
-            chainStore.chainName ||
-            ''
-          "
-          class="capitalize whitespace-nowrap text-base font-semibold text-gray-600 dark:text-gray-200 hidden md:!block"
-        >
-          {{ 
-            baseStore.latest?.block?.header?.height
-              ? `#${baseStore.latest.block.header.height}`
-              : chainStore.chainName  || '' 
-          }} <span class="text-error">{{ baseStore.connected ? '' : 'disconnected' }}</span>
-        </div>
-        <div
-          class="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap hidden md:!block"
-        >
-          {{ chainStore.connErr || chainStore.endpoint.address }}
-        </div>
-      </div>
-    </label>
-    <div
-      tabindex="0"
-      class="dropdown-content -left-6 w-80 menu shadow bg-base-200 rounded-box overflow-auto"
-    >
-      <!-- rest -->
-      <div
-        class="px-4 py-2 text-sm text-gray-400"
-        v-if="chainStore.current?.endpoints?.rest"
-      >
-        Rest Endpoint
-      </div>
-      <div
-        v-for="(item, index) in chainStore.current?.endpoints?.rest"
-        class="px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-[#384059] cursor-pointer"
-        :key="index"
-        @click="changeEndpoint(item)"
-      >
-        <div class="flex flex-col">
-          <div class="flex items-center justify-between w-full">
-            <div class="text-gray-500 dark:text-gray-200 capitalize">
-              {{ item.provider }}
-            </div>
-            <span
-              v-if="item.address === chainStore.endpoint?.address"
-              class="bg-yes inline-block h-2 w-2 rounded-full"
-            />
-          </div>
-          <div class="text-gray-400 text-xs whitespace-nowrap">
-            {{ item.address }}
+  <div v-if="blockchain.chainName" class="flex items-center space-x-6 relative">
+    <div class="flex items-center space-x-2 group cursor-pointer">
+      <img :src="blockchain.logo" class="h-6 w-6 rounded-full" :alt="blockchain.chainName"/>
+      <span class="font-medium">{{ blockchain.current?.prettyName || blockchain.chainName }}</span>
+      
+      <!-- Dropdown Card -->
+      <div class="absolute hidden group-hover:block top-full left-0 mt-2 bg-base-100 shadow-lg rounded-lg p-4 z-50 border border-gray-100 dark:border-gray-700">
+        <div class="text-sm">
+          <div class="mb-2">
+            <span class="font-medium text-gray-700 dark:text-gray-200">Endpoint:</span>
+            <a :href="blockchain.endpoint?.address" target="_blank" class="ml-2 text-primary hover:underline">
+              {{ blockchain.endpoint?.address }}
+            </a>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300">
+      <div class="flex items-center">
+        <span class="mr-1">Height:</span>
+        <span class="font-medium">{{ baseStore.latest?.block?.header?.height || '-' }}</span>
       </div>
 
-      <!-- rest -->
-      <div class="px-4 py-2 text-sm text-gray-400">Information</div>
-      <div class="w-full">
-        <div class="py-2 px-4">
-          Chain Id: {{ baseStore.latest.block?.header.chain_id && baseStore.connected
-                        ? baseStore.latest.block.header.chain_id
-                        : 'N/A' }}
-        </div>
-        <div class="py-2 px-4">
-          Height: {{ baseStore.latest.block?.header.height && baseStore.connected
-                      ? baseStore.latest.block.header.height
-                      : '0' }}
-        </div>
+      <div class="flex items-center">
+        <span class="mr-1">Chain ID:</span>
+        <span class="font-medium">{{ baseStore.latest?.block?.header?.chain_id || '-' }}</span>
       </div>
-      <!-- bottom-->
-      <div class="px-4 py-2">&nbsp;</div>
+
+      <div class="flex items-center">
+        <span class="mr-1">Provider:</span>
+        <span class="font-medium flex items-center">
+          {{ blockchain.endpoint?.provider || '-' }}
+          <span v-if="blockchain.endpoint?.provider" class="ml-1 w-2 h-2 rounded-full bg-success"></span>
+        </span>
+      </div>
+
+      
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { useBlockchain } from '@/stores/useBlockchain';
+import { useBaseStore } from '@/stores/useBaseStore';
+
+const blockchain = useBlockchain();
+const baseStore = useBaseStore();
+</script>

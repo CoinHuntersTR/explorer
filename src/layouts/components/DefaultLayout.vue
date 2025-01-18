@@ -42,6 +42,16 @@ const changeOpen = (index: Number) => {
   }
 };
 const showDiscord = window.location.host.search('ping.pub') > -1;
+const searchNetwork = ref('');
+
+const filteredNetworks = computed(() => {
+  if (!searchNetwork.value) return Object.values(dashboard.chains);
+  const search = searchNetwork.value.toLowerCase();
+  return Object.values(dashboard.chains).filter(chain => 
+    chain.prettyName?.toLowerCase().includes(search) || 
+    chain.chainName.toLowerCase().includes(search)
+  );
+});
 
 function isNavGroup(nav: VerticalNavItems | any): nav is NavGroup {
    return (<NavGroup>nav).children !== undefined;
@@ -62,16 +72,10 @@ function selected(route: any, nav: NavLink) {
   <div class="bg-gray-100 dark:bg-[#171d30]">
     <!-- sidebar -->
     <div
-      class="w-64 fixed z-50 left-0 top-0 bottom-0 overflow-auto bg-base-100 border-r border-gray-100 dark:border-gray-700"
+      class="w-64 fixed z-50 left-0 top-[64px] bottom-0 overflow-auto bg-base-100 border-r border-gray-100/10 dark:border-gray-700/50 backdrop-blur-xl"
       :class="{ block: sidebarShow, 'hidden xl:!block': !sidebarShow }"
     >
-      <div class="flex justify-between mt-1 pl-4 py-4 mb-1">
-        <RouterLink to="/" class="flex items-center">
-          <img class="w-10 h-10" src="../../assets/logo.svg" />
-          <h1 class="flex-1 ml-3 text-2xl font-semibold dark:text-white">
-            CoinHunters
-          </h1>
-        </RouterLink>
+      <div class="flex justify-between pl-4 py-4">
         <div
           class="pr-4 cursor-pointer xl:!hidden"
           @click="sidebarShow = false"
@@ -210,165 +214,41 @@ function selected(route: any, nav: NavLink) {
           {{ item?.heading }}
         </div>
       </div>
-      <div class="px-2">
-        <div class="px-4 text-sm pt-2 text-gray-400 pb-2 uppercase">
-          {{ $t('module.sponsors') }}
-        </div>
-        <a
-          href="https://dymension.xyz/"
-          target="_blank"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <img
-            src="https://pbs.twimg.com/profile_images/1663159896701820928/by0GLREA_400x400.jpg"
-            class="w-6 h-6 rounded-full mr-3"
-          />
-          <div
-            class="text-sm capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            Dymension
-          </div>
-        </a>
-            <a
-          href="https://lavanet.xyz/"
-          target="_blank"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <img
-            src="https://pbs.twimg.com/profile_images/1628433459977850882/l4oqDz8R_400x400.jpg"
-            class="w-6 h-6 rounded-full mr-3"
-          />
-          <div
-            class="text-sm capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            Lava Network
-          </div>
-        </a>
-        <a
-          href="https://crossfi.org/"
-          target="_blank"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <img
-            src="https://pbs.twimg.com/profile_images/1719733805483790336/9rtdiMS-_400x400.jpg"
-            class="w-6 h-6 rounded-full mr-3"
-          />
-          <div
-            class="text-sm capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            CrossFi
-          </div>
-        </a>
-        <a
-          href="https://www.plumenetwork.xyz/"
-          target="_blank"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <img
-            src="https://pbs.twimg.com/profile_images/1854933222569975808/no3lt9ZL_400x400.jpg"
-            class="w-6 h-6 rounded-full mr-3"
-          />
-          <div
-            class="text-sm capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            Plume Network
-          </div>
-        </a>
 
-          <div class="px-4 text-sm pt-2 text-gray-400 pb-2 uppercase">
-            Tools
-          </div>
-          <RouterLink to="/wallet/suggest"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-          >
-            <Icon icon="mdi:frequently-asked-questions" class="text-xl mr-2" />
-            <div
-              class="text-base capitalize flex-1 text-gray-600 dark:text-gray-200"
-            >
-              Wallet Helper
-            </div>
-          </RouterLink>
-
-        <div class="px-4 text-sm pt-2 text-gray-400 pb-2 uppercase">{{ $t('module.links') }}</div>
-        <a
-          href="https://coinhunterstr.com/"
-          target="_blank"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <Icon icon="mdi:world" class="text-xl mr-2" />
-          <div
-            class="text-base capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            CoinHunters Web
-          </div>
-        </a>
-        <a
-          href="https://nodes.coinhunterstr.com/"
-          target="_blank"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <Icon icon="mdi:world" class="text-xl mr-2" />
-          <div
-            class="text-base capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            CoinHunters Nodes
-          </div>
-        </a>
-        <a
-          href="https://twitter.com/CoinHuntersTR"
-          target="_blank"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <Icon icon="mdi:twitter" class="text-xl mr-2" />
-          <div
-            class="text-base capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            Twitter
-          </div>
-        </a>
-        <a
-          href="https://t.me/CoinHuntersTR"
-          target="_blank"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <Icon icon="mdi:telegram" class="text-xl mr-2" />
-          <div
-            class="text-base capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            Telegram
-          </div>
-        </a>
-        <a
-          href="https://www.youtube.com/@CoinHuntersTR"
-          target="_blank"
-          class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <Icon icon="mdi:youtube" class="text-xl mr-2" />
-          <div
-            class="text-base capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            Youtube
-          </div>
-        </a>
-        <a
-          v-if="showDiscord"
-          href="https://discord.gg/ydZX5ZhyBv"
-          target="_blank"
-          class="py-2 px-4 flex items-center rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-[#373f59]"
-        >
-          <Icon icon="mdi:discord" class="text-xl mr-2" />
-          <div
-            class="text-base capitalize flex-1 text-gray-600 dark:text-gray-200"
-          >
-            Discord
-          </div>
-        </a>
+      <div class="px-4 text-sm pt-2 text-gray-400 pb-2 uppercase">
+          Tools
       </div>
+      <RouterLink to="/wallet/suggest"
+      class="py-2 px-4 flex items-center cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-[#373f59]"
+      >
+        <Icon icon="mdi:frequently-asked-questions" class="text-xl mr-2" />
+        <div
+          class="text-base capitalize flex-1 text-gray-600 dark:text-gray-200"
+        >
+          Wallet Helper
+        </div>
+      </RouterLink>
+
+
+    <a
+      v-if="showDiscord"
+      href="https://discord.gg/ydZX5ZhyBv"
+      target="_blank"
+      class="py-2 px-4 flex items-center rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-[#373f59]"
+    >
+      <Icon icon="mdi:discord" class="text-xl mr-2" />
+      <div
+        class="text-base capitalize flex-1 text-gray-600 dark:text-gray-200"
+      >
+        Discord
+      </div>
+    </a>
     </div>
-    <div class="xl:!ml-64 px-3 pt-4">
+    </div>
+    <div class="xl:!ml-64">
       <!-- header -->
       <div
-        class="flex items-center py-3 bg-base-100 mb-4 rounded px-4 sticky top-0 z-10"
+        class="flex items-center h-[64px] bg-base-100 sticky top-0 z-10 w-full border-b border-gray-200 dark:border-gray-700 px-4"
       >
         <div
           class="text-2xl pr-3 cursor-pointer xl:!hidden"
@@ -377,9 +257,38 @@ function selected(route: any, nav: NavLink) {
           <Icon icon="mdi-menu" />
         </div>
 
-        <ChainProfile />
+        <RouterLink to="/" class="flex items-center mr-8">
+          <img class="w-8 h-8" src="../../assets/logo.svg" />
+          <h1 class="ml-2 text-xl font-semibold dark:text-white">
+            CoinHunters
+          </h1>
+        </RouterLink>
 
-        <div class="flex-1 w-0"></div>
+        <div class="flex-1 flex justify-start items-center">
+          <div class="dropdown dropdown-hover">
+            <label tabindex="0" class="btn btn-ghost flex items-center gap-2">
+              <img v-if="blockchain.current?.logo" :src="blockchain.current.logo" class="w-6 h-6 rounded-full" />
+              <span>{{ blockchain.current?.prettyName || blockchain.chainName }}</span>
+              <Icon icon="mdi:chevron-down" />
+            </label>
+            <div tabindex="0" class="dropdown-content z-[1] card card-compact w-96 p-2 shadow bg-base-100 dark:bg-[#1d2433]">
+              <div class="card-body">
+                <input type="text" v-model="searchNetwork" placeholder="Search networks..." class="input input-bordered w-full mb-2" />
+                <div class="max-h-[400px] overflow-y-auto">
+                  <ul class="menu menu-compact">
+              <li v-for="chain in filteredNetworks" :key="chain.chainName">
+                      <a @click="blockchain.switchChain(chain.chainName)" class="flex items-center gap-2 py-2">
+                        <img :src="chain.logo" class="w-6 h-6 rounded-full" />
+                        <span>{{ chain.prettyName || chain.chainName }}</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ChainProfile class="ml-4" />
+        </div>
 
         <!-- <NavSearchBar />-->
         <NavBarI18n class="hidden md:!inline-block" />
@@ -389,9 +298,9 @@ function selected(route: any, nav: NavLink) {
       </div>
 
       <!-- 👉 Pages -->
-      <div style="min-height: calc(100vh - 180px);">
+      <div class="p-4">
         <RouterView v-slot="{ Component }">
-          <Transition mode="out-in">
+          <Transition mode="out-in" class="transition-all duration-300 ease-in-out">
             <Component :is="Component" />
           </Transition>
         </RouterView>
@@ -399,5 +308,4 @@ function selected(route: any, nav: NavLink) {
 
       <newFooter />
     </div>
-  </div>
 </template>

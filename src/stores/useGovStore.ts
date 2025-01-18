@@ -26,10 +26,15 @@ export const useGovStore = defineStore('govStore', {
     },
   },
   actions: {
-    initial() {
+    async fetchAllProposals() {
       this.$reset();
-      this.fetchParams();
-      this.fetchProposals('2');
+      await Promise.all([
+        this.fetchProposals('1'), // Deposit Period
+        this.fetchProposals('2'), // Voting Period
+        this.fetchProposals('3'), // Passed
+        this.fetchProposals('4'), // Rejected
+        this.fetchProposals('5')  // Failed
+      ]);
     },
     async fetchProposals(status: string, pagination?: PageRequest) {
       //if (!this.loading[status]) {

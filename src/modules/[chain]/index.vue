@@ -10,14 +10,18 @@ import {
   useWalletStore,
   useStakingStore,
   useParamStore,
+  useGovStore
 } from '@/stores';
 import { onMounted, ref } from 'vue';
 import { useIndexModule, colorMap } from './indexStore';
 import { computed } from '@vue/reactivity';
+import LatestBlocks from '@/components/LatestBlocks.vue'; // Imported LatestBlocks component
 
 import CardStatisticsVertical from '@/components/CardStatisticsVertical.vue';
 import ProposalListItem from '@/components/ProposalListItem.vue';
 import ArrayObjectElement from '@/components/dynamic/ArrayObjectElement.vue'
+import { useRouter } from 'vue-router'
+import ProposalProcess from '@/components/ProposalProcess.vue'
 
 const props = defineProps(['chain']);
 
@@ -28,16 +32,17 @@ const format = useFormatter();
 const dialog = useTxDialog();
 const stakingStore = useStakingStore();
 const paramStore = useParamStore()
+const govStore = useGovStore()
+const router = useRouter()
 const coinInfo = computed(() => {
   return store.coinInfo;
 });
 
-onMounted(() => {
+onMounted(async () => {
   store.loadDashboard();
   walletStore.loadMyAsset();
   paramStore.handleAbciInfo()
-  // if(!(coinInfo.value && coinInfo.value.name)) {
-  // }
+  activeProposals.value = await govStore.fetchProposals('2') // Fetch voting period proposals
 });
 const ticker = computed(() => store.coinInfo.tickers[store.tickerIndex]);
 
@@ -121,6 +126,8 @@ const amount = computed({
     quantity.value = val / ticker.value.converted_last.usd || 0
   }
 })
+
+const activeProposals = ref()
 
 </script>
 
@@ -256,21 +263,104 @@ const amount = computed({
       </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-4 md:!grid-cols-3 lg:!grid-cols-6">
-      <div v-for="(item, key) in store.stats" :key="key">
-        <CardStatisticsVertical v-bind="item" />
-      </div>
-    </div>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <!-- Statistics Card -->
+      <div class="card bg-base-100 shadow-lg">
+        <div class="card-body">
+          <h3 class="card-title text-lg font-semibold text-main dark:text-white mb-4">Chain Statistics</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <!-- Height -->
+            <div class="stats-card p-4 rounded-xl">
+              <div class="flex items-center mb-2">
+                <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mr-3">
+                  <Icon icon="mdi-cube-outline" class="text-primary text-xl" />
+                </div>
+                <span class="text-sm text-gray-600 dark:text-gray-300">Height</span>
+              </div>
+              <div class="text-xl font-semibold">{{ store.height || '-' }}</div>
+            </div>
 
-    <div v-if="blockchain.supportModule('governance')" class="bg-base-100 rounded mt-4 shadow">
-      <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main">
-        {{ $t('index.active_proposals') }}
+            <!-- Validators -->
+            <div class="stats-card p-4 rounded-xl">
+              <div class="flex items-center mb-2">
+                <div class="w-8 h-8 rounded-lg bg-success/10 flex items-center justify-center mr-3">
+                  <Icon icon="mdi-account-group" class="text-success text-xl" />
+                </div>
+                <span class="text-sm text-gray-600 dark:text-gray-300">Validators</span>
+              </div>
+              <div class="text-xl font-semibold">{{ store.validatorCount || '-' }}</div>
+            </div>
+
+            <!-- Supply -->
+            <div class="stats-card p-4 rounded-xl">
+              <div class="flex items-center mb-2">
+                <div class="w-8 h-8 rounded-lg bg-info/10 flex items-center justify-center mr-3">
+                  <Icon icon="mdi-currency-usd" class="text-info text-xl" />
+                </div>
+                <span class="text-sm text-gray-600 dark:text-gray-300">Supply</span>
+              </div>
+              <div class="text-xl font-semibold">{{ format.formatToken(store.supply) || '-' }}</div>
+            </div>
+
+            <!-- Bonded Tokens -->
+            <div class="stats-card p-4 rounded-xl">
+              <div class="flex items-center mb-2">
+                <div class="w-8 h-8 rounded-lg bg-warning/10 flex items-center justify-center mr-3">
+                  <Icon icon="mdi-lock" class="text-warning text-xl" />
+                </div>
+                <span class="text-sm text-gray-600 dark:text-gray-300">Bonded Tokens</span>
+              </div>
+              <div class="text-xl font-semibold">{{ format.formatToken(store.bondedTokens) || '-' }}</div>
+            </div>
+
+            <!-- Inflation -->
+            <div class="stats-card p-4 rounded-xl">
+              <div class="flex items-center mb-2">
+                <div class="w-8 h-8 rounded-lg bg-error/10 flex items-center justify-center mr-3">
+                  <Icon icon="mdi-trending-up" class="text-error text-xl" />
+                </div>
+                <span class="text-sm text-gray-600 dark:text-gray-300">Inflation</span>
+              </div>
+              <div class="text-xl font-semibold">{{ store.inflation || '-' }}</div>
+            </div>
+
+            <!-- Community Pool -->
+            <div class="stats-card p-4 rounded-xl">
+              <div class="flex items-center mb-2">
+                <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center mr-3">
+                  <Icon icon="mdi-bank" class="text-secondary text-xl" />
+                </div>
+                <span class="text-sm text-gray-600 dark:text-gray-300">Community Pool</span>
+              </div>
+              <div class="text-xl font-semibold">{{ format.formatTokens(store.communityPool) || '-' }}</div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="px-4 pb-4">
-        <ProposalListItem :proposals="store?.proposals" />
-      </div>
-      <div class="pb-8 text-center" v-if="store.proposals?.proposals?.length === 0">
-        {{ $t('index.no_active_proposals') }}
+
+      <!-- Active Proposals Card -->
+      <div class="card bg-base-100 shadow-lg">
+        <div class="card-body">
+          <h3 class="card-title text-lg font-semibold text-main dark:text-white mb-4">Active Proposals</h3>
+          <div v-if="activeProposals?.proposals?.length > 0" class="space-y-4">
+            <div v-for="proposal in activeProposals.proposals" :key="proposal.proposal_id" 
+                 class="bg-base-200/50 p-4 rounded-xl hover:shadow-md transition-all duration-200 cursor-pointer"
+                 @click="router.push(`/${chain}/gov/${proposal.proposal_id}`)">
+              <div class="flex justify-between items-start mb-2">
+                <div class="badge badge-info">VOTING</div>
+                <h4 class="text-lg font-medium">#{{ proposal.proposal_id }}</h4>
+              </div>
+              <h5 class="text-base font-medium mb-3 line-clamp-2">{{ proposal.content?.title || proposal.title }}</h5>
+              <ProposalProcess :pool="stakingStore.pool" :tally="proposal.final_tally_result" />
+              <div class="text-sm text-gray-500 mt-2">
+                Ends: {{ format.toDay(proposal.voting_end_time, 'from') }}
+              </div>
+            </div>
+          </div>
+          <div v-else class="text-center py-4 text-gray-500">
+            No active proposals at this time
+          </div>
+        </div>
       </div>
     </div>
 
@@ -383,11 +473,8 @@ const amount = computed({
     </div>
 
     <div class="bg-base-100 rounded mt-4">
-      <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main">
-        {{ $t('index.app_versions') }}
-      </div>
-      <!-- Application Version -->
-      <ArrayObjectElement :value="paramStore.appVersion?.items" :thead="false" />
+      <!-- Latest Blocks -->
+      <LatestBlocks :chain="$route.params.chain" />
       <div class="h-4"></div>
     </div>
 
