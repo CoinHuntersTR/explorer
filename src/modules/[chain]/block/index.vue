@@ -38,7 +38,7 @@ const error = computed(() => blockStore.error);
     </div>
 
     <div v-else>
-      <div v-show="tab === 'blocks'" class="grid xl:!grid-cols-6 md:!grid-cols-4 grid-cols-1 gap-3">
+      <div v-show="tab === 'blocks'" class="grid xl:!grid-cols-4 md:!grid-cols-2 grid-cols-1 gap-4">
         <RouterLink v-for="item in list" :key="item.block?.header?.height"
           class="flex flex-col justify-between rounded p-4 shadow bg-base-100"
           :to="`/${chain}/block/${item.block.header.height}`">

@@ -30,19 +30,21 @@ export const useBlockModule = defineStore('blockModule', {
     },
     txsInRecents() {
       const txs = [] as { hash: string; tx: DecodedTxRaw; height?: string }[];
-      this.recents.forEach((x) =>
-        x.block?.data?.txs.forEach((tx: Uint8Array) => {
-          if (tx) {
-            try {
-              txs.push({
-                hash: hashTx(tx),
-                tx: decodeTxRaw(tx),
-                height: x.block?.header?.height
-              });
-            } catch (e) {}
-          }
-        })
-      );
+      this.recents.forEach((x) => {
+        if (x.block?.data?.txs) {
+          x.block.data.txs.forEach((tx: Uint8Array) => {
+            if (tx) {
+              try {
+                txs.push({
+                  hash: hashTx(tx),
+                  tx: decodeTxRaw(tx),
+                  height: x.block?.header?.height
+                });
+              } catch (e) {}
+            }
+          });
+        }
+      });
       return txs;
     },
   },
@@ -77,8 +79,10 @@ export const useBlockModule = defineStore('blockModule', {
         if (!latest) throw new Error('Failed to fetch latest block');
         
         this.latest = latest;
-        if (this.recents.length >= 50) this.recents.shift();
-        this.recents.push(latest);
+        if (!this.recents.find(b => b.block?.header?.height === latest.block?.header?.height)) {
+          if (this.recents.length >= 50) this.recents.shift();
+          this.recents.push(latest);
+        }
         
         this.isLoading = false;
         return latest;
