@@ -339,10 +339,10 @@ const activeProposals = ref()
       </div>
 
       <!-- Active Proposals Card -->
-      <div v-if="activeProposals?.proposals?.length > 0" class="card bg-base-100 shadow-lg">
+      <div class="card bg-base-100 shadow-lg">
         <div class="card-body">
           <h3 class="card-title text-lg font-semibold text-main dark:text-white mb-4">Active Proposals</h3>
-          <div class="space-y-4">
+          <div v-if="activeProposals?.proposals?.length > 0" class="space-y-4">
             <div v-for="proposal in activeProposals.proposals" :key="proposal.proposal_id" 
                  class="bg-base-200/50 p-4 rounded-xl hover:shadow-md transition-all duration-200 cursor-pointer"
                  @click="router.push(`/${chain}/gov/${proposal.proposal_id}`)">
@@ -357,12 +357,14 @@ const activeProposals = ref()
               </div>
             </div>
           </div>
+          <div v-else class="text-center py-4 text-gray-500">
+            No active proposals at this time
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Active Proposals Section -->
-    <div v-if="activeProposals?.proposals?.length > 0" class="mb-6">
+    <!-- Remove duplicate Active Proposals Section -->
       <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main dark:text-white">Active Proposals</div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div v-for="proposal in activeProposals.proposals" :key="proposal.proposal_id" 
