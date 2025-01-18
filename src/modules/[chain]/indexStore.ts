@@ -166,6 +166,11 @@ export const useIndexModule = defineStore('module-index', {
     },
     stats() {
       const formatter = useFormatter();
+      const staking = useStakingStore();
+      const mintStore = useMintStore();
+      const base = useBaseStore();
+      const bank = useBankStore();
+      
       return [
         {
           title: 'Height',
@@ -193,8 +198,7 @@ export const useIndexModule = defineStore('module-index', {
           color: 'warning',
           icon: 'mdi-lock',
           stats: formatter.formatTokenAmount({
-            // @ts-ignore
-            amount: this.pool.bonded_tokens,
+            amount: String(this.pool?.bonded_tokens || 0),
             denom: staking.params.bond_denom,
           }),
           change: 0,
@@ -203,19 +207,17 @@ export const useIndexModule = defineStore('module-index', {
           title: 'Inflation',
           color: 'success',
           icon: 'mdi-chart-multiple',
-          stats: formatter.formatDecimalToPercent(mintStore.inflation),
+          stats: `${(Number(mintStore.inflation) * 100).toFixed(2)}%`,
           change: 0,
         },
         {
           title: 'Community Pool',
           color: 'primary',
           icon: 'mdi-bank',
-          stats: formatter.formatTokens(
-            // @ts-ignore
-            this.communityPool?.filter(
-              (x: Coin) => x.denom === staking.params.bond_denom
-            )
-          ),
+          stats: this.communityPool?.length > 0 ? formatter.formatTokenAmount({
+            amount: String(parseInt(this.communityPool[0].amount)),
+            denom: this.communityPool[0].denom,
+          }) : '-',
           change: 0,
         },
       ];
