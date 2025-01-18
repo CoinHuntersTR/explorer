@@ -9,11 +9,12 @@ const blockStore = useBlockModule();
 const format = useFormatter();
 
 onMounted(async () => {
-  await blockStore.initial();
+  blockStore.clearRecentBlocks();
+  await blockStore.fetchLatest();
+  await blockStore.startAutoFetch();
 });
 
 const list = computed(() => blockStore.recents);
-
 const isLoading = computed(() => blockStore.isLoading);
 const error = computed(() => blockStore.error);
 </script>
