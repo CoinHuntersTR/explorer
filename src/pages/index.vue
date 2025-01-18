@@ -8,8 +8,10 @@ import {
 import ChainSummary from '@/components/ChainSummary.vue';
 import { computed, ref } from 'vue';
 import { useBlockchain } from '@/stores';
+import { useFormatter } from '@/stores/useFormatter'; // Added import for formatter
 
 const dashboard = useDashboard();
+const format = useFormatter(); // Added useFormatter
 
 const keywords = ref('');
 const activeTab = ref('mainnet');
