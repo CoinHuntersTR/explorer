@@ -102,10 +102,29 @@ body {
 
 .block-card {
   @apply bg-base-100/95 backdrop-blur border border-base-200 hover:shadow-lg hover:scale-[1.02] transition-all duration-200;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .dark .block-card {
   @apply border-base-300/10 hover:shadow-primary/5;
+  background: rgba(30, 41, 59, 0.95);
+}
+
+.block-card .text-primary {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.block-card .text-gray-600 {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .tabs-container {
