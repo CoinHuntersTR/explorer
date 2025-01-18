@@ -10,6 +10,7 @@ import {
   useWalletStore,
   useStakingStore,
   useParamStore,
+  useGovStore,
 } from '@/stores';
 import { onMounted, ref } from 'vue';
 import { useIndexModule, colorMap } from './indexStore';
@@ -29,16 +30,23 @@ const format = useFormatter();
 const dialog = useTxDialog();
 const stakingStore = useStakingStore();
 const paramStore = useParamStore()
+const govStore = useGovStore()
 const coinInfo = computed(() => {
   return store.coinInfo;
 });
+const activeProposals = ref([])
 
-onMounted(() => {
+// Fetch active proposals
+const fetchActiveProposals = async () => {
+  const proposals = await govStore.fetchProposals('2') // '2' represents voting period
+  activeProposals.value = proposals?.proposals || []
+}
+
+onMounted(async () => {
   store.loadDashboard();
   walletStore.loadMyAsset();
   paramStore.handleAbciInfo()
-  // if(!(coinInfo.value && coinInfo.value.name)) {
-  // }
+  await fetchActiveProposals()
 });
 const ticker = computed(() => store.coinInfo.tickers[store.tickerIndex]);
 
@@ -258,8 +266,22 @@ const amount = computed({
     </div>
 
     <div class="grid grid-cols-1 gap-4 md:!grid-cols-3 lg:!grid-cols-6">
-      <div v-for="(item, key) in store.stats" :key="key">
-        <CardStatisticsVertical v-bind="item" />
+      <div class="stats-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <CardStatisticsVertical
+          v-if="activeProposals && activeProposals.length > 0"
+          :icon="{ icon: 'mdi-gavel', size: 32, color: 'warning' }"
+          :stats="activeProposals.length"
+          title="Active Proposals"
+          :link="`/${blockchain.chainName}/gov`"
+          subtitle="Proposals in voting period"
+        />
+        <CardStatisticsVertical
+          :icon="{ icon: 'mdi-cube-outline', size: 32, color: 'primary' }"
+          :stats="format.formatNumber(store.stats[0].stats)"
+          title="Latest Block"
+          :link="`/${blockchain.chainName}/block/${store.stats[0].stats}`"
+        />
+        <CardStatisticsVertical v-for="(item, key) in store.stats.slice(1)" :key="key" v-bind="item" />
       </div>
     </div>
 
