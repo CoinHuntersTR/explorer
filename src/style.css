@@ -23,8 +23,15 @@
 
 .dark .text-gray-600,
 .dark .text-gray-700,
-.dark .text-gray-800 {
+.dark .text-gray-800,
+.dark .text-main,
+.dark .font-semibold {
   color: rgba(255, 255, 255, 0.9);
+}
+
+.dark .text-lg,
+.dark .card-title {
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .dark .bg-base-100 {
@@ -53,9 +60,14 @@
   --bg-gradient: linear-gradient(135deg, #f6f8fd 0%, #f1f4f9 100%);
   --bg-gradient-dark: linear-gradient(145deg, #1a1f2c 0%, #2a2f3f 100%);
   --text-main: #2d3748;
+  --text-main-dark: #e2e8f0;
   --card-bg: rgba(255, 255, 255, 0.8);
   --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   --border-radius: 12px;
+}
+
+.dark {
+  --text-main: var(--text-main-dark);
 }
 
 body {
