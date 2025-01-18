@@ -47,18 +47,62 @@ const chainStore = useBlockchain();
 
 <template>
   <div class="max-w-7xl mx-auto px-4 py-8 fade-enter-active">
-  <div class="grid-layout">
-    <CardStatisticsVertical
-      v-for="stat in dashboard.stats"
-      :key="stat.title"
-      :title="stat.title"
-      :color="stat.color"
-      :icon="stat.icon"
-      :stats="stat.stats"
-      :change="stat.change"
-      :block-time="stat.title === 'Height' ? baseStore.blocktime / 1000 : undefined"
-    />
+  <div class="grid xl:!grid-cols-6 md:!grid-cols-3 grid-cols-2 gap-6 mb-6">
+  <div class="stats-card hover:scale-105 transition-transform duration-300">
+    <div class="p-6 flex flex-col">
+      <div class="flex items-center mb-2">
+        <Icon icon="mdi:cube-outline" class="text-primary text-xl mr-2" />
+        <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">Height</div>
+      </div>
+      <div class="text-2xl font-bold text-gray-900 dark:text-white">#{{ dashboard.height }}</div>
+    </div>
   </div>
+  <div class="stats-card hover:scale-105 transition-transform duration-300">
+    <div class="p-6 flex flex-col">
+      <div class="flex items-center mb-2">
+        <Icon icon="mdi:account-group" class="text-success text-xl mr-2" />
+        <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">Validators</div>
+      </div>
+      <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ dashboard.validators }}</div>
+    </div>
+  </div>
+  <div class="stats-card hover:scale-105 transition-transform duration-300">
+    <div class="p-6 flex flex-col">
+      <div class="flex items-center mb-2">
+        <Icon icon="mdi:currency-usd" class="text-info text-xl mr-2" />
+        <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">Supply</div>
+      </div>
+      <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ format.formatToken(dashboard.supply) }}</div>
+    </div>
+  </div>
+  <div class="stats-card hover:scale-105 transition-transform duration-300">
+    <div class="p-6 flex flex-col">
+      <div class="flex items-center mb-2">
+        <Icon icon="mdi:link-variant" class="text-warning text-xl mr-2" />
+        <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">Bonded Tokens</div>
+      </div>
+      <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ format.formatToken(dashboard.bonded) }}</div>
+    </div>
+  </div>
+  <div class="stats-card hover:scale-105 transition-transform duration-300">
+    <div class="p-6 flex flex-col">
+      <div class="flex items-center mb-2">
+        <Icon icon="mdi:trending-up" class="text-error text-xl mr-2" />
+        <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">Inflation</div>
+      </div>
+      <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ format.formatPercent(dashboard.inflation) }}</div>
+    </div>
+  </div>
+  <div class="stats-card hover:scale-105 transition-transform duration-300">
+    <div class="p-6 flex flex-col">
+      <div class="flex items-center mb-2">
+        <Icon icon="mdi:bank" class="text-secondary text-xl mr-2" />
+        <div class="text-sm text-gray-600 dark:text-gray-400 font-medium">Community Pool</div>
+      </div>
+      <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ format.formatToken(dashboard.communityPool) }}</div>
+    </div>
+  </div>
+</div>
     <div class="text-center space-y-4 mb-12">
       <img src="https://coinhunterstr.com/wp-content/uploads/2022/12/CH_logo.webp" alt="CoinHunters Logo" class="mx-auto h-24 mb-4"/>
     </div>
@@ -105,7 +149,7 @@ const chainStore = useBlockchain();
           Testnets ({{ chains.testnetChains.length }})
         </button>
       </div>
-      
+
       <div class="relative max-w-2xl mx-auto">
         <Icon icon="mdi:magnify" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"/>
         <input 
