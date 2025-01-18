@@ -170,7 +170,7 @@ export const useIndexModule = defineStore('module-index', {
       const mintStore = useMintStore();
       const base = useBaseStore();
       const bank = useBankStore();
-      
+
       return [
         {
           title: 'Height',
