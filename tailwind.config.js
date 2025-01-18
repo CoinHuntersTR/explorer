@@ -29,14 +29,20 @@ module.exports = {
         light: {
           ...require('daisyui/src/theming/themes')['[data-theme=light]'],
           primary: '#666cff',
+          'base-100': '#ffffff',
+          'base-200': '#f8f9fa',
+          'base-300': '#f1f2f4',
+          'base-content': '#1f2937',
         },
       },
       {
         dark: {
           ...require('daisyui/src/theming/themes')['[data-theme=dark]'],
           primary: '#666cff',
-          'base-100': '#2a334c',
-          'base-200': '#252d37'
+          'base-100': '#1a1f2e',
+          'base-200': '#141824',
+          'base-300': '#0f131d',
+          'base-content': '#e2e8f0',
         },
       },
     ],

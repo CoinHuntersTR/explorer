@@ -47,23 +47,51 @@
 
 body {
   font-family: 'Inter', 'Poppins', sans-serif;
-  background: var(--bg-gradient);
-  color: var(--text-main);
+  @apply bg-base-200 text-base-content transition-colors duration-200;
 }
 
-.dark body {
-  background: var(--bg-gradient-dark);
-  color: #e2e8f0;
-}
-
-.dark .bg-base-100 {
-  background-color: rgba(42, 51, 76, 0.95) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.card {
+  @apply bg-base-100/95 backdrop-blur border border-base-200 transition-all duration-200;
 }
 
 .dark .card {
-  background: rgba(42, 51, 76, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  @apply border-base-300/10;
+}
+
+.block-card {
+  @apply bg-base-100/95 backdrop-blur border border-base-200 hover:shadow-lg hover:scale-[1.02] transition-all duration-200;
+}
+
+.dark .block-card {
+  @apply border-base-300/10 hover:shadow-primary/5;
+}
+
+.tabs-container {
+  @apply bg-base-200/50 backdrop-blur border border-base-200/50;
+}
+
+.dark .tabs-container {
+  @apply border-base-300/10;
+}
+
+.table-container {
+  @apply bg-base-100 border border-base-200;
+}
+
+.dark .table-container {
+  @apply border-base-300/10;
+}
+
+.table thead {
+  @apply bg-base-200/50;
+}
+
+.table tbody tr:hover {
+  @apply bg-base-200/50;
+}
+
+.dark .table tbody tr:hover {
+  @apply bg-base-300/30;
 }
 
 .dark .stats-card {
