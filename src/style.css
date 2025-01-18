@@ -13,9 +13,22 @@
 }
 
 /* Dark mode adjustments */
-.dark .block-card {
-  background: rgba(30, 41, 59, 0.5);
+.dark .block-card,
+.dark .stats-card,
+.dark .card {
+  background: rgba(30, 41, 59, 0.8);
   border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dark .text-gray-600,
+.dark .text-gray-700,
+.dark .text-gray-800 {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dark .bg-base-100 {
+  background-color: rgba(30, 41, 59, 0.8) !important;
 }
 
 .dark .tabs-container {
