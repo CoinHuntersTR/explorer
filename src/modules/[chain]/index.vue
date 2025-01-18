@@ -279,7 +279,7 @@ const activeProposals = ref()
               </div>
               <div class="text-xl font-semibold">{{ store.stats[0]?.value }}</div>
             </div>
-            
+
             <!-- Validators -->
             <div class="stats-card p-4 rounded-xl">
               <div class="flex items-center mb-2">
@@ -290,7 +290,7 @@ const activeProposals = ref()
               </div>
               <div class="text-xl font-semibold">{{ store.stats[1]?.value }}</div>
             </div>
-            
+
             <!-- Supply -->
             <div class="stats-card p-4 rounded-xl">
               <div class="flex items-center mb-2">
@@ -301,7 +301,7 @@ const activeProposals = ref()
               </div>
               <div class="text-xl font-semibold">{{ store.stats[2]?.value || '-' }}</div>
             </div>
-            
+
             <!-- Bonded Tokens -->
             <div class="stats-card p-4 rounded-xl">
               <div class="flex items-center mb-2">
@@ -312,7 +312,7 @@ const activeProposals = ref()
               </div>
               <div class="text-xl font-semibold">{{ store.stats[3]?.value || '-' }}</div>
             </div>
-            
+
             <!-- Inflation -->
             <div class="stats-card p-4 rounded-xl">
               <div class="flex items-center mb-2">
@@ -323,7 +323,7 @@ const activeProposals = ref()
               </div>
               <div class="text-xl font-semibold">{{ store.stats[4]?.value }}</div>
             </div>
-            
+
             <!-- Community Pool -->
             <div class="stats-card p-4 rounded-xl">
               <div class="flex items-center mb-2">
