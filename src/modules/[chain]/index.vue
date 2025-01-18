@@ -364,29 +364,6 @@ const activeProposals = ref()
       </div>
     </div>
 
-    <!-- Remove duplicate Active Proposals Section -->
-      <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main dark:text-white">Active Proposals</div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div v-for="proposal in activeProposals.proposals" :key="proposal.proposal_id" 
-             class="card bg-base-100 hover:shadow-lg transition-all duration-200 cursor-pointer dark:bg-gray-800"
-             @click="router.push(`/${chain}/gov/${proposal.proposal_id}`)">
-          <div class="card-body">
-            <div class="flex justify-between items-start">
-              <div class="badge badge-info">VOTING</div>
-              <h3 class="text-xl font-bold">#{{ proposal.proposal_id }}</h3>
-            </div>
-            <h4 class="text-lg font-medium mt-2 line-clamp-2">{{ proposal.content?.title || proposal.title }}</h4>
-            <div class="mt-4">
-              <ProposalProcess :pool="stakingStore.pool" :tally="proposal.final_tally_result" />
-            </div>
-            <div class="flex justify-between text-sm mt-4">
-              <span class="text-gray-500">Ends: {{ format.toDay(proposal.voting_end_time, 'from') }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="bg-base-100 rounded mt-4 shadow">
       <div class="flex justify-between px-4 pt-4 pb-2 text-lg font-semibold text-main">
         <span class="truncate" >{{ walletStore.currentAddress || 'Not Connected' }}</span>
