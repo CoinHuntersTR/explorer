@@ -263,8 +263,60 @@ const activeProposals = ref()
       </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-4 md:!grid-cols-3 lg:!grid-cols-6">
-      <div v-for="(item, key) in store.stats" :key="key">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <!-- Active Proposals Card -->
+      <div v-if="activeProposals?.proposals?.length > 0" class="card bg-base-100 shadow-lg">
+        <div class="card-body">
+          <h3 class="card-title text-lg font-semibold text-main dark:text-white mb-4">Active Proposals</h3>
+          <div class="space-y-4">
+            <div v-for="proposal in activeProposals.proposals" :key="proposal.proposal_id" 
+                 class="bg-base-200/50 p-4 rounded-xl hover:shadow-md transition-all duration-200 cursor-pointer"
+                 @click="router.push(`/${chain}/gov/${proposal.proposal_id}`)">
+              <div class="flex justify-between items-start mb-2">
+                <div class="badge badge-info">VOTING</div>
+                <h4 class="text-lg font-medium">#{{ proposal.proposal_id }}</h4>
+              </div>
+              <h5 class="text-base font-medium mb-3 line-clamp-2">{{ proposal.content?.title || proposal.title }}</h5>
+              <ProposalProcess :pool="stakingStore.pool" :tally="proposal.final_tally_result" />
+              <div class="text-sm text-gray-500 mt-2">
+                Ends: {{ format.toDay(proposal.voting_end_time, 'from') }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Token Statistics Card -->
+      <div class="card bg-base-100 shadow-lg">
+        <div class="card-body">
+          <h3 class="card-title text-lg font-semibold text-main dark:text-white mb-4">Token Statistics</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col justify-center">
+              <DonutChart 
+                :series="[Number(store.stats[2]?.value?.replace(/[^0-9]/g, '')), Number(store.stats[3]?.value?.replace(/[^0-9]/g, ''))]"
+                :labels="['Total Supply', 'Bonded Tokens']"
+                :colors="['#4CAF50', '#2196F3']"
+                height="200"
+              />
+            </div>
+            <div class="flex flex-col justify-center space-y-4">
+              <div class="stat bg-base-200/50 rounded-xl p-4">
+                <div class="stat-title text-xs">Total Supply</div>
+                <div class="stat-value text-primary text-2xl">{{ store.stats[2]?.value }}</div>
+              </div>
+              <div class="stat bg-base-200/50 rounded-xl p-4">
+                <div class="stat-title text-xs">Bonded Tokens</div>
+                <div class="stat-value text-info text-2xl">{{ store.stats[3]?.value }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other Stats -->
+    <div class="grid grid-cols-1 gap-4 md:!grid-cols-3 lg:!grid-cols-6 mt-4">
+      <div v-for="(item, key) in store.stats" :key="key" v-show="key !== 2 && key !== 3">
         <CardStatisticsVertical v-bind="item" />
       </div>
     </div>
