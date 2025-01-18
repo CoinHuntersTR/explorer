@@ -1,6 +1,6 @@
 
 <template>
-  <div class="bg-base-100 rounded-lg shadow-md p-6">
+  <div class="bg-base-100 dark:bg-base-200 rounded-xl shadow-lg backdrop-blur-lg p-6">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold">Latest Blocks</h2>
       <RouterLink :to="`/${chain}/block`" class="text-primary hover:text-primary-focus text-sm">View all</RouterLink>
@@ -9,7 +9,7 @@
     <div class="overflow-x-auto">
       <table class="w-full table-auto">
         <thead>
-          <tr class="text-sm border-b">
+          <tr class="text-sm border-b dark:border-base-300">
             <th class="pb-3 text-left">Height</th>
             <th class="pb-3 text-left">Hash</th>
             <th class="pb-3 text-left">Proposer</th>
@@ -18,27 +18,31 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="block in blocks" :key="block.height" class="hover:bg-base-200 border-b border-base-200 even:bg-base-100/50">
+          <tr v-if="loading" class="animate-pulse">
+            <td colspan="5" class="text-center py-4">Loading blocks...</td>
+          </tr>
+          <tr v-else-if="blocks.length === 0">
+            <td colspan="5" class="text-center py-4">No blocks found</td>
+          </tr>
+          <tr v-for="block in blocks" :key="block.height" class="hover:bg-base-200 dark:hover:bg-base-300 border-b border-base-200 dark:border-base-300">
             <td class="py-3">
-              <RouterLink :to="`/${chain}/block/${block.height}`" class="text-primary hover:text-primary-focus">
-                {{ block.height }}
+              <RouterLink :to="`/${chain}/block/${block.block?.header?.height}`" class="text-primary hover:text-primary-focus">
+                {{ block.block?.header?.height }}
               </RouterLink>
             </td>
             <td class="py-3">
-              <RouterLink :to="`/${chain}/tx/${block.hash}`" class="hover:text-primary-focus">
-                {{ formatHash(block.hash) }}
-              </RouterLink>
+              <span class="font-mono">{{ formatHash(block.block_id?.hash) }}</span>
             </td>
             <td class="py-3">
-              <RouterLink :to="`/${chain}/staking/${block.proposer_address}`" class="flex items-center hover:text-primary-focus">
+              <RouterLink :to="`/${chain}/staking/${block.block?.header?.proposer_address}`" class="flex items-center hover:text-primary-focus">
                 <div class="w-6 h-6 rounded-full bg-base-300 flex items-center justify-center mr-2">
                   <Icon icon="mdi:account" />
                 </div>
-                {{ formatValidator(block.proposer_address) }}
+                {{ formatValidator(block.block?.header?.proposer_address) }}
               </RouterLink>
             </td>
-            <td class="py-3">{{ block.num_txs }}</td>
-            <td class="py-3">{{ format.timeFromNow(block.time) }}</td>
+            <td class="py-3">{{ block.block?.data?.txs?.length || 0 }}</td>
+            <td class="py-3">{{ format.timeFromNow(block.block?.header?.time) }}</td>
           </tr>
         </tbody>
       </table>
@@ -49,12 +53,14 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { Icon } from '@iconify/vue';
-import { useFormatter, useBlockchain } from '@/stores';
+import { useFormatter, useBlockchain, useBaseStore } from '@/stores';
 
 const props = defineProps(['chain']);
 const blockchain = useBlockchain();
+const baseStore = useBaseStore();
 const format = useFormatter();
 const blocks = ref([]);
+const loading = ref(true);
 let timer: any = null;
 
 const formatHash = (hash: string) => {
@@ -63,21 +69,24 @@ const formatHash = (hash: string) => {
 };
 
 const formatValidator = (address: string) => {
-  // Format validator name (implement your logic here)
+  if (!address) return '';
   return address.substring(0, 12) + '...';
 };
 
 const fetchBlocks = async () => {
   try {
-    const latestBlocks = await blockchain.rpc.getLatestBlocks(10);
-    blocks.value = latestBlocks;
+    loading.value = true;
+    await baseStore.fetchLatest();
+    blocks.value = baseStore.recents.slice(0, 10);
   } catch (error) {
     console.error('Error fetching blocks:', error);
+  } finally {
+    loading.value = false;
   }
 };
 
-onMounted(() => {
-  fetchBlocks();
+onMounted(async () => {
+  await fetchBlocks();
   timer = setInterval(fetchBlocks, 6000);
 });
 
