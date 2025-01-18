@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { Icon } from '@iconify/vue';
-import LatestBlocks from '@/components/LatestBlocks.vue';
 import {
   useDashboard,
   LoadingStatus,
@@ -88,8 +87,6 @@ const chainStore = useBlockchain();
         :name="chain.chainName"
       />
     </div>
-
-    <LatestBlocks class="mb-8" />
 
     <div class="text-center text-base mt-6 text-primary">
       <h2 class="mb-6">{{ $t('pages.description') }}</h2>
