@@ -13,6 +13,7 @@ export const useBlockModule = defineStore('blockModule', {
       recents: [] as Block[],
       isLoading: false,
       error: null as string | null,
+      initialized: false,
     };
   },
   getters: {
@@ -47,53 +48,62 @@ export const useBlockModule = defineStore('blockModule', {
   },
   actions: {
     async initial() {
-      this.clearRecentBlocks();
-      await this.autoFetch();
+      if (!this.initialized) {
+        this.initialized = true;
+        this.clearRecentBlocks();
+        await this.startAutoFetch();
+      }
     },
     clearRecentBlocks() {
       this.recents = [];
       this.error = null;
     },
-    async autoFetch() {
+    async startAutoFetch() {
       try {
-        const block = await this.fetchLatest();
-        this.latest = block;
-        setTimeout(() => this.autoFetch(), 6000);
+        await this.fetchLatest();
+        setTimeout(() => this.startAutoFetch(), 6000);
       } catch (e) {
-        console.error('Failed to fetch latest block:', e);
-        setTimeout(() => this.autoFetch(), 6000);
+        console.error('Failed to fetch blocks:', e);
+        setTimeout(() => this.startAutoFetch(), 6000);
       }
     },
     async fetchLatest() {
       this.isLoading = true;
       try {
-        const latest = await this.blockchain.rpc?.getBaseBlockLatest();
+        if (!this.blockchain.rpc) {
+          throw new Error('RPC not initialized');
+        }
+        const latest = await this.blockchain.rpc.getBaseBlockLatest();
         if (!latest) throw new Error('Failed to fetch latest block');
         
+        this.latest = latest;
         if (this.recents.length >= 50) this.recents.shift();
         this.recents.push(latest);
         
+        this.isLoading = false;
         return latest;
       } catch (e: any) {
+        this.isLoading = false;
         this.error = e.message;
         throw e;
-      } finally {
-        this.isLoading = false;
       }
     },
     async fetchBlock(height: string) {
       this.isLoading = true;
       try {
-        const block = await this.blockchain.rpc?.getBaseBlockAt(height);
+        if (!this.blockchain.rpc) {
+          throw new Error('RPC not initialized');
+        }
+        const block = await this.blockchain.rpc.getBaseBlockAt(height);
         if (!block) throw new Error('Failed to fetch block');
         
         this.current = block;
+        this.isLoading = false;
         return block;
       } catch (e: any) {
+        this.isLoading = false;
         this.error = e.message;
         throw e;
-      } finally {
-        this.isLoading = false;
       }
     },
   },
