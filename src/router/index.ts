@@ -18,6 +18,15 @@ const router = createRouter({
         i18n: 'governance',
         order: 4
       }
+    },
+    {
+      path: '/:chain/block',
+      name: 'blocks',
+      component: () => import('@/modules/[chain]/block/index.vue'),
+      meta: {
+        i18n: 'blocks',
+        order: 2
+      }
     }
   ],
 });
