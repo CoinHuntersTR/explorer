@@ -22,7 +22,7 @@
         "coingecko_id": "dymension", 
         "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/dymension/images/dymension-logo.png"
     }],
-    "addr_prefix": "dymension",
+    "addr_prefix": "dym",
     "theme_color": "#ce4747",
     "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/dymension/images/dymension-logo.png"
 }
