@@ -18,7 +18,7 @@
     "assets": [{
         "base": "ubbn",
         "symbol": "TBABY",
-        "exponent": "18",
+        "exponent": "6",
         "coingecko_id": "babylon", 
         "logo": "https://pbs.twimg.com/profile_images/1877371944636485632/kzLetgFB_400x400.jpg"
     }],
