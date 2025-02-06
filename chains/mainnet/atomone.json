@@ -1,0 +1,28 @@
+{
+    "chain_name": "Atomone",
+    "api": [
+        {
+            "address": "https://atomone-mainnet-api.itrocket.net", 
+            "provider": "CoinHunters"
+        }
+    ], 
+    "rpc": [
+        {
+            "address": "https://atomone-mainnet-rpc.itrocket.net", 
+            "provider": "CoinHunters"
+        }
+    ],
+    "sdk_version": "v0.50.3",
+    "coin_type": "60",
+    "min_tx_fee": "800",
+    "assets": [{
+        "base": "uatone",
+        "symbol": "ATONE",
+        "exponent": "6",
+        "coingecko_id": "ATONE", 
+        "logo": "https://pbs.twimg.com/profile_images/1882109264459923457/62jTRD_k_400x400.png"
+    }],
+    "addr_prefix": "atone",
+    "theme_color": "#ce4747",
+    "logo": "https://pbs.twimg.com/profile_images/1882109264459923457/62jTRD_k_400x400.png"
+}
