@@ -2,15 +2,13 @@
     "chain_name": "Union-Testnet",
     "api": [
         {
-            "address": "https://rest-testnet-9-cors-proxy.unionlabs.workers.dev/
-", 
+            "address": "https://rest.testnet-9.union.build/", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://rpc-testnet-9-cors-proxy.unionlabs.workers.dev/
-", 
+            "address": "https://rpc.testnet-9.union.build/", 
             "provider": "CoinHunters"
         }
     ],
