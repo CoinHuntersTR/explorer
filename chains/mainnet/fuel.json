@@ -1,0 +1,28 @@
+{
+    "chain_name": "Fuel",
+    "api": [
+        {
+            "address": "https://fuel-mainnet-api.itrocket.net", 
+            "provider": "CoinHunters"
+        }
+    ], 
+    "rpc": [
+        {
+            "address": "https://fuel-mainnet-rpc.itrocket.net", 
+            "provider": "CoinHunters"
+        }
+    ],
+    "sdk_version": "v0.47.10",
+    "coin_type": "118",
+    "min_tx_fee": "800",
+    "assets": [{
+        "base": "fuel",
+        "symbol": "FUEL",
+        "exponent": "18",
+        "coingecko_id": "fuel-network", 
+        "logo": "https://pbs.twimg.com/profile_images/1651228955301629963/IfYACWA__400x400.jpg"
+    }],
+    "addr_prefix": "fuelsequencer",
+    "theme_color": "#ce4747",
+    "logo": "https://pbs.twimg.com/profile_images/1651228955301629963/IfYACWA__400x400.jpg"
+}
