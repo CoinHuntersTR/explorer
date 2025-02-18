@@ -18,7 +18,7 @@
     "assets": [{
         "base": "fuel",
         "symbol": "FUEL",
-        "exponent": "6",
+        "exponent": "18",
         "coingecko_id": "fuel-network", 
         "logo": "https://pbs.twimg.com/profile_images/1651228955301629963/IfYACWA__400x400.jpg"
     }],
