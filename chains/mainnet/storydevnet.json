@@ -1,9 +1,9 @@
 {
   "chain_name": "Story",
   "api": [
-    "https://api.story.nodestake.org"
+    "https://api.storyscan.app"
   ],
-  "rpc": ["https://rpc.story.nodestake.org"],
+  "rpc": ["https://rpc.storyscan.app"],
   "snapshot_provider": "CoinHunters",
   "sdk_version": "v0.47.4",
   "coin_type": "60",
