@@ -19,7 +19,7 @@
         "base": "uatone",
         "symbol": "ATONE",
         "exponent": "6",
-        "coingecko_id": "ATONE", 
+        "coingecko_id": "atomone", 
         "logo": "https://pbs.twimg.com/profile_images/1891894823390429185/9swkoZNn_400x400.png"
     }],
     "addr_prefix": "atone",
