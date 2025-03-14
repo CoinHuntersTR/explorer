@@ -19,7 +19,7 @@
         "base": "apell",
         "symbol": "PELL",
         "exponent": "18",
-        "coingecko_id": "PELL", 
+        "coingecko_id": "pell-network-token", 
         "logo": "https://pbs.twimg.com/profile_images/1811609717522989056/_jr_bub2_400x400.png"
     }],
     "addr_prefix": "AMF",
