@@ -2,13 +2,13 @@
     "chain_name": "DYDX",
     "api": [
         {
-            "address": "https://dydx-api.lavenderfive.com:443", 
+            "address": "https://dydx-api.polkachu.com", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://dydx-rpc.lavenderfive.com:443", 
+            "address": "https://dydx-rpc.polkachu.com", 
             "provider": "CoinHunters"
         }
     ],
