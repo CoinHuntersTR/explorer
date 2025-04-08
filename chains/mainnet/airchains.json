@@ -2,13 +2,13 @@
     "chain_name": "Airchains-Testnet",
     "api": [
         {
-            "address": "https://airchains_v-testnet-api.itrocket.net", 
+            "address": "https://airchains-testnet-api.itrocket.net", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://airchains_v-testnet-rpc.itrocket.net", 
+            "address": "https://airchains-testnet-rpc.itrocket.net", 
             "provider": "CoinHunters"
         }
     ],
