@@ -2,13 +2,13 @@
      "chain_name": "Babylon",
      "api": [
          {
-             "address": "https://babylon-api.polkachu.com", 
+             "address": "https://babylon-api.polkachu.com:443", 
              "provider": "CoinHunters"
          }
      ], 
      "rpc": [
          {
-             "address": "https://babylon-rpc.polkachu.com", 
+             "address": "https://babylon-rpc.polkachu.com:443", 
              "provider": "CoinHunters"
          }
      ],
