@@ -1,5 +1,5 @@
  {
-     "chain_name": "Babylon-Testnet",
+     "chain_name": "Babylon",
      "api": [
          {
              "address": "https://babylon-api.polkachu.com", 
