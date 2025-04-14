@@ -1,0 +1,28 @@
+ {
+     "chain_name": "XRPL EVM-Testnet",
+     "api": [
+         {
+             "address": "https://xrplevm-testnet-api.itrocket.net", 
+             "provider": "CoinHunters"
+         }
+     ], 
+     "rpc": [
+         {
+             "address": "https://xrplevm-testnet-rpc.itrocket.net", 
+             "provider": "CoinHunters"
+         }
+     ],
+     "sdk_version": "v0.50.9",
+     "coin_type": "60",
+     "min_tx_fee": "500",
+     "assets": [{
+         "base": "axrp",
+         "symbol": "POA",
+         "exponent": "6",
+         "coingecko_id": "xrpl-evm", 
+         "logo": "https://raw.githubusercontent.com/CoinHuntersTR/Logo/refs/heads/main/174716916.png"
+     }],
+     "addr_prefix": "ethm",
+     "theme_color": "#c45a0b",
+     "logo": "https://raw.githubusercontent.com/CoinHuntersTR/Logo/refs/heads/main/174716916.png"
+ }
