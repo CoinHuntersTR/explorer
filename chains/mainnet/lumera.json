@@ -1,0 +1,28 @@
+{
+    "chain_name": "Lumera-Testnet",
+    "api": [
+        {
+            "address": "https://lumera-testnet.api.kjnodes.com", 
+            "provider": "CoinHunters"
+        }
+    ], 
+    "rpc": [
+        {
+            "address": "https://lumera-testnet.rpc.kjnodes.com", 
+            "provider": "CoinHunters"
+        }
+    ],
+    "sdk_version": "v0.47.4",
+    "coin_type": "60",
+    "min_tx_fee": "500",
+    "assets": [{
+        "base": "ulume",
+        "symbol": "LUME",
+        "exponent": "6",
+        "coingecko_id": "lumera", 
+        "logo": "https://pbs.twimg.com/profile_images/1914464060265127936/z2ONvvpp_400x400.png"
+    }],
+    "addr_prefix": "lumera",
+    "theme_color": "#ea4335",
+    "logo": "https://pbs.twimg.com/profile_images/1914464060265127936/z2ONvvpp_400x400.png"
+}
