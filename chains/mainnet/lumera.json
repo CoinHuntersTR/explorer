@@ -2,13 +2,13 @@
     "chain_name": "Lumera-Testnet",
     "api": [
         {
-            "address": "https://lumera-testnet.api.kjnodes.com", 
+            "address": "https://lumera-testnet-api.polkachu.com", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://lumera-testnet.rpc.kjnodes.com", 
+            "address": "https://lumera-testnet-rpc.polkachu.com", 
             "provider": "CoinHunters"
         }
     ],
