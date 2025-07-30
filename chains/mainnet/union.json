@@ -19,7 +19,7 @@
     "assets": [{
         "base": "au",
         "symbol": "U",
-        "exponent": "6",
+        "exponent": "18",
         "coingecko_id": "union", 
         "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/testnets/uniontestnet/images/union.png"
     }],
