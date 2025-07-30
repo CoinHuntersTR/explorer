@@ -1,1 +1,29 @@
-https://api.rpc-node.union-testnet-10.union.build
+
+{
+    "chain_name": "Union-Testnet",
+    "api": [
+        {
+            "address": "https://api.rpc-node.union-testnet-10.union.build", 
+            "provider": "CoinHunters"
+        }
+    ], 
+    "rpc": [
+        {
+            "address": "https://rpc.rpc-node.union-testnet-10.union.build", 
+            "provider": "CoinHunters"
+        }
+    ],
+    "sdk_version": "v0.47.4",
+    "coin_type": "60",
+    "min_tx_fee": "500",
+    "assets": [{
+        "base": "au",
+        "symbol": "U",
+        "exponent": "6",
+        "coingecko_id": "union", 
+        "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/testnets/uniontestnet/images/union.png"
+    }],
+    "addr_prefix": "union",
+    "theme_color": "#a3ecff",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/testnets/uniontestnet/images/union.png"
+}
