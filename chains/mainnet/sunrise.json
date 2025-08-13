@@ -1,0 +1,29 @@
+
+{
+    "chain_name": "Sunrise",
+    "api": [
+        {
+            "address": "https://api.sunrise.nodestake.org", 
+            "provider": "CoinHunters"
+        }
+    ], 
+    "rpc": [
+        {
+            "address": "https://rpc.sunrise.nodestake.org", 
+            "provider": "CoinHunters"
+        }
+    ],
+    "sdk_version": "v0.47.4",
+    "coin_type": "60",
+    "min_tx_fee": "500",
+    "assets": [{
+        "base": "uvrise",
+        "symbol": "vRISE",
+        "exponent": "18",
+        "coingecko_id": "rise", 
+        "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/refs/heads/master/sunrise/images/sunrise.svg"
+    }],
+    "addr_prefix": "rise",
+    "theme_color": "#a3ecff",
+    "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/refs/heads/master/sunrise/images/sunrise.svg"
+}
