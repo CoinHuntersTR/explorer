@@ -1,0 +1,28 @@
+{
+    "chain_name": "Bitway",
+    "api": [
+        {
+            "address": "https://bitway-mainnet-api.itrocket.net", 
+            "provider": "CoinHunters"
+        }
+    ], 
+    "rpc": [
+        {
+            "address": "https://bitway-mainnet-rpc.itrocket.net", 
+            "provider": "CoinHunters"
+        }
+    ],
+    "sdk_version": "v0.50.3",
+    "coin_type": "60",
+    "min_tx_fee": "800",
+    "assets": [{
+        "base": "ubtw",
+        "symbol": "BTW",
+        "exponent": "6",
+        "coingecko_id": "BTW", 
+        "logo": "https://mainnet.itrocket.net/logos/bitway.jpg"
+    }],
+    "addr_prefix": "bitway",
+    "theme_color": "#ce4747",
+    "logo": "https://mainnet.itrocket.net/logos/bitway.jpg"
+}
