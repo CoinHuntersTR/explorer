@@ -14,12 +14,12 @@
         }
     ],
     "sdk_version": "v0.47.4",
-    "coin_type": "60",
+    "coin_type": "118",
     "min_tx_fee": "500",
     "assets": [{
         "base": "uvrise",
         "symbol": "vRISE",
-        "exponent": "18",
+        "exponent": "8",
         "coingecko_id": "sunrise-layer", 
         "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/refs/heads/master/sunrise/images/sunrise.svg"
     }],
