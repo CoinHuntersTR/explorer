@@ -19,8 +19,8 @@
     "assets": [{
         "base": "uvrise",
         "symbol": "vRISE",
-        "exponent": "8",
-        "coingecko_id": "rise", 
+        "exponent": "18",
+        "coingecko_id": "sunrise-layer", 
         "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/refs/heads/master/sunrise/images/sunrise.svg"
     }],
     "addr_prefix": "rise",
