@@ -19,7 +19,7 @@
         "base": "uom",
         "symbol": "OM",
         "exponent": "6",
-        "coingecko_id": "mantra-dao", 
+        "coingecko_id": "mantra", 
         "logo": "https://raw.githubusercontent.com/cosmos/chain-registry/master/mantrachain/images/OM-Prim-Col.png"
     }],
     "addr_prefix": "mantra",
