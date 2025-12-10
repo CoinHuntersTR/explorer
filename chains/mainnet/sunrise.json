@@ -3,13 +3,13 @@
     "chain_name": "Sunrise",
     "api": [
         {
-            "address": "https://api.sunrise.nodestake.org", 
+            "address": "https://sunrise-api.polkachu.com", 
             "provider": "CoinHunters"
         }
     ], 
     "rpc": [
         {
-            "address": "https://rpc.sunrise.nodestake.org", 
+            "address": "https://sunrise-rpc.polkachu.com/", 
             "provider": "CoinHunters"
         }
     ],
